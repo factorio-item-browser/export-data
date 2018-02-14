@@ -1,0 +1,31 @@
+{
+  "name": "factorio-item-browser/export-data",
+  "description": "The export data structure of the Factorio Item Browser.",
+  "homepage": "https://www.factorio-item-browser.com/",
+  "type": "library",
+  "keywords": ["Factorio Item Browser", "FIB", "export", "BluePsyduck"],
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "BluePsyduck",
+      "email": "bluepsyduck@gmx.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=7.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "FactorioItemBrowser\\ExportData\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "FactorioItemBrowserTest\\ExportData\\": "tests/src/"
+    }
+  }
+}

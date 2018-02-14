@@ -1,0 +1,110 @@
+<?php
+
+namespace FactorioItemBrowserTest\ExportData\Entity\Icon;
+
+use FactorioItemBrowser\ExportData\Entity\Icon\Color;
+use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * The PHPUnit test of the layer class.
+ *
+ * @author BluePsyduck <bluepsyduck@gmx.com>
+ * @license http://opensource.org/licenses/GPL-3.0 GPL v3
+ *
+ * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Icon\Color
+ */
+class LayerTest extends TestCase
+{
+    /**
+     * Tests the constructing.
+     */
+    public function testConstruct()
+    {
+        $layer = new Layer();
+        $this->assertEquals('', $layer->getFileName());
+        $this->assertInstanceOf(Color::class, $layer->getTintColor());
+        $this->assertEquals(0, $layer->getOffsetX());
+        $this->assertEquals(0, $layer->getOffsetY());
+        $this->assertEquals(1., $layer->getScale());
+    }
+
+    /**
+     * Tests the cloning.
+     */
+    public function testClone()
+    {
+        $layer = new Layer();
+        $layer->setFileName('foo')
+              ->setOffsetX(42)
+              ->setOffsetY(21)
+              ->setScale(13.37);
+        $layer->getTintColor()->setAlpha(4.2);
+
+        $clonedLayer = clone($layer);
+        $layer->setFileName('oof')
+              ->setOffsetX(24)
+              ->setOffsetY(12)
+              ->setScale(73.31);
+        $layer->getTintColor()->setAlpha(2.4);
+
+        $this->assertEquals('foo', $clonedLayer->getFileName());
+        $this->assertEquals(42, $clonedLayer->getOffsetX());
+        $this->assertEquals(21, $clonedLayer->getOffsetY());
+        $this->assertEquals(13.37, $clonedLayer->getScale());
+        $this->assertEquals(4.2, $clonedLayer->getTintColor()->getAlpha());
+    }
+
+    /**
+     * Tests setting and getting the file name.
+     */
+    public function testSetAndGetFileName()
+    {
+        $layer = new layer();
+        $this->assertEquals($layer, $layer->setFileName('foo'));
+        $this->assertEquals('foo', $layer->getFileName());
+    }
+
+    /**
+     * Tests setting and getting the tint color.
+     */
+    public function testSetAndGetTintColor()
+    {
+        $color = new Color();
+        $color->setAlpha(0.42);
+
+        $layer = new layer();
+        $this->assertEquals($layer, $layer->setTintColor($color));
+        $this->assertEquals($color, $layer->getTintColor());
+    }
+
+    /**
+     * Tests setting and getting the offset X.
+     */
+    public function testSetAndGetOffsetX()
+    {
+        $layer = new layer();
+        $this->assertEquals($layer, $layer->setOffsetX(42));
+        $this->assertEquals(42, $layer->getOffsetX());
+    }
+
+    /**
+     * Tests setting and getting the offset Y.
+     */
+    public function testSetAndGetOffsetY()
+    {
+        $layer = new layer();
+        $this->assertEquals($layer, $layer->setOffsetY(42));
+        $this->assertEquals(42, $layer->getOffsetY());
+    }
+
+    /**
+     * Tests setting and getting the scale.
+     */
+    public function testSetAndGetScale()
+    {
+        $layer = new layer();
+        $this->assertEquals($layer, $layer->setScale(4.2));
+        $this->assertEquals(4.2, $layer->getScale());
+    }
+}
