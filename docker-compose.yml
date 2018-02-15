@@ -1,0 +1,11 @@
+version: "3"
+services:
+
+  php:
+    build: ./docker/php
+    container_name: fib-ed-php
+    image: fib-ed-php
+    ports:
+      - "8000:80"
+    volumes:
+      - ".:/project"
