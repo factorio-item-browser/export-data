@@ -2,6 +2,7 @@
 
 namespace FactorioItemBrowserTest\ExportData\Entity\Recipe;
 
+use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
 use PHPUnit\Framework\TestCase;
 
@@ -24,9 +25,9 @@ class ProductTest extends TestCase
 
         $this->assertEquals('', $product->getType());
         $this->assertEquals('', $product->getName());
-        $this->assertEquals(0., $product->getAmountMin());
-        $this->assertEquals(0., $product->getAmountMax());
-        $this->assertEquals(0., $product->getProbability());
+        $this->assertEquals(1., $product->getAmountMin());
+        $this->assertEquals(1., $product->getAmountMax());
+        $this->assertEquals(1., $product->getProbability());
         $this->assertEquals(0, $product->getOrder());
     }
 
@@ -88,5 +89,50 @@ class ProductTest extends TestCase
         $product = new Product();
         $this->assertEquals($product, $product->setOrder(42));
         $this->assertEquals(42, $product->getOrder());
+    }
+
+    /**
+     * Provides the data for the writeAndReadData test.
+     * @return array
+     */
+    public function provideTestWriteAndReadData(): array
+    {
+        $product = new Product();
+        $product->setType('abc')
+                   ->setName('def')
+                   ->setAmountMin(13.37)
+                   ->setAmountMax(73.31)
+                   ->setProbability(4.2)
+                   ->setOrder(42);
+
+        $data = [
+            't' => 'abc',
+            'n' => 'def',
+            'i' => 13.37,
+            'a' => 73.31,
+            'p' => 4.2,
+            'o' => 42
+        ];
+
+        return [
+            [$product, $data],
+            [new Product(), []]
+        ];
+    }
+
+    /**
+     * Tests the writing and reading of the data.
+     * @param Product $product
+     * @param array $expectedData
+     * @dataProvider provideTestWriteAndReadData
+     */
+    public function testWriteAndReadData(Product $product, array $expectedData)
+    {
+        $data = $product->writeData();
+        $this->assertEquals($expectedData, $data);
+
+        $newProduct = new Product();
+        $this->assertEquals($newProduct, $newProduct->readData(new DataContainer($data)));
+        $this->assertEquals($newProduct, $product);
     }
 }

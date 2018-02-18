@@ -2,6 +2,8 @@
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
+use BluePsyduck\Common\Data\DataBuilder;
+use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Mod\Dependency;
 
 /**
@@ -10,7 +12,7 @@ use FactorioItemBrowser\ExportData\Entity\Mod\Dependency;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Mod
+class Mod implements EntityInterface
 {
     /**
      * The name of the mod.
@@ -341,5 +343,53 @@ class Mod
     public function getCombinationNames(): array
     {
         return $this->combinationNames;
+    }
+
+    /**
+     * Writes the entity data to an array.
+     * @return array
+     */
+    public function writeData(): array
+    {
+        $dataBuilder = new DataBuilder();
+        $dataBuilder->setString('n', $this->name, '')
+                    ->setArray('t', $this->titles->writeData(), null, [])
+                    ->setArray('d', $this->descriptions->writeData(), null, [])
+                    ->setString('a', $this->author, '')
+                    ->setString('v', $this->version, '')
+                    ->setString('f', $this->fileName, '')
+                    ->setString('i', $this->directoryName, '')
+                    ->setArray('e', $this->dependencies, function (Dependency $dependency): array {
+                        return $dependency->writeData();
+                    }, [])
+                    ->setString('c', $this->checksum, '')
+                    ->setInteger('o', $this->order, 0)
+                    ->setArray('m', $this->combinationNames, 'strval', []);
+        return $dataBuilder->getData();
+    }
+
+    /**
+     * Reads the entity data.
+     * @param DataContainer $data
+     * @return $this
+     */
+    public function readData(DataContainer $data)
+    {
+        $this->name = $data->getString('n', '');
+        $this->titles->readData($data->getObject('t'));
+        $this->descriptions->readData($data->getObject('d'));
+        $this->author = $data->getString('a', '');
+        $this->version = $data->getString('v', '');
+        $this->fileName = $data->getString('f', '');
+        $this->directoryName = $data->getString('i', '');
+        $this->dependencies = array_map(function (DataContainer $data): Dependency {
+            $dependency = new Dependency();
+            $dependency->readData($data);
+            return $dependency;
+        }, $data->getObjectArray('e'));
+        $this->checksum = $data->getString('c', '');
+        $this->order = $data->getInteger('o', 0);
+        $this->combinationNames = array_map('strval', $data->getArray('m'));
+        return $this;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace FactorioItemBrowserTest\ExportData\Entity;
 
+use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
 use PHPUnit\Framework\TestCase;
@@ -124,5 +125,54 @@ class ItemTest extends TestCase
         $item = new Item();
         $this->assertEquals($item, $item->setIconHash('foo'));
         $this->assertEquals('foo', $item->getIconHash());
+    }
+
+    /**
+     * Provides the data for the writeAndReadData test.
+     * @return array
+     */
+    public function provideTestWriteAndReadData(): array
+    {
+        $item = new Item();
+        $item->setType('abc')
+             ->setName('def')
+             ->setProvidesRecipeLocalisation(true)
+             ->setIconHash('ghi');
+        $item->getLabels()->setTranslation('en', 'jkl');
+        $item->getDescriptions()->setTranslation('de', 'mno');
+
+        $data = [
+            't' => 'abc',
+            'n' => 'def',
+            'l' => [
+                'en' => 'jkl'
+            ],
+            'd' => [
+                'de' => 'mno'
+            ],
+            'p' => 1,
+            'i' => 'ghi'
+        ];
+
+        return [
+            [$item, $data],
+            [new Item(), []]
+        ];
+    }
+
+    /**
+     * Tests the writing and reading of the data.
+     * @param Item $item
+     * @param array $expectedData
+     * @dataProvider provideTestWriteAndReadData
+     */
+    public function testWriteAndReadData(Item $item, array $expectedData)
+    {
+        $data = $item->writeData();
+        $this->assertEquals($expectedData, $data);
+
+        $newItem = new Item();
+        $this->assertEquals($newItem, $newItem->readData(new DataContainer($data)));
+        $this->assertEquals($newItem, $item);
     }
 }

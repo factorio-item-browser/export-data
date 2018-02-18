@@ -2,6 +2,7 @@
 
 namespace FactorioItemBrowserTest\ExportData\Entity\Mod;
 
+use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Mod\Dependency;
 use PHPUnit\Framework\TestCase;
 
@@ -74,5 +75,44 @@ class DependencyTest extends TestCase
         $dependency = new Dependency();
         $this->assertEquals($dependency, $dependency->setIsMandatory(true));
         $this->assertEquals(true, $dependency->getIsMandatory());
+    }
+
+    /**
+     * Provides the data for the writeAndReadData test.
+     * @return array
+     */
+    public function provideTestWriteAndReadData(): array
+    {
+        $dependency = new Dependency();
+        $dependency->setRequiredModName('abc')
+                   ->setRequiredVersion('4.2.0')
+                   ->setIsMandatory(true);
+
+        $data = [
+            'm' => 'abc',
+            'v' => '4.2.0',
+            'r' => 1
+        ];
+
+        return [
+            [$dependency, $data],
+            [new Dependency(), []]
+        ];
+    }
+
+    /**
+     * Tests the writing and reading of the data.
+     * @param Dependency $dependency
+     * @param array $expectedData
+     * @dataProvider provideTestWriteAndReadData
+     */
+    public function testWriteAndReadData(Dependency $dependency, array $expectedData)
+    {
+        $data = $dependency->writeData();
+        $this->assertEquals($expectedData, $data);
+
+        $newDependency = new Dependency();
+        $this->assertEquals($newDependency, $newDependency->readData(new DataContainer($data)));
+        $this->assertEquals($newDependency, $dependency);
     }
 }

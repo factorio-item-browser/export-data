@@ -2,6 +2,7 @@
 
 namespace FactorioItemBrowserTest\ExportData\Entity\Recipe;
 
+use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient;
 use PHPUnit\Framework\TestCase;
 
@@ -10,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- * 
+ *
  * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient
  */
 class IngredientTest extends TestCase
@@ -24,7 +25,7 @@ class IngredientTest extends TestCase
 
         $this->assertEquals('', $ingredient->getType());
         $this->assertEquals('', $ingredient->getName());
-        $this->assertEquals(0., $ingredient->getAmount());
+        $this->assertEquals(1., $ingredient->getAmount());
         $this->assertEquals(0, $ingredient->getOrder());
     }
 
@@ -66,5 +67,46 @@ class IngredientTest extends TestCase
         $ingredient = new Ingredient();
         $this->assertEquals($ingredient, $ingredient->setOrder(42));
         $this->assertEquals(42, $ingredient->getOrder());
+    }
+
+    /**
+     * Provides the data for the writeAndReadData test.
+     * @return array
+     */
+    public function provideTestWriteAndReadData(): array
+    {
+        $ingredient = new Ingredient();
+        $ingredient->setType('abc')
+                   ->setName('def')
+                   ->setAmount(13.37)
+                   ->setOrder(42);
+
+        $data = [
+            't' => 'abc',
+            'n' => 'def',
+            'a' => 13.37,
+            'o' => 42
+        ];
+
+        return [
+            [$ingredient, $data],
+            [new Ingredient(), []]
+        ];
+    }
+
+    /**
+     * Tests the writing and reading of the data.
+     * @param Ingredient $ingredient
+     * @param array $expectedData
+     * @dataProvider provideTestWriteAndReadData
+     */
+    public function testWriteAndReadData(Ingredient $ingredient, array $expectedData)
+    {
+        $data = $ingredient->writeData();
+        $this->assertEquals($expectedData, $data);
+
+        $newIngredient = new Ingredient();
+        $this->assertEquals($newIngredient, $newIngredient->readData(new DataContainer($data)));
+        $this->assertEquals($newIngredient, $ingredient);
     }
 }

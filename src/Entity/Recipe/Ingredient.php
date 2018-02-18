@@ -2,13 +2,17 @@
 
 namespace FactorioItemBrowser\ExportData\Entity\Recipe;
 
+use BluePsyduck\Common\Data\DataBuilder;
+use BluePsyduck\Common\Data\DataContainer;
+use FactorioItemBrowser\ExportData\Entity\EntityInterface;
+
 /**
  * The class representing an ingredient of a recipe.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Ingredient
+class Ingredient implements EntityInterface
 {
     /**
      * The type of the ingredient.
@@ -26,7 +30,7 @@ class Ingredient
      * The amount of the ingredient required for the recipe.
      * @var float
      */
-    protected $amount = 0.;
+    protected $amount = 1.;
 
     /**
      * The order of the ingredient in the recipe.
@@ -112,5 +116,33 @@ class Ingredient
     public function getOrder(): int
     {
         return $this->order;
+    }
+
+    /**
+     * Writes the entity data to an array.
+     * @return array
+     */
+    public function writeData(): array
+    {
+        $dataBuilder = new DataBuilder();
+        $dataBuilder->setString('t', $this->type, '')
+                    ->setString('n', $this->name, '')
+                    ->setFloat('a', $this->amount, 1.)
+                    ->setInteger('o', $this->order, 0);
+        return $dataBuilder->getData();
+    }
+
+    /**
+     * Reads the entity data.
+     * @param DataContainer $data
+     * @return $this
+     */
+    public function readData(DataContainer $data)
+    {
+        $this->type = $data->getString('t', '');
+        $this->name = $data->getString('n', '');
+        $this->amount = $data->getFloat('a', 1.);
+        $this->order = $data->getInteger('o', 0);
+        return $this;
     }
 }

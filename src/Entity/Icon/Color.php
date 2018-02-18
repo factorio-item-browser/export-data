@@ -2,13 +2,17 @@
 
 namespace FactorioItemBrowser\ExportData\Entity\Icon;
 
+use BluePsyduck\Common\Data\DataBuilder;
+use BluePsyduck\Common\Data\DataContainer;
+use FactorioItemBrowser\ExportData\Entity\EntityInterface;
+
 /**
  * A class holding information about a color.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Color
+class Color implements EntityInterface
 {
     /**
      * The red component of the color.
@@ -121,7 +125,7 @@ class Color
     {
         return $this->getComponent($this->alpha, $scale);
     }
-    
+
     /**
      * Calculates the value to set a component.
      * @param float $value
@@ -142,5 +146,33 @@ class Color
     protected function getComponent(float $value, float $scale): float
     {
         return ($scale < 0) ? ((1 - $value) * -$scale) : ($value * $scale);
+    }
+
+    /**
+     * Writes the entity data to an array.
+     * @return array
+     */
+    public function writeData(): array
+    {
+        $dataBuilder = new DataBuilder();
+        $dataBuilder->setFloat('r', $this->getRed(), 1.)
+                    ->setFloat('g', $this->getGreen(), 1.)
+                    ->setFloat('b', $this->getBlue(), 1.)
+                    ->setFloat('a', $this->getAlpha(), 1.);
+        return $dataBuilder->getData();
+    }
+
+    /**
+     * Reads the entity data.
+     * @param DataContainer $data
+     * @return $this
+     */
+    public function readData(DataContainer $data)
+    {
+        $this->red = $data->getFloat('r', 1.);
+        $this->green = $data->getFloat('g', 1.);
+        $this->blue = $data->getFloat('b', 1.);
+        $this->alpha = $data->getFloat('a', 1.);
+        return $this;
     }
 }

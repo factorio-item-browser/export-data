@@ -2,13 +2,17 @@
 
 namespace FactorioItemBrowser\ExportData\Entity\Recipe;
 
+use BluePsyduck\Common\Data\DataBuilder;
+use BluePsyduck\Common\Data\DataContainer;
+use FactorioItemBrowser\ExportData\Entity\EntityInterface;
+
 /**
  * The class representing a product of a recipe.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Product
+class Product implements EntityInterface
 {
     /**
      * The type of the product.
@@ -26,19 +30,19 @@ class Product
      * The minimal amount of the product from the recipe.
      * @var float
      */
-    protected $amountMin = 0.;
+    protected $amountMin = 1.;
 
     /**
      * The maximal amount of the product from the recipe.
      * @var float
      */
-    protected $amountMax = 0.;
+    protected $amountMax = 1.;
 
     /**
      * The probability in which the product is returned from the recipe.
      * @var float
      */
-    protected $probability = 0.;
+    protected $probability = 1.;
 
     /**
      * The order of the product in the recipe.
@@ -164,5 +168,37 @@ class Product
     public function getOrder(): int
     {
         return $this->order;
+    }
+
+    /**
+     * Writes the entity data to an array.
+     * @return array
+     */
+    public function writeData(): array
+    {
+        $dataBuilder = new DataBuilder();
+        $dataBuilder->setString('t', $this->type, '')
+                    ->setString('n', $this->name, '')
+                    ->setFloat('i', $this->amountMin, 1.)
+                    ->setFloat('a', $this->amountMax, 1.)
+                    ->setFloat('p', $this->probability, 1.)
+                    ->setInteger('o', $this->order, 0);
+        return $dataBuilder->getData();
+    }
+
+    /**
+     * Reads the entity data.
+     * @param DataContainer $data
+     * @return $this
+     */
+    public function readData(DataContainer $data)
+    {
+        $this->type = $data->getString('t', '');
+        $this->name = $data->getString('n', '');
+        $this->amountMin = $data->getFloat('i', 1.);
+        $this->amountMax = $data->getFloat('a', 1.);
+        $this->probability = $data->getFloat('p', 1.);
+        $this->order = $data->getInteger('o', 0);
+        return $this;
     }
 }

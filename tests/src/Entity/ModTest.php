@@ -2,6 +2,7 @@
 
 namespace FactorioItemBrowserTest\ExportData\Entity;
 
+use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
 use FactorioItemBrowser\ExportData\Entity\Mod;
 use FactorioItemBrowser\ExportData\Entity\Mod\Dependency;
@@ -211,5 +212,75 @@ class ModTest extends TestCase
 
         $this->assertEquals($mod, $mod->addCombinationName('ghi'));
         $this->assertEquals(['abc', 'def', 'ghi'], $mod->getCombinationNames());
+    }
+
+    /**
+     * Provides the data for the writeAndReadData test.
+     * @return array
+     */
+    public function provideTestWriteAndReadData(): array
+    {
+        $dependency1 = new Dependency();
+        $dependency1->setRequiredModName('foo');
+        $dependency2 = new Dependency();
+        $dependency2->setRequiredModName('bar');
+
+        $mod = new Mod();
+        $mod->setName('abc')
+            ->setAuthor('def')
+            ->setVersion('4.2.0')
+            ->setFileName('ghi')
+            ->setDirectoryName('jkl')
+            ->addDependency($dependency1)
+            ->addDependency($dependency2)
+            ->setChecksum('mno')
+            ->addCombinationName('pqr')
+            ->addCombinationName('stu');
+        $mod->getTitles()->setTranslation('en', 'vwx');
+        $mod->getDescriptions()->setTranslation('de', 'yz');
+
+        $data = [
+            'n' => 'abc',
+            't' => [
+                'en' => 'vwx'
+            ],
+            'd' => [
+                'de' => 'yz'
+            ],
+            'a' => 'def',
+            'v' => '4.2.0',
+            'f' => 'ghi',
+            'i' => 'jkl',
+            'e' => [
+                ['m' => 'foo'],
+                ['m' => 'bar']
+            ],
+            'c' => 'mno',
+            'm' => [
+                'pqr',
+                'stu'
+            ]
+        ];
+
+        return [
+            [$mod, $data],
+            [new Mod(), []]
+        ];
+    }
+
+    /**
+     * Tests the writing and reading of the data.
+     * @param Mod $mod
+     * @param array $expectedData
+     * @dataProvider provideTestWriteAndReadData
+     */
+    public function testWriteAndReadData(Mod $mod, array $expectedData)
+    {
+        $data = $mod->writeData();
+        $this->assertEquals($expectedData, $data);
+
+        $newMod = new Mod();
+        $this->assertEquals($newMod, $newMod->readData(new DataContainer($data)));
+        $this->assertEquals($newMod, $mod);
     }
 }

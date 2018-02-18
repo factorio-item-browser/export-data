@@ -2,6 +2,7 @@
 
 namespace FactorioItemBrowserTest\ExportData\Entity\Icon;
 
+use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon\Color;
 use PHPUnit\Framework\TestCase;
 
@@ -85,5 +86,46 @@ class ColorTest extends TestCase
         $this->assertEquals($color, $color->setAlpha(64, 256));
         $this->assertEquals(0.25, $color->getAlpha());
         $this->assertEquals(64, $color->getAlpha(256));
+    }
+
+    /**
+     * Provides the data for the writeAndReadData test.
+     * @return array
+     */
+    public function provideTestWriteAndReadData(): array
+    {
+        $color = new Color();
+        $color->setRed(0.2)
+              ->setGreen(0.4)
+              ->setBlue(0.6)
+              ->setAlpha(0.8);
+
+        $data = [
+            'r' => 0.2,
+            'g' => 0.4,
+            'b' => 0.6,
+            'a' => 0.8
+        ];
+
+        return [
+            [$color, $data],
+            [new Color(), []]
+        ];
+    }
+
+    /**
+     * Tests the writing and reading of the data.
+     * @param Color $color
+     * @param array $expectedData
+     * @dataProvider provideTestWriteAndReadData
+     */
+    public function testWriteAndReadData(Color $color, array $expectedData)
+    {
+        $data = $color->writeData();
+        $this->assertEquals($expectedData, $data);
+
+        $newColor = new Color();
+        $this->assertEquals($newColor, $newColor->readData(new DataContainer($data)));
+        $this->assertEquals($newColor, $color);
     }
 }

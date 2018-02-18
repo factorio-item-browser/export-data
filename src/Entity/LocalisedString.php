@@ -2,13 +2,15 @@
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
+use BluePsyduck\Common\Data\DataContainer;
+
 /**
  * The entity representing the translations of a localised string.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class LocalisedString
+class LocalisedString implements EntityInterface
 {
     /**
      * The translations of the localised string.
@@ -49,5 +51,25 @@ class LocalisedString
     public function getTranslations(): array
     {
         return $this->translations;
+    }
+
+    /**
+     * Writes the entity data to an array.
+     * @return array
+     */
+    public function writeData(): array
+    {
+        return array_filter($this->translations);
+    }
+
+    /**
+     * Reads the entity data.
+     * @param DataContainer $data
+     * @return $this
+     */
+    public function readData(DataContainer $data)
+    {
+        $this->translations = array_filter($data->getData());
+        return $this;
     }
 }

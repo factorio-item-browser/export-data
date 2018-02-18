@@ -2,13 +2,17 @@
 
 namespace FactorioItemBrowser\ExportData\Entity\Icon;
 
+use BluePsyduck\Common\Data\DataBuilder;
+use BluePsyduck\Common\Data\DataContainer;
+use FactorioItemBrowser\ExportData\Entity\EntityInterface;
+
 /**
  * The entity representing one layer of an icon.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Layer
+class Layer implements EntityInterface
 {
     /**
      * The file name of the icon layer.
@@ -154,5 +158,35 @@ class Layer
     public function getScale(): float
     {
         return $this->scale;
+    }
+
+    /**
+     * Writes the entity data to an array.
+     * @return array
+     */
+    public function writeData(): array
+    {
+        $dataBuilder = new DataBuilder();
+        $dataBuilder->setString('f', $this->getFileName(), '')
+                    ->setArray('c', $this->tintColor->writeData(), null, [])
+                    ->setInteger('x', $this->getOffsetX(), 0)
+                    ->setInteger('y', $this->getOffsetY(), 0)
+                    ->setFloat('s', $this->getScale(), 1.);
+        return $dataBuilder->getData();
+    }
+
+    /**
+     * Reads the entity data.
+     * @param DataContainer $data
+     * @return $this
+     */
+    public function readData(DataContainer $data)
+    {
+        $this->fileName = $data->getString('f', '');
+        $this->tintColor->readData($data->getObject('c'));
+        $this->offsetX = $data->getInteger('x', 0);
+        $this->offsetY = $data->getInteger('y', 0);
+        $this->scale = $data->getFloat('s', 1.);
+        return $this;
     }
 }

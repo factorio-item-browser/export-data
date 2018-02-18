@@ -2,6 +2,8 @@
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
+use BluePsyduck\Common\Data\DataBuilder;
+use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
 
@@ -11,7 +13,7 @@ use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Recipe
+class Recipe implements EntityInterface
 {
     /**
      * The type of the recipe.
@@ -75,10 +77,10 @@ class Recipe
      */
     public function __clone()
     {
-        $this->ingredients = array_map(function(Ingredient $ingredient): Ingredient {
+        $this->ingredients = array_map(function (Ingredient $ingredient): Ingredient {
             return clone($ingredient);
         }, $this->ingredients);
-        $this->products = array_map(function(Product $product): Product {
+        $this->products = array_map(function (Product $product): Product {
             return clone($product);
         }, $this->products);
 
@@ -270,5 +272,53 @@ class Recipe
     public function getIconHash(): string
     {
         return $this->iconHash;
+    }
+
+    /**
+     * Writes the entity data to an array.
+     * @return array
+     */
+    public function writeData(): array
+    {
+        $dataBuilder = new DataBuilder();
+        $dataBuilder->setString('t', $this->type, '')
+                    ->setString('n', $this->name, '')
+                    ->setArray('i', $this->ingredients, function (Ingredient $ingredient): array {
+                        return $ingredient->writeData();
+                    }, [])
+                    ->setArray('p', $this->products, function (Product $product): array {
+                        return $product->writeData();
+                    }, [])
+                    ->setFloat('c', $this->craftingTime, 0.)
+                    ->setArray('l', $this->labels->writeData(), null, [])
+                    ->setArray('d', $this->descriptions->writeData(), null, [])
+                    ->setString('h', $this->iconHash, '');
+        return $dataBuilder->getData();
+    }
+
+    /**
+     * Reads the entity data.
+     * @param DataContainer $data
+     * @return $this
+     */
+    public function readData(DataContainer $data)
+    {
+        $this->type = $data->getString('t', '');
+        $this->name = $data->getString('n', '');
+        $this->ingredients = array_map(function (DataContainer $data): Ingredient {
+            $ingredient = new Ingredient();
+            $ingredient->readData($data);
+            return $ingredient;
+        }, $data->getObjectArray('i'));
+        $this->products = array_map(function (DataContainer $data): Product {
+            $product = new Product();
+            $product->readData($data);
+            return $product;
+        }, $data->getObjectArray('p'));
+        $this->craftingTime = $data->getFloat('c', 0.);
+        $this->labels->readData($data->getObject('l'));
+        $this->descriptions->readData($data->getObject('d'));
+        $this->iconHash = $data->getString('h', '');
+        return $this;
     }
 }

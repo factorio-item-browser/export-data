@@ -2,13 +2,17 @@
 
 namespace FactorioItemBrowser\ExportData\Entity\Mod;
 
+use BluePsyduck\Common\Data\DataBuilder;
+use BluePsyduck\Common\Data\DataContainer;
+use FactorioItemBrowser\ExportData\Entity\EntityInterface;
+
 /**
  * The class representing a mod dependency.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Dependency
+class Dependency implements EntityInterface
 {
     /**
      * The name of the required mod.
@@ -86,5 +90,31 @@ class Dependency
     public function getIsMandatory(): bool
     {
         return $this->isMandatory;
+    }
+
+    /**
+     * Writes the entity data to an array.
+     * @return array
+     */
+    public function writeData(): array
+    {
+        $dataBuilder = new DataBuilder();
+        $dataBuilder->setString('m', $this->requiredModName, '')
+                    ->setString('v', $this->requiredVersion, '')
+                    ->setInteger('r', $this->isMandatory ? 1 : 0, 0);
+        return $dataBuilder->getData();
+    }
+
+    /**
+     * Reads the entity data.
+     * @param DataContainer $data
+     * @return $this
+     */
+    public function readData(DataContainer $data)
+    {
+        $this->requiredModName = $data->getString('m', '');
+        $this->requiredVersion = $data->getString('v', '');
+        $this->isMandatory = $data->getInteger('r', 0) === 1;
+        return $this;
     }
 }

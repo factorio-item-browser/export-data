@@ -2,6 +2,9 @@
 
 namespace FactorioItemBrowser\ExportData\Entity\Mod;
 
+use BluePsyduck\Common\Data\DataBuilder;
+use BluePsyduck\Common\Data\DataContainer;
+use FactorioItemBrowser\ExportData\Entity\EntityInterface;
 use FactorioItemBrowser\ExportData\Entity\Icon;
 use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\Recipe;
@@ -12,7 +15,7 @@ use FactorioItemBrowser\ExportData\Entity\Recipe;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Combination
+class Combination implements EntityInterface
 {
     /**
      * The name of the combination.
@@ -231,7 +234,8 @@ class Combination
      * @param string $name
      * @return $this
      */
-    public function removeItem(string $type, string $name) {
+    public function removeItem(string $type, string $name)
+    {
         foreach ($this->items as $key => $item) {
             if ($item->getType() === $type && $item->getName() === $name) {
                 unset($this->items[$key]);
@@ -372,6 +376,59 @@ class Combination
                 break;
             }
         }
+        return $this;
+    }
+
+    /**
+     * Writes the entity data to an array.
+     * @return array
+     */
+    public function writeData(): array
+    {
+        $dataBuilder = new DataBuilder();
+        $dataBuilder->setString('n', $this->name, '')
+                    ->setString('m', $this->mainModName, '')
+                    ->setArray('l', $this->loadedModNames, 'strval', [])
+                    ->setArray('o', $this->loadedOptionalModNames, 'strval', [])
+                    ->setArray('i', $this->items, function (Item $item): array {
+                        return $item->writeData();
+                    }, [])
+                    ->setArray('r', $this->recipes, function (Recipe $recipe): array {
+                        return $recipe->writeData();
+                    }, [])
+                    ->setArray('c', $this->icons, function (Icon $icon): array {
+                        return $icon->writeData();
+                    }, []);
+        return $dataBuilder->getData();
+    }
+
+    /**
+     * Reads the entity data.
+     * @param DataContainer $data
+     * @return $this
+     */
+    public function readData(DataContainer $data)
+    {
+        $this->name = $data->getString('n', '');
+        $this->mainModName = $data->getString('m', '');
+        $this->loadedModNames = array_map('strval', $data->getArray('l'));
+        $this->loadedOptionalModNames = array_map('strval', $data->getArray('o'));
+        $this->items = array_map(function (DataContainer $data): Item {
+            $item = new Item();
+            $item->readData($data);
+            return $item;
+        }, $data->getObjectArray('i'));
+        $this->recipes = array_map(function (DataContainer $data): Recipe {
+            $recipe = new Recipe();
+            $recipe->readData($data);
+            return $recipe;
+        }, $data->getObjectArray('r'));
+        $this->icons = array_map(function (DataContainer $data): Icon {
+            $icon = new Icon();
+            $icon->readData($data);
+            return $icon;
+        }, $data->getObjectArray('c'));
+
         return $this;
     }
 }

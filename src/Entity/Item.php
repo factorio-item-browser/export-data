@@ -2,13 +2,16 @@
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
+use BluePsyduck\Common\Data\DataBuilder;
+use BluePsyduck\Common\Data\DataContainer;
+
 /**
  * The class representing an item from the export.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Item
+class Item implements EntityInterface
 {
     /**
      * The type of the item.
@@ -182,5 +185,37 @@ class Item
     public function getIconHash(): string
     {
         return $this->iconHash;
+    }
+
+    /**
+     * Writes the entity data to an array.
+     * @return array
+     */
+    public function writeData(): array
+    {
+        $dataBuilder = new DataBuilder();
+        $dataBuilder->setString('t', $this->getType(), '')
+                    ->setString('n', $this->getName(), '')
+                    ->setArray('l', $this->labels->writeData(), null, [])
+                    ->setArray('d', $this->descriptions->writeData(), null, [])
+                    ->setInteger('p', $this->getProvidesRecipeLocalisation() ? 1 : 0, 0)
+                    ->setString('i', $this->iconHash, '');
+        return $dataBuilder->getData();
+    }
+
+    /**
+     * Reads the entity data.
+     * @param DataContainer $data
+     * @return $this
+     */
+    public function readData(DataContainer $data)
+    {
+        $this->type = $data->getString('t', '');
+        $this->name = $data->getString('n', '');
+        $this->labels->readData($data->getObject('l'));
+        $this->descriptions->readData($data->getObject('d'));
+        $this->providesRecipeLocalisation = $data->getInteger('p', 0) === 1;
+        $this->iconHash = $data->getString('i');
+        return $this;
     }
 }

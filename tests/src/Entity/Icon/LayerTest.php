@@ -2,6 +2,7 @@
 
 namespace FactorioItemBrowserTest\ExportData\Entity\Icon;
 
+use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon\Color;
 use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
 use PHPUnit\Framework\TestCase;
@@ -106,5 +107,50 @@ class LayerTest extends TestCase
         $layer = new layer();
         $this->assertEquals($layer, $layer->setScale(4.2));
         $this->assertEquals(4.2, $layer->getScale());
+    }
+
+    /**
+     * Provides the data for the writeAndReadData test.
+     * @return array
+     */
+    public function provideTestWriteAndReadData(): array
+    {
+        $layer = new Layer();
+        $layer->setFileName('abc')
+              ->setOffsetX(42)
+              ->setOffsetY(21)
+              ->setScale(13.37);
+        $layer->getTintColor()->setRed(0.2);
+
+        $data = [
+            'f' => 'abc',
+            'c' => [
+                'r' => 0.2
+            ],
+            'x' => 42,
+            'y' => 21,
+            's' => 13.37
+        ];
+
+        return [
+            [$layer, $data],
+            [new Layer(), []]
+        ];
+    }
+
+    /**
+     * Tests the writing and reading of the data.
+     * @param Layer $layer
+     * @param array $expectedData
+     * @dataProvider provideTestWriteAndReadData
+     */
+    public function testWriteAndReadData(Layer $layer, array $expectedData)
+    {
+        $data = $layer->writeData();
+        $this->assertEquals($expectedData, $data);
+
+        $newLayer = new Layer();
+        $this->assertEquals($newLayer, $newLayer->readData(new DataContainer($data)));
+        $this->assertEquals($newLayer, $layer);
     }
 }

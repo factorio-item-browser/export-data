@@ -2,6 +2,7 @@
 
 namespace FactorioItemBrowserTest\ExportData\Entity\Mod;
 
+use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon;
 use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\Mod\Combination;
@@ -222,5 +223,85 @@ class CombinationTest extends TestCase
         $this->assertEquals($icon1, $combination->getIcon('abc'));
         $this->assertEquals($icon2, $combination->getIcon('def'));
         $this->assertEquals(null, $combination->getIcon('ghi'));
+    }
+
+    /**
+     * Provides the data for the writeAndReadData test.
+     * @return array
+     */
+    public function provideTestWriteAndReadData(): array
+    {
+        $item1 = new Item();
+        $item1->setType('i42');
+        $item2 = new Item();
+        $item2->setType('i21');
+        $recipe1 = new Recipe();
+        $recipe1->setType('r42');
+        $recipe2 = new Recipe();
+        $recipe2->setType('r21');
+        $icon1 = new Icon();
+        $icon1->setIconHash('c42');
+        $icon2 = new Icon();
+        $icon2->setIconHash('c21');
+
+        $combination = new Combination();
+        $combination->setName('abc')
+                    ->setMainModName('def')
+                    ->addLoadedModName('ghi')
+                    ->addLoadedModName('jkl')
+                    ->addLoadedOptionalModName('mno')
+                    ->addLoadedOptionalModName('pqr')
+                    ->addItem($item1)
+                    ->addItem($item2)
+                    ->addRecipe($recipe1)
+                    ->addRecipe($recipe2)
+                    ->addIcon($icon1)
+                    ->addIcon($icon2);
+
+        $data = [
+            'n' => 'abc',
+            'm' => 'def',
+            'l' => [
+                'ghi',
+                'jkl'
+            ],
+            'o' => [
+                'mno',
+                'pqr'
+            ],
+            'i' => [
+                ['t' => 'i42'],
+                ['t' => 'i21']
+            ],
+            'r' => [
+                ['t' => 'r42'],
+                ['t' => 'r21']
+            ],
+            'c' => [
+                ['h' => 'c42'],
+                ['h' => 'c21']
+            ]
+        ];
+
+        return [
+            [$combination, $data],
+            [new Combination(), []]
+        ];
+    }
+
+    /**
+     * Tests the writing and reading of the data.
+     * @param Combination $combination
+     * @param array $expectedData
+     * @dataProvider provideTestWriteAndReadData
+     */
+    public function testWriteAndReadData(Combination $combination, array $expectedData)
+    {
+        $data = $combination->writeData();
+        $this->assertEquals($expectedData, $data);
+
+        $newCombination = new Combination();
+        $this->assertEquals($newCombination, $newCombination->readData(new DataContainer($data)));
+        $this->assertEquals($newCombination, $combination);
     }
 }

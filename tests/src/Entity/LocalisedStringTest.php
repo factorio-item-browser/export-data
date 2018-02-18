@@ -2,6 +2,7 @@
 
 namespace FactorioItemBrowserTest\ExportData\Entity;
 
+use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
 use PHPUnit\Framework\TestCase;
 
@@ -53,5 +54,42 @@ class LocalisedStringTest extends TestCase
         $this->assertEquals('foo', $localisedString->getTranslation('en'));
         $this->assertEquals('bar', $localisedString->getTranslation('de'));
         $this->assertEquals('', $localisedString->getTranslation('jp'));
+    }
+
+    /**
+     * Provides the data for the writeAndReadData test.
+     * @return array
+     */
+    public function provideTestWriteAndReadData(): array
+    {
+        $localisedString = new LocalisedString();
+        $localisedString->setTranslation('en', 'abc')
+                        ->setTranslation('de', 'def');
+
+        $data = [
+            'en' => 'abc',
+            'de' => 'def'
+        ];
+
+        return [
+            [$localisedString, $data],
+            [new LocalisedString(), []]
+        ];
+    }
+
+    /**
+     * Tests the writing and reading of the data.
+     * @param LocalisedString $localisedString
+     * @param array $expectedData
+     * @dataProvider provideTestWriteAndReadData
+     */
+    public function testWriteAndReadData(LocalisedString $localisedString, array $expectedData)
+    {
+        $data = $localisedString->writeData();
+        $this->assertEquals($expectedData, $data);
+
+        $newLocalisedString = new LocalisedString();
+        $this->assertEquals($newLocalisedString, $newLocalisedString->readData(new DataContainer($data)));
+        $this->assertEquals($newLocalisedString, $localisedString);
     }
 }

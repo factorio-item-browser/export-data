@@ -4,8 +4,54 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ba44d37d5538efa23c644c5329905f8b",
-    "packages": [],
+    "content-hash": "57c8360a65880529dbba2bd2e809996f",
+    "packages": [
+        {
+            "name": "bluepsyduck/common",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BluePsyduck/Common.git",
+                "reference": "909897fdfbcd4b7c72b94f2b365f7df295814fc8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BluePsyduck/Common/zipball/909897fdfbcd4b7c72b94f2b365f7df295814fc8",
+                "reference": "909897fdfbcd4b7c72b94f2b365f7df295814fc8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BluePsyduck\\Common\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "BluePsyduck",
+                    "email": "bluepsyduck@gmx.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Some classes commonly used in other projects.",
+            "homepage": "https://github.com/BluePsyduck/Common",
+            "keywords": [
+                "BluePsyduck",
+                "common"
+            ],
+            "time": "2018-02-16T20:20:50+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "doctrine/instantiator",

@@ -2,6 +2,7 @@
 
 namespace FactorioItemBrowserTest\ExportData\Entity;
 
+use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
 use FactorioItemBrowser\ExportData\Entity\Recipe;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient;
@@ -179,5 +180,75 @@ class RecipeTest extends TestCase
         $item = new Recipe();
         $this->assertEquals($item, $item->setIconHash('foo'));
         $this->assertEquals('foo', $item->getIconHash());
+    }
+
+    /**
+     * Provides the data for the writeAndReadData test.
+     * @return array
+     */
+    public function provideTestWriteAndReadData(): array
+    {
+        $ingredient1 = new Ingredient();
+        $ingredient1->setType('pqr');
+        $ingredient2 = new Ingredient();
+        $ingredient2->setType('stu');
+        $product1 = new Product();
+        $product1->setType('vwx');
+        $product2 = new Product();
+        $product2->setType('yz');
+
+        $recipe = new Recipe();
+        $recipe->setType('abc')
+               ->setName('def')
+               ->addIngredient($ingredient1)
+               ->addIngredient($ingredient2)
+               ->addProduct($product1)
+               ->addProduct($product2)
+               ->setCraftingTime(13.37)
+               ->setIconHash('ghi');
+        $recipe->getLabels()->setTranslation('en', 'jkl');
+        $recipe->getDescriptions()->setTranslation('de', 'mno');
+
+        $data = [
+            't' => 'abc',
+            'n' => 'def',
+            'i' => [
+                ['t' => 'pqr'],
+                ['t' => 'stu']
+            ],
+            'p' => [
+                ['t' => 'vwx'],
+                ['t' => 'yz']
+            ],
+            'c' => 13.37,
+            'l' => [
+                'en' => 'jkl'
+            ],
+            'd' => [
+                'de' => 'mno'
+            ],
+            'h' => 'ghi'
+        ];
+
+        return [
+            [$recipe, $data],
+            [new Recipe(), []]
+        ];
+    }
+
+    /**
+     * Tests the writing and reading of the data.
+     * @param Recipe $recipe
+     * @param array $expectedData
+     * @dataProvider provideTestWriteAndReadData
+     */
+    public function testWriteAndReadData(Recipe $recipe, array $expectedData)
+    {
+        $data = $recipe->writeData();
+        $this->assertEquals($expectedData, $data);
+
+        $newRecipe = new Recipe();
+        $this->assertEquals($newRecipe, $newRecipe->readData(new DataContainer($data)));
+        $this->assertEquals($newRecipe, $recipe);
     }
 }
