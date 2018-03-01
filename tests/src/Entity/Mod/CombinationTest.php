@@ -43,8 +43,8 @@ class CombinationTest extends TestCase
         $item->setType('abc')
              ->setName('def');
         $recipe = new Recipe();
-        $recipe->setType('ghi')
-               ->setName('jkl');
+        $recipe->setName('ghi')
+               ->setMode('jkl');
         $icon = new Icon();
         $icon->setIconHash('mno');
 
@@ -64,8 +64,8 @@ class CombinationTest extends TestCase
                     ->setLoadedOptionalModNames(['zy']);
         $item->setType('cba')
              ->setName('fed');
-        $recipe->setType('ihg')
-               ->setName('lkj');
+        $recipe->setName('ihg')
+               ->setMode('lkj');
         $icon->setIconHash('onm');
 
         $this->assertEquals('pqr', $clonedCombination->getName());
@@ -164,14 +164,14 @@ class CombinationTest extends TestCase
     public function testSetAddGetAndRemoveRecipes()
     {
         $recipe1 = new Recipe();
-        $recipe1->setType('abc')
-                ->setName('def');
+        $recipe1->setName('abc')
+                ->setMode('def');
         $recipe2 = new Recipe();
-        $recipe2->setType('ghi')
-                ->setName('jkl');
+        $recipe2->setName('ghi')
+                ->setMode('jkl');
         $recipe3 = new Recipe();
-        $recipe3->setType('mno')
-                ->setName('pqr');
+        $recipe3->setName('mno')
+                ->setMode('pqr');
 
         $combination = new Combination();
         $this->assertEquals($combination, $combination->setRecipes([$recipe1, new Item(), $recipe2]));
@@ -236,9 +236,9 @@ class CombinationTest extends TestCase
         $item2 = new Item();
         $item2->setType('i21');
         $recipe1 = new Recipe();
-        $recipe1->setType('r42');
+        $recipe1->setName('r42');
         $recipe2 = new Recipe();
-        $recipe2->setType('r21');
+        $recipe2->setName('r21');
         $icon1 = new Icon();
         $icon1->setIconHash('c42');
         $icon2 = new Icon();
@@ -274,8 +274,8 @@ class CombinationTest extends TestCase
                 ['t' => 'i21']
             ],
             'r' => [
-                ['t' => 'r42'],
-                ['t' => 'r21']
+                ['n' => 'r42'],
+                ['n' => 'r21']
             ],
             'c' => [
                 ['h' => 'c42'],

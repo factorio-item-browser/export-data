@@ -26,8 +26,8 @@ class RecipeTest extends TestCase
     {
         $recipe = new Recipe();
 
-        $this->assertEquals('', $recipe->getType());
         $this->assertEquals('', $recipe->getName());
+        $this->assertEquals('', $recipe->getMode());
         $this->assertEquals([], $recipe->getIngredients());
         $this->assertEquals([], $recipe->getProducts());
         $this->assertEquals(0, $recipe->getCraftingTime());
@@ -47,8 +47,8 @@ class RecipeTest extends TestCase
         $product->setType('jkl');
 
         $recipe = new Recipe();
-        $recipe->setType('foo')
-               ->setName('bar')
+        $recipe->setName('foo')
+               ->setMode('bar')
                ->addIngredient($ingredient)
                ->addProduct($product)
                ->setIconHash('baz');
@@ -56,16 +56,16 @@ class RecipeTest extends TestCase
         $recipe->getDescriptions()->setTranslation('en', 'def');
 
         $clonedRecipe = clone($recipe);
-        $recipe->setType('oof')
-               ->setName('rab')
+        $recipe->setName('oof')
+               ->setMode('rab')
                ->setIconHash('zab');
         $recipe->getLabels()->setTranslation('en', 'cba');
         $recipe->getDescriptions()->setTranslation('en', 'fde');
         $ingredient->setType('ihg');
         $product->setType('lkj');
 
-        $this->assertEquals('foo', $clonedRecipe->getType());
-        $this->assertEquals('bar', $clonedRecipe->getName());
+        $this->assertEquals('foo', $clonedRecipe->getName());
+        $this->assertEquals('bar', $clonedRecipe->getMode());
         $this->assertEquals('baz', $clonedRecipe->getIconHash());
         $this->assertEquals('abc', $clonedRecipe->getLabels()->getTranslation('en'));
         $this->assertEquals('def', $clonedRecipe->getDescriptions()->getTranslation('en'));
@@ -77,16 +77,6 @@ class RecipeTest extends TestCase
     }
 
     /**
-     * Tests setting and getting the type.
-     */
-    public function testSetAndGetType()
-    {
-        $recipe = new Recipe();
-        $this->assertEquals($recipe, $recipe->setType('foo'));
-        $this->assertEquals('foo', $recipe->getType());
-    }
-
-    /**
      * Tests setting and getting the name.
      */
     public function testSetAndGetName()
@@ -94,6 +84,16 @@ class RecipeTest extends TestCase
         $recipe = new Recipe();
         $this->assertEquals($recipe, $recipe->setName('foo'));
         $this->assertEquals('foo', $recipe->getName());
+    }
+
+    /**
+     * Tests setting and getting the mode.
+     */
+    public function testSetAndGetMode()
+    {
+        $recipe = new Recipe();
+        $this->assertEquals($recipe, $recipe->setMode('foo'));
+        $this->assertEquals('foo', $recipe->getMode());
     }
 
     /**
@@ -198,8 +198,8 @@ class RecipeTest extends TestCase
         $product2->setType('yz');
 
         $recipe = new Recipe();
-        $recipe->setType('abc')
-               ->setName('def')
+        $recipe->setName('abc')
+               ->setMode('def')
                ->addIngredient($ingredient1)
                ->addIngredient($ingredient2)
                ->addProduct($product1)
@@ -210,8 +210,8 @@ class RecipeTest extends TestCase
         $recipe->getDescriptions()->setTranslation('de', 'mno');
 
         $data = [
-            't' => 'abc',
-            'n' => 'def',
+            'n' => 'abc',
+            'm' => 'def',
             'i' => [
                 ['t' => 'pqr'],
                 ['t' => 'stu']

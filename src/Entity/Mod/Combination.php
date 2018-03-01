@@ -270,16 +270,16 @@ class Combination implements EntityInterface
     }
 
     /**
-     * Returns the recipe with the specified type and name, if it exists.
-     * @param string $type
+     * Returns the recipe with the specified name and mode, if it exists.
      * @param string $name
+     * @param string $mode
      * @return Recipe|null
      */
-    public function getRecipe(string $type, string $name): ?Recipe
+    public function getRecipe(string $name, string $mode): ?Recipe
     {
         $result = null;
         foreach ($this->recipes as $recipe) {
-            if ($recipe->getType() === $type && $recipe->getName() === $name) {
+            if ($recipe->getName() === $name && $recipe->getMode() === $mode) {
                 $result = $recipe;
                 break;
             }
@@ -298,14 +298,14 @@ class Combination implements EntityInterface
 
     /**
      * Removes the recipe with the specified type and name.
-     * @param string $type
      * @param string $name
+     * @param string $mode
      * @return $this
      */
-    public function removeRecipe(string $type, string $name)
+    public function removeRecipe(string $name, string $mode)
     {
         foreach ($this->recipes as $key => $recipe) {
-            if ($recipe->getType() === $type && $recipe->getName() === $name) {
+            if ($recipe->getName() === $name && $recipe->getMode() === $mode) {
                 unset($this->recipes[$key]);
                 break;
             }

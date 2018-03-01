@@ -16,16 +16,16 @@ use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
 class Recipe implements EntityInterface
 {
     /**
-     * The type of the recipe.
-     * @var string
-     */
-    protected $type = '';
-
-    /**
      * The name of the recipe.
      * @var string
      */
     protected $name = '';
+
+    /**
+     * The mode of the recipe.
+     * @var string
+     */
+    protected $mode = '';
 
     /**
      * The ingredients of the recipe.
@@ -89,26 +89,6 @@ class Recipe implements EntityInterface
     }
 
     /**
-     * Sets the type of the recipe.
-     * @param string $type
-     * @return $this Implementing fluent interface.
-     */
-    public function setType(string $type)
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    /**
-     * Returns the type of the recipe.
-     * @return string
-     */
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    /**
      * Sets the name of the recipe.
      * @param string $name
      * @return $this Implementing fluent interface.
@@ -126,6 +106,26 @@ class Recipe implements EntityInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * Sets the mode of the recipe.
+     * @param string $mode
+     * @return $this Implementing fluent interface.
+     */
+    public function setMode(string $mode)
+    {
+        $this->mode = $mode;
+        return $this;
+    }
+
+    /**
+     * Returns the mode of the recipe.
+     * @return string
+     */
+    public function getMode(): string
+    {
+        return $this->mode;
     }
 
     /**
@@ -281,8 +281,8 @@ class Recipe implements EntityInterface
     public function writeData(): array
     {
         $dataBuilder = new DataBuilder();
-        $dataBuilder->setString('t', $this->type, '')
-                    ->setString('n', $this->name, '')
+        $dataBuilder->setString('n', $this->name, '')
+                    ->setString('m', $this->mode, '')
                     ->setArray('i', $this->ingredients, function (Ingredient $ingredient): array {
                         return $ingredient->writeData();
                     }, [])
@@ -303,8 +303,8 @@ class Recipe implements EntityInterface
      */
     public function readData(DataContainer $data)
     {
-        $this->type = $data->getString('t', '');
         $this->name = $data->getString('n', '');
+        $this->mode = $data->getString('m', '');
         $this->ingredients = array_map(function (DataContainer $data): Ingredient {
             $ingredient = new Ingredient();
             $ingredient->readData($data);
