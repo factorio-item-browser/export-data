@@ -137,8 +137,8 @@ class ExportDataServiceTest extends TestCase
         $service = new ExportDataService($directory->url());
 
         $this->assertEquals($service, $service->saveIcon($iconHash, $iconContent));
-        $this->assertTrue($directory->hasChild('icons/ab/cd/abcdef.png'));
-        $this->assertEquals($iconContent, file_get_contents($directory->getChild('icons/ab/cd/abcdef.png')->url()));
+        $this->assertTrue($directory->hasChild('icons/ab/abcdef.png'));
+        $this->assertEquals($iconContent, file_get_contents($directory->getChild('icons/ab/abcdef.png')->url()));
     }
 
     /**
@@ -148,7 +148,7 @@ class ExportDataServiceTest extends TestCase
     {
         $iconHash = 'abcdef';
         $iconContent = 'foo';
-        $directory = vfsStream::setup('export', null, ['icons/ab/cd/abcdef.png' => $iconContent]);
+        $directory = vfsStream::setup('export', null, ['icons/ab/abcdef.png' => $iconContent]);
         $service = new ExportDataService($directory->url());
 
         $this->assertEquals($iconContent, $service->loadIcon($iconHash));
@@ -190,7 +190,7 @@ class ExportDataServiceTest extends TestCase
     {
         $directory = vfsStream::setup('export', 0400, []);
         if ($withDirectory) {
-            $directory->addChild(vfsStream::newDirectory('icons/ab/cd', 0400));
+            $directory->addChild(vfsStream::newDirectory('icons/ab', 0400));
         }
         $service = new ExportDataService($directory->url());
 
@@ -198,6 +198,6 @@ class ExportDataServiceTest extends TestCase
         $this->expectExceptionMessage($expectedException);
 
         $this->assertEquals($service, $service->saveIcon('abcdef', 'fail'));
-        $this->assertFalse($directory->hasChild('icons/ab/cd/abcdef.png'));
+        $this->assertFalse($directory->hasChild('icons/ab/abcdef.png'));
     }
 }

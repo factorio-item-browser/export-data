@@ -123,6 +123,13 @@ class ExportDataService
         return $this;
     }
 
+    /**
+     * Loads the combination of the a mod.
+     * @param string $modName
+     * @param string $combinationName
+     * @return Combination
+     * @throws ExportDataException
+     */
     public function loadCombination(string $modName, string $combinationName): Combination
     {
         $path = $this->getCombinationPath($modName, $combinationName);
@@ -152,6 +159,7 @@ class ExportDataService
      * @param string $iconHash
      * @param string $content
      * @return $this
+     * @throws ExportDataException
      */
     public function saveIcon(string $iconHash, string $content)
     {
@@ -180,7 +188,6 @@ class ExportDataService
         return implode(DIRECTORY_SEPARATOR, [
             Path::DIRECTORY_ICONS,
             substr($iconHash, 0, 2),
-            substr($iconHash, 2, 2),
             $iconHash . '.png'
         ]);
     }
