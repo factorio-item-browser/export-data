@@ -306,14 +306,10 @@ class Recipe implements EntityInterface
         $this->name = $data->getString('n', '');
         $this->mode = $data->getString('m', '');
         $this->ingredients = array_map(function (DataContainer $data): Ingredient {
-            $ingredient = new Ingredient();
-            $ingredient->readData($data);
-            return $ingredient;
+            return (new Ingredient())->readData($data);
         }, $data->getObjectArray('i'));
         $this->products = array_map(function (DataContainer $data): Product {
-            $product = new Product();
-            $product->readData($data);
-            return $product;
+            return (new Product())->readData($data);
         }, $data->getObjectArray('p'));
         $this->craftingTime = $data->getFloat('c', 0.);
         $this->labels->readData($data->getObject('l'));

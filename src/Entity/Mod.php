@@ -4,6 +4,7 @@ namespace FactorioItemBrowser\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
+use FactorioItemBrowser\ExportData\Entity\Mod\Combination;
 use FactorioItemBrowser\ExportData\Entity\Mod\Dependency;
 
 /**
@@ -75,10 +76,10 @@ class Mod implements EntityInterface
     protected $order = 0;
 
     /**
-     * The names of the combinations of the mod.
-     * @var array|string[]
+     * The combinations of the mod.
+     * @var array
      */
-    protected $combinationNames = [];
+    protected $combinations = [];
 
     /**
      * Initializes the mod.
@@ -99,6 +100,9 @@ class Mod implements EntityInterface
         $this->dependencies = array_map(function (Dependency $dependency): Dependency {
             return clone($dependency);
         }, $this->dependencies);
+        $this->combinations = array_map(function (Combination $combination): Combination {
+            return clone($combination);
+        }, $this->combinations);
     }
 
     /**
@@ -315,34 +319,36 @@ class Mod implements EntityInterface
     }
 
     /**
-     * Sets the names of the combinations of the mod.
-     * @param array|string[] $combinationNames
-     * @return $this Implementing fluent interface.
-     */
-    public function setCombinationNames(array $combinationNames)
-    {
-        $this->combinationNames = $combinationNames;
-        return $this;
-    }
-
-    /**
-     * Adds a combination name to the mod.
-     * @param string $combinationName
+     * Sets the combination of the mods.
+     * @param array|Combination[] $combinations
      * @return $this
      */
-    public function addCombinationName(string $combinationName)
+    public function setCombinations(array $combinations)
     {
-        $this->combinationNames[] = $combinationName;
+        $this->combinations = array_values(array_filter($combinations, function ($combination): bool {
+            return $combination instanceof Combination;
+        }));
         return $this;
     }
 
     /**
-     * Returns the names of the combinations of the mod.
-     * @return array|string[]
+     * Adds a combination to the mod.
+     * @param Combination $combination
+     * @return $this
      */
-    public function getCombinationNames(): array
+    public function addCombination(Combination $combination)
     {
-        return $this->combinationNames;
+        $this->combinations[] = $combination;
+        return $this;
+    }
+
+    /**
+     * Returns the combinations of the mod.
+     * @return array|Combination[]
+     */
+    public function getCombinations(): array
+    {
+        return $this->combinations;
     }
 
     /**
@@ -364,7 +370,9 @@ class Mod implements EntityInterface
                     }, [])
                     ->setString('c', $this->checksum, '')
                     ->setInteger('o', $this->order, 0)
-                    ->setArray('m', $this->combinationNames, 'strval', []);
+                    ->setArray('m', $this->combinations, function (Combination $combination): array {
+                        return $combination->writeData();
+                    }, []);
         return $dataBuilder->getData();
     }
 
@@ -383,13 +391,13 @@ class Mod implements EntityInterface
         $this->fileName = $data->getString('f', '');
         $this->directoryName = $data->getString('i', '');
         $this->dependencies = array_map(function (DataContainer $data): Dependency {
-            $dependency = new Dependency();
-            $dependency->readData($data);
-            return $dependency;
+            return (new Dependency())->readData($data);
         }, $data->getObjectArray('e'));
         $this->checksum = $data->getString('c', '');
         $this->order = $data->getInteger('o', 0);
-        $this->combinationNames = array_map('strval', $data->getArray('m'));
+        $this->combinations = array_map(function (DataContainer $data): Combination {
+            return (new Combination())->readData($data);
+        }, $data->getObjectArray('m'));
         return $this;
     }
 }

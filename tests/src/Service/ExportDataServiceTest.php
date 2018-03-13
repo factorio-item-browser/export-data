@@ -2,8 +2,10 @@
 
 namespace FactorioItemBrowserTest\ExportData\Service;
 
+use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\Mod;
 use FactorioItemBrowser\ExportData\Entity\Mod\Combination;
+use FactorioItemBrowser\ExportData\Entity\Mod\CombinationData;
 use FactorioItemBrowser\ExportData\Exception\ExportDataException;
 use FactorioItemBrowser\ExportData\Service\ExportDataService;
 use org\bovigo\vfs\vfsStream;
@@ -93,37 +95,47 @@ class ExportDataServiceTest extends TestCase
     }
 
     /**
-     * Tests saving a combination.
+     * Tests saving combination data.
      */
-    public function testSaveCombination()
+    public function testSaveCombinationData()
     {
         $combination = new Combination();
         $combination->setName('abc')
                     ->setMainModName('def');
-        $content = '{"n":"abc","m":"def"}';
+
+        $item = new Item();
+        $item->setName('abc');
+        $combinationData = new CombinationData();
+        $combinationData->addItem($item);
+        $content = '{"i":[{"n":"abc"}]}';
 
         $directory = vfsStream::setup('export');
         $service = new ExportDataService($directory->url());
 
-        $this->assertEquals($service, $service->saveCombination($combination));
+        $this->assertEquals($service, $service->saveCombinationData($combination, $combinationData));
         $this->assertTrue($directory->hasChild('mods/def/abc.json'));
         $this->assertEquals($content, file_get_contents($directory->getChild('mods/def/abc.json')->url()));
     }
 
     /**
-     * Tests loading a combination.
+     * Tests loading combination data.
      */
-    public function testLoadCombination()
+    public function testLoadCombinationData()
     {
-        $content = '{"n":"abc","m":"def"}';
-        $expectedCombination = new Combination();
-        $expectedCombination->setName('abc')
-                            ->setMainModName('def');
+        $content = '{"i":[{"n":"abc"}]}';
+        $combination = new Combination();
+        $combination->setName('abc')
+                    ->setMainModName('def');
+
+        $item = new Item();
+        $item->setName('abc');
+        $expectedCombinationData = new CombinationData();
+        $expectedCombinationData->addItem($item);
 
         $directory = vfsStream::setup('export', null, ['mods/def/abc.json' => $content]);
         $service = new ExportDataService($directory->url());
 
-        $this->assertEquals($expectedCombination, $service->loadCombination('def', 'abc'));
+        $this->assertEquals($expectedCombinationData, $service->loadCombinationData($combination));
     }
 
     /**

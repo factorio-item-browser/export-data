@@ -5,6 +5,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
 use FactorioItemBrowser\ExportData\Entity\Mod;
+use FactorioItemBrowser\ExportData\Entity\Mod\Combination;
 use FactorioItemBrowser\ExportData\Entity\Mod\Dependency;
 use PHPUnit\Framework\TestCase;
 
@@ -34,7 +35,7 @@ class ModTest extends TestCase
         $this->assertEquals([], $mod->getDependencies());
         $this->assertEquals('', $mod->getChecksum());
         $this->assertEquals(0, $mod->getOrder());
-        $this->assertEquals([], $mod->getCombinationNames());
+        $this->assertEquals([], $mod->getCombinations());
     }
 
     /**
@@ -44,6 +45,8 @@ class ModTest extends TestCase
     {
         $dependency = new Dependency();
         $dependency->setRequiredModName('foo');
+        $combination = new Combination();
+        $combination->setName('bar');
 
         $mod = new Mod();
         $mod->setName('abc')
@@ -54,9 +57,9 @@ class ModTest extends TestCase
             ->addDependency($dependency)
             ->setChecksum('mno')
             ->setOrder(42)
-            ->setCombinationNames(['pqr']);
-        $mod->getTitles()->setTranslation('en', 'stu');
-        $mod->getDescriptions()->setTranslation('en', 'vwx');
+            ->addCombination($combination);
+        $mod->getTitles()->setTranslation('en', 'pqr');
+        $mod->getDescriptions()->setTranslation('en', 'stu');
 
         $clonedMod = clone($mod);
         $mod->setName('cba')
@@ -65,11 +68,11 @@ class ModTest extends TestCase
             ->setFileName('ihg')
             ->setDirectoryName('lkj')
             ->setChecksum('onm')
-            ->setOrder(24)
-            ->setCombinationNames(['rqp']);
-        $mod->getTitles()->setTranslation('en', 'uts');
-        $mod->getDescriptions()->setTranslation('en', 'xwv');
+            ->setOrder(24);
+        $mod->getTitles()->setTranslation('en', 'rqp');
+        $mod->getDescriptions()->setTranslation('en', 'uts');
         $dependency->setRequiredModName('oof');
+        $combination->setName('rab');
 
         $this->assertEquals('abc', $clonedMod->getName());
         $this->assertEquals('def', $clonedMod->getAuthor());
@@ -78,11 +81,12 @@ class ModTest extends TestCase
         $this->assertEquals('jkl', $clonedMod->getDirectoryName());
         $this->assertEquals('mno', $clonedMod->getChecksum());
         $this->assertEquals(42, $clonedMod->getOrder());
-        $this->assertEquals(['pqr'], $clonedMod->getCombinationNames());
-        $this->assertEquals('stu', $clonedMod->getTitles()->getTranslation('en'));
-        $this->assertEquals('vwx', $clonedMod->getDescriptions()->getTranslation('en'));
+        $this->assertEquals('pqr', $clonedMod->getTitles()->getTranslation('en'));
+        $this->assertEquals('stu', $clonedMod->getDescriptions()->getTranslation('en'));
         $dependencies = $clonedMod->getDependencies();
         $this->assertEquals('foo', array_pop($dependencies)->getRequiredModName());
+        $combinations = $clonedMod->getCombinations();
+        $this->assertEquals('bar', array_pop($combinations)->getName());
     }
 
     /**
@@ -202,16 +206,23 @@ class ModTest extends TestCase
     }
 
     /**
-     * Tests setting, adding and getting the combination names.
+     * Tests setting, adding and getting the combinations.
      */
-    public function testSetAddAndGetCombinationNames()
+    public function testSetAddAndGetCombinations()
     {
-        $mod = new Mod();
-        $this->assertEquals($mod, $mod->setCombinationNames(['abc', 'def']));
-        $this->assertEquals(['abc', 'def'], $mod->getCombinationNames());
+        $combination1 = new Combination();
+        $combination1->setName('abc');
+        $combination2 = new Combination();
+        $combination2->setName('def');
+        $combination3 = new Combination();
+        $combination3->setName('ghi');
 
-        $this->assertEquals($mod, $mod->addCombinationName('ghi'));
-        $this->assertEquals(['abc', 'def', 'ghi'], $mod->getCombinationNames());
+        $mod = new Mod();
+        $this->assertEquals($mod, $mod->setCombinations([$combination1, new Mod(), $combination2]));
+        $this->assertEquals([$combination1, $combination2], $mod->getCombinations());
+
+        $this->assertEquals($mod, $mod->addCombination($combination3));
+        $this->assertEquals([$combination1, $combination2, $combination3], $mod->getCombinations());
     }
 
     /**
@@ -224,6 +235,11 @@ class ModTest extends TestCase
         $dependency1->setRequiredModName('foo');
         $dependency2 = new Dependency();
         $dependency2->setRequiredModName('bar');
+        $combination1 = new Combination();
+        $combination1->setName('oof');
+        $combination2 = new Combination();
+        $combination2->setName('rab');
+
 
         $mod = new Mod();
         $mod->setName('abc')
@@ -234,18 +250,18 @@ class ModTest extends TestCase
             ->addDependency($dependency1)
             ->addDependency($dependency2)
             ->setChecksum('mno')
-            ->addCombinationName('pqr')
-            ->addCombinationName('stu');
-        $mod->getTitles()->setTranslation('en', 'vwx');
-        $mod->getDescriptions()->setTranslation('de', 'yz');
+            ->addCombination($combination1)
+            ->addCombination($combination2);
+        $mod->getTitles()->setTranslation('en', 'pqr');
+        $mod->getDescriptions()->setTranslation('de', 'stu');
 
         $data = [
             'n' => 'abc',
             't' => [
-                'en' => 'vwx'
+                'en' => 'pqr'
             ],
             'd' => [
-                'de' => 'yz'
+                'de' => 'stu'
             ],
             'a' => 'def',
             'v' => '4.2.0',
@@ -257,8 +273,8 @@ class ModTest extends TestCase
             ],
             'c' => 'mno',
             'm' => [
-                'pqr',
-                'stu'
+                ['n' => 'oof'],
+                ['n' => 'rab']
             ]
         ];
 

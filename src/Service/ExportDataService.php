@@ -6,6 +6,7 @@ use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Constant\Path;
 use FactorioItemBrowser\ExportData\Entity\Mod;
 use FactorioItemBrowser\ExportData\Entity\Mod\Combination;
+use FactorioItemBrowser\ExportData\Entity\Mod\CombinationData;
 use FactorioItemBrowser\ExportData\Exception\ExportDataException;
 
 /**
@@ -111,46 +112,46 @@ class ExportDataService
     }
 
     /**
-     * Saves the specified combination to the export directory.
+     * Saves the specified combination data to the export directory.
      * @param Combination $combination
+     * @param CombinationData $combinationData
      * @return $this
+     * @throws ExportDataException
      */
-    public function saveCombination(Combination $combination)
+    public function saveCombinationData(Combination $combination, CombinationData $combinationData)
     {
-        $path = $this->getCombinationPath($combination->getMainModName(), $combination->getName());
-        $data = $combination->writeData();
+        $path = $this->getCombinationDataPath($combination);
+        $data = $combinationData->writeData();
         $this->writeFile($path, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         return $this;
     }
 
     /**
-     * Loads the combination of the a mod.
-     * @param string $modName
-     * @param string $combinationName
-     * @return Combination
+     * Loads the data of a combination.
+     * @param Combination $combination
+     * @return CombinationData
      * @throws ExportDataException
      */
-    public function loadCombination(string $modName, string $combinationName): Combination
+    public function loadCombinationData(Combination $combination): CombinationData
     {
-        $path = $this->getCombinationPath($modName, $combinationName);
+        $path = $this->getCombinationDataPath($combination);
         $content = $this->readFile($path);
-        $combination = new Combination();
-        $combination->readData(new DataContainer(json_decode($content, true)));
-        return $combination;
+        $combinationData = new CombinationData();
+        $combinationData->readData(new DataContainer(json_decode($content, true)));
+        return $combinationData;
     }
 
     /**
-     * Returns the path of the specified combination.
-     * @param string $modName
-     * @param string $combinationName
+     * Returns the path of the specified combination data.
+     * @param Combination $combination
      * @return string
      */
-    protected function getCombinationPath(string $modName, string $combinationName): string
+    protected function getCombinationDataPath(Combination $combination): string
     {
         return implode(DIRECTORY_SEPARATOR, [
             Path::DIRECTORY_MODS,
-            $modName,
-            $combinationName . '.json'
+            $combination->getMainModName(),
+            $combination->getName() . '.json'
         ]);
     }
 

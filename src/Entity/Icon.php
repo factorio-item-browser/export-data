@@ -112,9 +112,7 @@ class Icon implements EntityInterface
     {
         $this->iconHash = $data->getString('h', '');
         $this->layers = array_map(function (DataContainer $data): Layer {
-            $layer = new Layer();
-            $layer->readData($data);
-            return $layer;
+            return (new Layer())->readData($data);
         }, $data->getObjectArray('l'));
         return $this;
     }
