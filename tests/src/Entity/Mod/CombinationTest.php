@@ -3,7 +3,9 @@
 namespace FactorioItemBrowserTest\ExportData\Entity\Mod;
 
 use BluePsyduck\Common\Data\DataContainer;
+use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\Mod\Combination;
+use FactorioItemBrowser\ExportData\Entity\Mod\CombinationData;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -26,6 +28,8 @@ class CombinationTest extends TestCase
         $this->assertEquals('', $combination->getMainModName());
         $this->assertEquals([], $combination->getLoadedModNames());
         $this->assertEquals([], $combination->getLoadedOptionalModNames());
+        $this->assertInstanceOf(CombinationData::class, $combination->getData());
+        $this->assertFalse($combination->getIsDataLoaded());
     }
 
     /**
@@ -33,22 +37,32 @@ class CombinationTest extends TestCase
      */
     public function testClone()
     {
+        $item = new Item();
+        $item->setType('foo')
+             ->setName('bar');
+
         $combination = new Combination();
         $combination->setName('abc')
                     ->setMainModName('def')
                     ->setLoadedModNames(['ghi'])
-                    ->setLoadedOptionalModNames(['jkl']);
+                    ->setLoadedOptionalModNames(['jkl'])
+                    ->setIsDataLoaded(true);
+        $combination->getData()->addItem($item);
 
         $clonedCombination = clone($combination);
         $combination->setName('cba')
                     ->setMainModName('fed')
                     ->setLoadedModNames(['ihg'])
-                    ->setLoadedOptionalModNames(['lkj']);
+                    ->setLoadedOptionalModNames(['lkj'])
+                    ->setIsDataLoaded(false);
+        $combination->getData()->removeItem('foo', 'bar');
 
         $this->assertEquals('abc', $clonedCombination->getName());
         $this->assertEquals('def', $clonedCombination->getMainModName());
         $this->assertEquals(['ghi'], $clonedCombination->getLoadedModNames());
         $this->assertEquals(['jkl'], $clonedCombination->getLoadedOptionalModNames());
+        $this->assertTrue($clonedCombination->getIsDataLoaded());
+        $this->assertInstanceOf(Item::class, $clonedCombination->getData()->getItem('foo', 'bar'));
     }
 
     /**
@@ -95,6 +109,29 @@ class CombinationTest extends TestCase
 
         $this->assertEquals($combination, $combination->addLoadedOptionalModName('ghi'));
         $this->assertEquals(['abc', 'def', 'ghi'], $combination->getLoadedOptionalModNames());
+    }
+
+    /**
+     * Tests setting and getting the data.
+     */
+    public function testSetAndGetData()
+    {
+        $data = new CombinationData();
+        $data->addItem(new Item());
+        
+        $combination = new Combination();
+        $this->assertEquals($combination, $combination->setData($data));
+        $this->assertEquals($data, $combination->getData());
+    }
+
+    /**
+     * Tests setting and getting the data loaded flag.
+     */
+    public function testSetAndGetIsDataLoaded()
+    {
+        $combination = new Combination();
+        $this->assertEquals($combination, $combination->setIsDataLoaded(true));
+        $this->assertEquals(true, $combination->getIsDataLoaded());
     }
 
     /**

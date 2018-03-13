@@ -39,6 +39,34 @@ class Combination implements EntityInterface
     protected $loadedOptionalModNames = [];
 
     /**
+     * The data of the combination.
+     * @var CombinationData
+     */
+    protected $data;
+
+    /**
+     * Whether the data of the combination has been loaded.
+     * @var bool
+     */
+    protected $isDataLoaded = false;
+
+    /**
+     * Initializes the entity.
+     */
+    public function __construct()
+    {
+        $this->data = new CombinationData();
+    }
+
+    /**
+     * Clones the entity.
+     */
+    public function __clone()
+    {
+        $this->data = clone($this->data);
+    }
+
+    /**
      * Sets the name of the combination.
      * @param string $name
      * @return $this Implementing fluent interface.
@@ -138,6 +166,46 @@ class Combination implements EntityInterface
     public function getLoadedOptionalModNames(): array
     {
         return $this->loadedOptionalModNames;
+    }
+
+    /**
+     * Sets the data of the combination.
+     * @param CombinationData $data
+     * @return $this
+     */
+    public function setData(CombinationData $data)
+    {
+        $this->data = $data;
+        return $this;
+    }
+
+    /**
+     * Returns the data of the combination.
+     * @return CombinationData
+     */
+    public function getData(): CombinationData
+    {
+        return $this->data;
+    }
+
+    /**
+     * Sets whether the data of the combination has been loaded.
+     * @param bool $isDataLoaded
+     * @return $this
+     */
+    public function setIsDataLoaded(bool $isDataLoaded)
+    {
+        $this->isDataLoaded = $isDataLoaded;
+        return $this;
+    }
+
+    /**
+     * Returns whether the data of the combination has been loaded.
+     * @return bool
+     */
+    public function getIsDataLoaded(): bool
+    {
+        return $this->isDataLoaded;
     }
 
     /**

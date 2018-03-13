@@ -99,20 +99,19 @@ class ExportDataServiceTest extends TestCase
      */
     public function testSaveCombinationData()
     {
+        $item = new Item();
+        $item->setName('abc');
+
         $combination = new Combination();
         $combination->setName('abc')
                     ->setMainModName('def');
-
-        $item = new Item();
-        $item->setName('abc');
-        $combinationData = new CombinationData();
-        $combinationData->addItem($item);
+        $combination->getData()->addItem($item);
         $content = '{"i":[{"n":"abc"}]}';
 
         $directory = vfsStream::setup('export');
         $service = new ExportDataService($directory->url());
 
-        $this->assertEquals($service, $service->saveCombinationData($combination, $combinationData));
+        $this->assertEquals($service, $service->saveCombinationData($combination));
         $this->assertTrue($directory->hasChild('mods/def/abc.json'));
         $this->assertEquals($content, file_get_contents($directory->getChild('mods/def/abc.json')->url()));
     }
@@ -135,7 +134,9 @@ class ExportDataServiceTest extends TestCase
         $directory = vfsStream::setup('export', null, ['mods/def/abc.json' => $content]);
         $service = new ExportDataService($directory->url());
 
-        $this->assertEquals($expectedCombinationData, $service->loadCombinationData($combination));
+        $this->assertEquals($service, $service->loadCombinationData($combination));
+        $this->assertEquals($expectedCombinationData, $combination->getData());
+        $this->assertTrue($combination->getIsDataLoaded());
     }
 
     /**

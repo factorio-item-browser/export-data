@@ -6,7 +6,6 @@ use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Constant\Path;
 use FactorioItemBrowser\ExportData\Entity\Mod;
 use FactorioItemBrowser\ExportData\Entity\Mod\Combination;
-use FactorioItemBrowser\ExportData\Entity\Mod\CombinationData;
 use FactorioItemBrowser\ExportData\Exception\ExportDataException;
 
 /**
@@ -112,33 +111,32 @@ class ExportDataService
     }
 
     /**
-     * Saves the specified combination data to the export directory.
+     * Saves the data of the combination into the export directory.
      * @param Combination $combination
-     * @param CombinationData $combinationData
      * @return $this
      * @throws ExportDataException
      */
-    public function saveCombinationData(Combination $combination, CombinationData $combinationData)
+    public function saveCombinationData(Combination $combination)
     {
         $path = $this->getCombinationDataPath($combination);
-        $data = $combinationData->writeData();
+        $data = $combination->getData()->writeData();
         $this->writeFile($path, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         return $this;
     }
 
     /**
-     * Loads the data of a combination.
+     * Loads the data into the specified combination.
      * @param Combination $combination
-     * @return CombinationData
+     * @return $this
      * @throws ExportDataException
      */
-    public function loadCombinationData(Combination $combination): CombinationData
+    public function loadCombinationData(Combination $combination)
     {
         $path = $this->getCombinationDataPath($combination);
         $content = $this->readFile($path);
-        $combinationData = new CombinationData();
-        $combinationData->readData(new DataContainer(json_decode($content, true)));
-        return $combinationData;
+        $combination->getData()->readData(new DataContainer(json_decode($content, true)));
+        $combination->setIsDataLoaded(true);
+        return $this;
     }
 
     /**
