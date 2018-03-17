@@ -52,7 +52,20 @@ class ExportDataService
                 $mod->readData($modData);
                 $this->mods[$mod->getName()] = $mod;
             }
+            $this->sortMods();
         }
+        return $this;
+    }
+
+    /**
+     * Sorts the mods after their order values.
+     * @return $this
+     */
+    protected function sortMods()
+    {
+        uasort($this->mods, function(Mod $left, Mod $right): int {
+            return $left->getOrder() <=> $right->getOrder();
+        });
         return $this;
     }
 
@@ -103,6 +116,7 @@ class ExportDataService
      */
     public function saveMods()
     {
+        $this->sortMods();
         $data = array_values(array_map(function(Mod $mod): array  {
             return $mod->writeData();
         }, $this->mods));

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8a7bc8712a688bf963bcbb0c91ce051f",
+    "content-hash": "326af5c3f4700f7523dd546c3e11a0c4",
     "packages": [
         {
             "name": "bluepsyduck/common",
@@ -1563,7 +1563,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1"
+        "php": "^7.2"
     },
     "platform-dev": []
 }

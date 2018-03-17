@@ -55,14 +55,16 @@ class ExportDataServiceTest extends TestCase
      */
     public function testLoadMods()
     {
-        $content = '[{"n":"abc"},{"n":"def"}]';
+        $content = '[{"n":"abc","o":42},{"n":"def","o":21}]';
         $mod1 = new Mod();
-        $mod1->setName('abc');
+        $mod1->setName('abc')
+             ->setOrder(42);
         $mod2 = new Mod();
-        $mod2->setName('def');
+        $mod2->setName('def')
+             ->setOrder(21);
         $expectedMods = [
-            'abc' => $mod1,
-            'def' => $mod2
+            'def' => $mod2,
+            'abc' => $mod1
         ];
 
         $directory = vfsStream::setup('export', null, ['mods/list.json' => $content]);
@@ -70,6 +72,7 @@ class ExportDataServiceTest extends TestCase
 
         $this->assertEquals($service, $service->loadMods());
         $this->assertEquals($expectedMods, $service->getMods());
+        $this->assertEquals($mod2, current($service->getMods()));
     }
 
     /**
@@ -78,13 +81,15 @@ class ExportDataServiceTest extends TestCase
     public function testSaveMods()
     {
         $mod1 = new Mod();
-        $mod1->setName('abc');
+        $mod1->setName('abc')
+             ->setOrder(42);
         $mod2 = new Mod();
-        $mod2->setName('def');
+        $mod2->setName('def')
+             ->setOrder(21);
 
         $directory = vfsStream::setup('export');
         $service = new ExportDataService($directory->url());
-        $expectedContent = '[{"n":"abc"},{"n":"def"}]';
+        $expectedContent = '[{"n":"def","o":21},{"n":"abc","o":42}]';
 
         $service->setMod($mod1)
                 ->setMod($mod2);
