@@ -16,12 +16,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Mod\CombinationData
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Mod\CombinationData
  */
 class CombinationDataTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @coversNothing
      */
     public function testConstruct()
     {
@@ -33,6 +34,7 @@ class CombinationDataTest extends TestCase
 
     /**
      * Tests the cloning.
+     * @covers ::__clone
      */
     public function testClone()
     {
@@ -64,6 +66,11 @@ class CombinationDataTest extends TestCase
 
     /**
      * Tests setting, adding, getting and removing the items.
+     * @covers ::setItems
+     * @covers ::getItems
+     * @covers ::addItem
+     * @covers ::getItem
+     * @covers ::removeItem
      */
     public function testSetAddGetAndRemoveItems()
     {
@@ -99,6 +106,11 @@ class CombinationDataTest extends TestCase
 
     /**
      * Tests setting, adding, getting and removing the recipes.
+     * @covers ::setRecipes
+     * @covers ::getRecipes
+     * @covers ::addRecipe
+     * @covers ::getRecipe
+     * @covers ::removeRecipe
      */
     public function testSetAddGetAndRemoveRecipes()
     {
@@ -134,6 +146,11 @@ class CombinationDataTest extends TestCase
 
     /**
      * Tests setting, adding, getting and removing the icons.
+     * @covers ::setIcons
+     * @covers ::getIcons
+     * @covers ::addIcon
+     * @covers ::getIcon
+     * @covers ::removeIcon
      */
     public function testSetAddGetAndRemoveIcons()
     {
@@ -216,6 +233,8 @@ class CombinationDataTest extends TestCase
      * Tests the writing and reading of the data.
      * @param CombinationData $combinationData
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(CombinationData $combinationData, array $expectedData)

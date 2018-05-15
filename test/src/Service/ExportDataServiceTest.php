@@ -17,12 +17,17 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Service\ExportDataService
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Service\ExportDataService
  */
 class ExportDataServiceTest extends TestCase
 {
     /**
      * Tests setting, getting and removing mods.
+     * @covers ::__construct
+     * @covers ::getMod
+     * @covers ::getMods
+     * @covers ::setMod
+     * @covers ::removeMod
      */
     public function testSetGetAndRemoveMods()
     {
@@ -52,6 +57,8 @@ class ExportDataServiceTest extends TestCase
 
     /**
      * Tests loading the mods.
+     * @covers ::loadMods
+     * @covers ::sortMods
      */
     public function testLoadMods()
     {
@@ -77,6 +84,8 @@ class ExportDataServiceTest extends TestCase
 
     /**
      * Tests saving the mods.
+     * @covers ::saveMods
+     * @covers ::sortMods
      */
     public function testSaveMods()
     {
@@ -101,6 +110,8 @@ class ExportDataServiceTest extends TestCase
 
     /**
      * Tests saving combination data.
+     * @covers ::saveCombinationData
+     * @covers ::getCombinationDataPath
      */
     public function testSaveCombinationData()
     {
@@ -123,6 +134,8 @@ class ExportDataServiceTest extends TestCase
 
     /**
      * Tests loading combination data.
+     * @covers ::loadCombinationData
+     * @covers ::getCombinationDataPath
      */
     public function testLoadCombinationData()
     {
@@ -146,6 +159,8 @@ class ExportDataServiceTest extends TestCase
 
     /**
      * Tests saving an icon.
+     * @covers ::saveIcon
+     * @covers ::<protected>
      */
     public function testSaveIcon()
     {
@@ -161,6 +176,8 @@ class ExportDataServiceTest extends TestCase
 
     /**
      * Tests loading an icon.
+     * @covers ::loadIcon
+     * @covers ::<protected>
      */
     public function testLoadIcon()
     {
@@ -174,6 +191,7 @@ class ExportDataServiceTest extends TestCase
 
     /**
      * Tests reading errors.
+     * @covers ::<protected>
      */
     public function testReadError()
     {
@@ -202,6 +220,7 @@ class ExportDataServiceTest extends TestCase
      * Tests writing errors.
      * @param bool $withDirectory
      * @param string $expectedException
+     * @covers ::<protected>
      * @dataProvider provideWriteError
      */
     public function testWriteError(bool $withDirectory, string $expectedException)

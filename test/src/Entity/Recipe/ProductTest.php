@@ -12,12 +12,13 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Recipe\Product
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Recipe\Product
  */
 class ProductTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @coversNothing
      */
     public function testConstruct()
     {
@@ -32,7 +33,39 @@ class ProductTest extends TestCase
     }
 
     /**
+     * Tests the cloning.
+     * @coversNothing
+     */
+    public function testClone()
+    {
+        $product = new Product();
+        $product->setType('abc')
+                ->setName('def')
+                ->setAmountMin(13.37)
+                ->setAmountMax(4.2)
+                ->setProbability(2.1)
+                ->setOrder(42);
+
+        $clonedProduct = clone($product);
+        $product->setType('cba')
+            ->setName('fed')
+            ->setAmountMin(73.31)
+            ->setAmountMax(2.4)
+            ->setProbability(1.2)
+            ->setOrder(24);
+
+        $this->assertEquals('abc', $clonedProduct->getType());
+        $this->assertEquals('def', $clonedProduct->getName());
+        $this->assertEquals(13.37, $clonedProduct->getAmountMin());
+        $this->assertEquals(4.2, $clonedProduct->getAmountMax());
+        $this->assertEquals(2.1, $clonedProduct->getProbability());
+        $this->assertEquals(42, $clonedProduct->getOrder());
+    }
+
+    /**
      * Tests setting and getting the type.
+     * @covers ::setType
+     * @covers ::getType
      */
     public function testSetAndGetType()
     {
@@ -43,6 +76,8 @@ class ProductTest extends TestCase
 
     /**
      * Tests setting and getting the name.
+     * @covers ::setName
+     * @covers ::getName
      */
     public function testSetAndGetName()
     {
@@ -53,6 +88,8 @@ class ProductTest extends TestCase
 
     /**
      * Tests setting and getting the minimal amount.
+     * @covers ::setAmountMin
+     * @covers ::getAmountMin
      */
     public function testSetAndGetAmountMin()
     {
@@ -63,6 +100,8 @@ class ProductTest extends TestCase
 
     /**
      * Tests setting and getting the maximal amount.
+     * @covers ::setAmountMax
+     * @covers ::getAmountMax
      */
     public function testSetAndGetAmountMax()
     {
@@ -73,6 +112,8 @@ class ProductTest extends TestCase
 
     /**
      * Tests setting and getting the probability.
+     * @covers ::setProbability
+     * @covers ::getProbability
      */
     public function testSetAndGetProbability()
     {
@@ -83,6 +124,8 @@ class ProductTest extends TestCase
 
     /**
      * Tests setting and getting the order.
+     * @covers ::setOrder
+     * @covers ::getOrder
      */
     public function testSetAndGetOrder()
     {
@@ -124,6 +167,8 @@ class ProductTest extends TestCase
      * Tests the writing and reading of the data.
      * @param Product $product
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(Product $product, array $expectedData)

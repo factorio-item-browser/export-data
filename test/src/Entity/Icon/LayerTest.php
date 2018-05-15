@@ -13,12 +13,13 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Icon\Color
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Icon\Layer
  */
 class LayerTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @covers ::__construct
      */
     public function testConstruct()
     {
@@ -32,6 +33,7 @@ class LayerTest extends TestCase
 
     /**
      * Tests the cloning.
+     * @covers ::__clone
      */
     public function testClone()
     {
@@ -58,6 +60,8 @@ class LayerTest extends TestCase
 
     /**
      * Tests setting and getting the file name.
+     * @covers ::setFileName
+     * @covers ::getFileName
      */
     public function testSetAndGetFileName()
     {
@@ -68,6 +72,8 @@ class LayerTest extends TestCase
 
     /**
      * Tests setting and getting the tint color.
+     * @covers ::setTintColor
+     * @covers ::getTintColor
      */
     public function testSetAndGetTintColor()
     {
@@ -81,6 +87,8 @@ class LayerTest extends TestCase
 
     /**
      * Tests setting and getting the offset X.
+     * @covers ::setOffsetX
+     * @covers ::getOffsetX
      */
     public function testSetAndGetOffsetX()
     {
@@ -91,6 +99,8 @@ class LayerTest extends TestCase
 
     /**
      * Tests setting and getting the offset Y.
+     * @covers ::setOffsetY
+     * @covers ::getOffsetY
      */
     public function testSetAndGetOffsetY()
     {
@@ -101,6 +111,8 @@ class LayerTest extends TestCase
 
     /**
      * Tests setting and getting the scale.
+     * @covers ::setScale
+     * @covers ::getScale
      */
     public function testSetAndGetScale()
     {
@@ -142,6 +154,8 @@ class LayerTest extends TestCase
      * Tests the writing and reading of the data.
      * @param Layer $layer
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(Layer $layer, array $expectedData)

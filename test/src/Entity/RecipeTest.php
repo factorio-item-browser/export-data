@@ -15,12 +15,13 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Recipe
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Recipe
  */
 class RecipeTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @covers ::__construct
      */
     public function testConstruct()
     {
@@ -38,6 +39,7 @@ class RecipeTest extends TestCase
 
     /**
      * Tests the cloning.
+     * @covers ::__clone
      */
     public function testClone()
     {
@@ -78,6 +80,8 @@ class RecipeTest extends TestCase
 
     /**
      * Tests setting and getting the name.
+     * @covers ::setName
+     * @covers ::getName
      */
     public function testSetAndGetName()
     {
@@ -88,6 +92,8 @@ class RecipeTest extends TestCase
 
     /**
      * Tests setting and getting the mode.
+     * @covers ::setMode
+     * @covers ::getMode
      */
     public function testSetAndGetMode()
     {
@@ -98,6 +104,9 @@ class RecipeTest extends TestCase
 
     /**
      * Tests setting, adding and getting the ingredients.
+     * @covers ::setIngredients
+     * @covers ::getIngredients
+     * @covers ::addIngredient
      */
     public function testSetAddAndGetIngredients()
     {
@@ -118,6 +127,9 @@ class RecipeTest extends TestCase
 
     /**
      * Tests setting, adding and getting the products.
+     * @covers ::setProducts
+     * @covers ::getProducts
+     * @covers ::addProduct
      */
     public function testSetAddAndGetProducts()
     {
@@ -138,6 +150,8 @@ class RecipeTest extends TestCase
 
     /**
      * Tests setting and getting the crafting time.
+     * @covers ::setCraftingTime
+     * @covers ::getCraftingTime
      */
     public function testSetAndGetCraftingTime()
     {
@@ -148,6 +162,8 @@ class RecipeTest extends TestCase
 
     /**
      * Tests setting and getting the labels.
+     * @covers ::setLabels
+     * @covers ::getLabels
      */
     public function testSetAndGetLabels()
     {
@@ -161,6 +177,8 @@ class RecipeTest extends TestCase
 
     /**
      * Tests setting and getting the descriptions.
+     * @covers ::setDescriptions
+     * @covers ::getDescriptions
      */
     public function testSetAndGetDescriptions()
     {
@@ -174,6 +192,8 @@ class RecipeTest extends TestCase
 
     /**
      * Tests setting and getting the icon hash.
+     * @covers ::setIconHash
+     * @covers ::getIconHash
      */
     public function testSetAndGetIconHash()
     {
@@ -240,6 +260,8 @@ class RecipeTest extends TestCase
      * Tests the writing and reading of the data.
      * @param Recipe $recipe
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(Recipe $recipe, array $expectedData)

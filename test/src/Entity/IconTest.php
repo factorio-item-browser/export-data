@@ -14,12 +14,13 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Icon
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Icon
  */
 class IconTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @coversNothing
      */
     public function testConstruct()
     {
@@ -30,6 +31,7 @@ class IconTest extends TestCase
 
     /**
      * Tests the cloning.
+     * @covers ::__clone
      */
     public function testClone()
     {
@@ -51,6 +53,8 @@ class IconTest extends TestCase
 
     /**
      * Tests setting and getting the icon hash.
+     * @covers ::setIconHash
+     * @covers ::getIconHash
      */
     public function testSetAndGetIconHash()
     {
@@ -61,6 +65,9 @@ class IconTest extends TestCase
 
     /**
      * Tests setting, adding and getting the layers.
+     * @covers ::setLayers
+     * @covers ::getLayers
+     * @covers ::addLayer
      */
     public function testSetAddAndGetLayers()
     {
@@ -113,6 +120,8 @@ class IconTest extends TestCase
      * Tests the writing and reading of the data.
      * @param Icon $icon
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(Icon $icon, array $expectedData)

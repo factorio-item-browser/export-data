@@ -13,12 +13,13 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Item
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Item
  */
 class ItemTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @covers ::__construct
      */
     public function testConstruct()
     {
@@ -34,6 +35,7 @@ class ItemTest extends TestCase
 
     /**
      * Tests the cloning.
+     * @covers ::__clone
      */
     public function testClone()
     {
@@ -63,6 +65,8 @@ class ItemTest extends TestCase
 
     /**
      * Tests setting and getting the type.
+     * @covers ::setType
+     * @covers ::getType
      */
     public function testSetAndGetType()
     {
@@ -73,6 +77,8 @@ class ItemTest extends TestCase
 
     /**
      * Tests setting and getting the name.
+     * @covers ::setName
+     * @covers ::getName
      */
     public function testSetAndGetName()
     {
@@ -83,6 +89,8 @@ class ItemTest extends TestCase
 
     /**
      * Tests setting and getting the labels.
+     * @covers ::setLabels
+     * @covers ::getLabels
      */
     public function testSetAndGetLabels()
     {
@@ -96,6 +104,8 @@ class ItemTest extends TestCase
 
     /**
      * Tests setting and getting the descriptions.
+     * @covers ::setDescriptions
+     * @covers ::getDescriptions
      */
     public function testSetAndGetDescriptions()
     {
@@ -109,6 +119,8 @@ class ItemTest extends TestCase
 
     /**
      * Tests setting and getting the provides recipe localisation flag.
+     * @covers ::setProvidesRecipeLocalisation
+     * @covers ::getProvidesRecipeLocalisation
      */
     public function testSetAndGetProvidesRecipeLocalisation()
     {
@@ -119,6 +131,8 @@ class ItemTest extends TestCase
 
     /**
      * Tests setting and getting the icon hash.
+     * @covers ::setIconHash
+     * @covers ::getIconHash
      */
     public function testSetAndGetIconHash()
     {
@@ -164,6 +178,8 @@ class ItemTest extends TestCase
      * Tests the writing and reading of the data.
      * @param Item $item
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(Item $item, array $expectedData)

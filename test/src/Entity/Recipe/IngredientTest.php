@@ -12,12 +12,13 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient
  */
 class IngredientTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @coversNothing
      */
     public function testConstruct()
     {
@@ -30,7 +31,33 @@ class IngredientTest extends TestCase
     }
 
     /**
+     * Tests the cloning.
+     * @coversNothing
+     */
+    public function testClone()
+    {
+        $ingredient = new Ingredient();
+        $ingredient->setType('abc')
+                   ->setName('def')
+                   ->setAmount(13.37)
+                   ->setOrder(42);
+
+        $clonedIngredient = clone($ingredient);
+        $ingredient->setType('cba')
+                   ->setName('fed')
+                   ->setAmount(73.31)
+                   ->setOrder(24);
+
+        $this->assertEquals('abc', $clonedIngredient->getType());
+        $this->assertEquals('def', $clonedIngredient->getName());
+        $this->assertEquals(13.37, $clonedIngredient->getAmount());
+        $this->assertEquals(42, $clonedIngredient->getOrder());
+    }
+    
+    /**
      * Tests setting and getting the type.
+     * @covers ::setType
+     * @covers ::getType
      */
     public function testSetAndGetType()
     {
@@ -41,6 +68,8 @@ class IngredientTest extends TestCase
 
     /**
      * Tests setting and getting the name.
+     * @covers ::setName
+     * @covers ::getName
      */
     public function testSetAndGetName()
     {
@@ -51,6 +80,8 @@ class IngredientTest extends TestCase
 
     /**
      * Tests setting and getting the amount.
+     * @covers ::setAmount
+     * @covers ::getAmount
      */
     public function testSetAndGetAmount()
     {
@@ -61,6 +92,8 @@ class IngredientTest extends TestCase
 
     /**
      * Tests setting and getting the order.
+     * @covers ::setOrder
+     * @covers ::getOrder
      */
     public function testSetAndGetOrder()
     {
@@ -98,6 +131,8 @@ class IngredientTest extends TestCase
      * Tests the writing and reading of the data.
      * @param Ingredient $ingredient
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(Ingredient $ingredient, array $expectedData)

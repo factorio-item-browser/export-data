@@ -12,12 +12,13 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\LocalisedString
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\LocalisedString
  */
 class LocalisedStringTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @coversNothing
      */
     public function testConstruct()
     {
@@ -27,6 +28,7 @@ class LocalisedStringTest extends TestCase
 
     /**
      * Tests the cloning.
+     * @coversNothing
      */
     public function testClone()
     {
@@ -41,6 +43,10 @@ class LocalisedStringTest extends TestCase
 
     /**
      * Tests setting and getting the translations.
+     * @covers ::setTranslation
+     * @covers ::getTranslations
+     * @covers ::setTranslation
+     * @covers ::getTranslation
      */
     public function testSetAndGetTranslations()
     {
@@ -81,6 +87,8 @@ class LocalisedStringTest extends TestCase
      * Tests the writing and reading of the data.
      * @param LocalisedString $localisedString
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(LocalisedString $localisedString, array $expectedData)
