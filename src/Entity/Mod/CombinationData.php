@@ -8,6 +8,7 @@ use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon;
 use FactorioItemBrowser\ExportData\Entity\Item;
+use FactorioItemBrowser\ExportData\Entity\Machine;
 use FactorioItemBrowser\ExportData\Entity\Recipe;
 
 /**
@@ -31,6 +32,12 @@ class CombinationData
     protected $recipes = [];
 
     /**
+     * The machines of the combination.
+     * @var array|Machine[]
+     */
+    protected $machines = [];
+
+    /**
      * The icons of the export.
      * @var array|Icon[]
      */
@@ -47,6 +54,9 @@ class CombinationData
         $this->recipes = array_map(function (Recipe $recipe): Recipe {
             return clone($recipe);
         }, $this->recipes);
+        $this->machines =  array_map(function (Machine $machine): Machine {
+            return clone($machine);
+        }, $this->machines);
         $this->icons = array_map(function (Icon $icon): Icon {
             return clone($icon);
         }, $this->icons);
@@ -189,6 +199,72 @@ class CombinationData
     }
 
     /**
+     * Sets the machines of the combination.
+     * @param array|Machine[] $machines
+     * @return $this
+     */
+    public function setMachines(array $machines)
+    {
+        $this->machines = array_values(array_filter($machines, function ($machine): bool {
+            return $machine instanceof Machine;
+        }));
+        return $this;
+    }
+
+    /**
+     * Adds a machine to the combination.
+     * @param Machine $machine
+     * @return $this
+     */
+    public function addMachine(Machine $machine)
+    {
+        $this->machines[] = $machine;
+        return $this;
+    }
+
+    /**
+     * Returns the machine with the specified name, if it exists.
+     * @param string $name
+     * @return Machine|null
+     */
+    public function getMachine(string $name): ?Machine
+    {
+        $result = null;
+        foreach ($this->machines as $machine) {
+            if ($machine->getName() === $name) {
+                $result = $machine;
+                break;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Returns the machines of the combination.
+     * @return array|Machine[]
+     */
+    public function getMachines(): array
+    {
+        return $this->machines;
+    }
+
+    /**
+     * Removes the machine with the specified name.
+     * @param string $name
+     * @return $this
+     */
+    public function removeMachine(string $name)
+    {
+        foreach ($this->machines as $key => $machine) {
+            if ($machine->getName() === $name) {
+                unset($this->machines[$key]);
+                break;
+            }
+        }
+        return $this;
+    }
+
+    /**
      * Sets the icons of the combination.
      * @param array|Icon[] $icons
      * @return $this
@@ -267,6 +343,9 @@ class CombinationData
                     ->setArray('r', $this->recipes, function (Recipe $recipe): array {
                         return $recipe->writeData();
                     }, [])
+                    ->setArray('m', $this->machines, function (Machine $machine): array {
+                        return $machine->writeData();
+                    }, [])
                     ->setArray('c', $this->icons, function (Icon $icon): array {
                         return $icon->writeData();
                     }, []);
@@ -286,6 +365,9 @@ class CombinationData
         $this->recipes = array_map(function (DataContainer $data): Recipe {
             return (new Recipe())->readData($data);
         }, $data->getObjectArray('r'));
+        $this->machines = array_map(function (DataContainer $data): Machine {
+            return (new Machine())->readData($data);
+        }, $data->getObjectArray('m'));
         $this->icons = array_map(function (DataContainer $data): Icon {
             return (new Icon())->readData($data);
         }, $data->getObjectArray('c'));

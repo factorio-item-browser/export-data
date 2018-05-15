@@ -7,6 +7,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity\Mod;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon;
 use FactorioItemBrowser\ExportData\Entity\Item;
+use FactorioItemBrowser\ExportData\Entity\Machine;
 use FactorioItemBrowser\ExportData\Entity\Mod\CombinationData;
 use FactorioItemBrowser\ExportData\Entity\Recipe;
 use PHPUnit\Framework\TestCase;
@@ -29,6 +30,7 @@ class CombinationDataTest extends TestCase
         $combinationData = new CombinationData();
         $this->assertEquals([], $combinationData->getItems());
         $this->assertEquals([], $combinationData->getRecipes());
+        $this->assertEquals([], $combinationData->getMachines());
         $this->assertEquals([], $combinationData->getIcons());
     }
 
@@ -40,16 +42,19 @@ class CombinationDataTest extends TestCase
     {
         $item = new Item();
         $item->setType('abc')
-            ->setName('def');
+             ->setName('def');
         $recipe = new Recipe();
         $recipe->setName('ghi')
-            ->setMode('jkl');
+               ->setMode('jkl');
+        $machine = new Machine();
+        $machine->setName('mno');
         $icon = new Icon();
-        $icon->setIconHash('mno');
+        $icon->setIconHash('pqr');
 
         $combinationData = new CombinationData();
         $combinationData->addItem($item)
                         ->addRecipe($recipe)
+                        ->addMachine($machine)
                         ->addIcon($icon);
 
         $clonedCombination = clone($combinationData);
@@ -57,11 +62,13 @@ class CombinationDataTest extends TestCase
              ->setName('fed');
         $recipe->setName('ihg')
                ->setMode('lkj');
-        $icon->setIconHash('onm');
+        $machine->setName('onm');
+        $icon->setIconHash('rqp');
 
         $this->assertInstanceOf(Item::class, $clonedCombination->getItem('abc', 'def'));
         $this->assertInstanceOf(Recipe::class, $clonedCombination->getRecipe('ghi', 'jkl'));
-        $this->assertInstanceOf(Icon::class, $clonedCombination->getIcon('mno'));
+        $this->assertInstanceOf(Machine::class, $clonedCombination->getMachine('mno'));
+        $this->assertInstanceOf(Icon::class, $clonedCombination->getIcon('pqr'));
     }
 
     /**
@@ -145,6 +152,43 @@ class CombinationDataTest extends TestCase
     }
 
     /**
+     * Tests setting, adding, getting and removing the machines.
+     * @covers ::setMachines
+     * @covers ::getMachines
+     * @covers ::addMachine
+     * @covers ::getMachine
+     * @covers ::removeMachine
+     */
+    public function testSetAddGetAndRemoveMachines()
+    {
+        $machine1 = new Machine();
+        $machine1->setName('abc');
+        $machine2 = new Machine();
+        $machine2->setName('def');
+        $machine3 = new Machine();
+        $machine3->setName('ghi');
+
+        $combinationData = new CombinationData();
+        $this->assertEquals($combinationData, $combinationData->setMachines([$machine1, new Item(), $machine2]));
+        $this->assertEquals([$machine1, $machine2], $combinationData->getMachines());
+        $this->assertEquals($machine1, $combinationData->getMachine('abc'));
+        $this->assertEquals($machine2, $combinationData->getMachine('def'));
+        $this->assertEquals(null, $combinationData->getMachine('ghi'));
+
+        $this->assertEquals($combinationData, $combinationData->addMachine($machine3));
+        $this->assertEquals([$machine1, $machine2, $machine3], $combinationData->getMachines());
+        $this->assertEquals($machine1, $combinationData->getMachine('abc'));
+        $this->assertEquals($machine2, $combinationData->getMachine('def'));
+        $this->assertEquals($machine3, $combinationData->getMachine('ghi'));
+
+        $this->assertEquals($combinationData, $combinationData->removeMachine('ghi'));
+        $this->assertEquals([$machine1, $machine2], $combinationData->getMachines());
+        $this->assertEquals($machine1, $combinationData->getMachine('abc'));
+        $this->assertEquals($machine2, $combinationData->getMachine('def'));
+        $this->assertEquals(null, $combinationData->getMachine('ghi'));
+    }
+
+    /**
      * Tests setting, adding, getting and removing the icons.
      * @covers ::setIcons
      * @covers ::getIcons
@@ -195,6 +239,10 @@ class CombinationDataTest extends TestCase
         $recipe1->setName('r42');
         $recipe2 = new Recipe();
         $recipe2->setName('r21');
+        $machine1 = new Machine();
+        $machine1->setName('m42');
+        $machine2 = new Machine();
+        $machine2->setName('m21');
         $icon1 = new Icon();
         $icon1->setIconHash('c42');
         $icon2 = new Icon();
@@ -205,6 +253,8 @@ class CombinationDataTest extends TestCase
                         ->addItem($item2)
                         ->addRecipe($recipe1)
                         ->addRecipe($recipe2)
+                        ->addMachine($machine1)
+                        ->addMachine($machine2)
                         ->addIcon($icon1)
                         ->addIcon($icon2);
 
@@ -216,6 +266,10 @@ class CombinationDataTest extends TestCase
             'r' => [
                 ['n' => 'r42'],
                 ['n' => 'r21']
+            ],
+            'm' => [
+                ['n' => 'm42'],
+                ['n' => 'm21']
             ],
             'c' => [
                 ['h' => 'c42'],
