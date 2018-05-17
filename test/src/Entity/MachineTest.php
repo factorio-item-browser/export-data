@@ -31,7 +31,7 @@ class MachineTest extends TestCase
         $this->assertInstanceOf(LocalisedString::class, $machine->getDescriptions());
         $this->assertEquals([], $machine->getCraftingCategories());
         $this->assertEquals(1., $machine->getCraftingSpeed());
-        $this->assertEquals(1, $machine->getNumberOfIngredientSlots());
+        $this->assertEquals(0, $machine->getNumberOfIngredientSlots());
         $this->assertEquals(0, $machine->getNumberOfModuleSlots());
         $this->assertEquals(0, $machine->getEnergyUsage());
         $this->assertEquals('', $machine->getIconHash());

@@ -49,7 +49,7 @@ class Machine implements EntityInterface
      * The number of ingredient slots available in the machine.
      * @var int
      */
-    protected $numberOfIngredientSlots = 1;
+    protected $numberOfIngredientSlots = 0;
 
     /**
      * The number of module slots available in the machine.
@@ -290,7 +290,7 @@ class Machine implements EntityInterface
                     ->setArray('d', $this->descriptions->writeData(), null, [])
                     ->setArray('c', $this->craftingCategories, 'strval', [])
                     ->setFloat('s', $this->craftingSpeed, 1.)
-                    ->setInteger('i', $this->numberOfIngredientSlots, 1)
+                    ->setInteger('i', $this->numberOfIngredientSlots, 0)
                     ->setInteger('m', $this->numberOfModuleSlots, 0)
                     ->setInteger('e', $this->energyUsage, 0)
                     ->setString('o', $this->iconHash, '');
@@ -309,7 +309,7 @@ class Machine implements EntityInterface
         $this->descriptions->readData($data->getObject('d'));
         $this->craftingCategories = array_map('strval', $data->getArray('c'));
         $this->craftingSpeed = $data->getFloat('s', 1.);
-        $this->numberOfIngredientSlots = $data->getInteger('i', 1);
+        $this->numberOfIngredientSlots = $data->getInteger('i', 0);
         $this->numberOfModuleSlots = $data->getInteger('m', 0);
         $this->energyUsage = $data->getInteger('e', 0);
         $this->iconHash = $data->getString('o');
