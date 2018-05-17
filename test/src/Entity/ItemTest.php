@@ -30,6 +30,7 @@ class ItemTest extends TestCase
         $this->assertInstanceOf(LocalisedString::class, $item->getLabels());
         $this->assertInstanceOf(LocalisedString::class, $item->getDescriptions());
         $this->assertEquals(false, $item->getProvidesRecipeLocalisation());
+        $this->assertEquals(false, $item->getProvidesMachineLocalisation());
         $this->assertEquals('', $item->getIconHash());
     }
 
@@ -130,6 +131,18 @@ class ItemTest extends TestCase
     }
 
     /**
+     * Tests setting and getting the provides machine localisation flag.
+     * @covers ::setProvidesMachineLocalisation
+     * @covers ::getProvidesMachineLocalisation
+     */
+    public function testSetAndGetProvidesMachineLocalisation()
+    {
+        $item = new Item();
+        $this->assertEquals($item, $item->setProvidesMachineLocalisation(true));
+        $this->assertEquals(true, $item->getProvidesMachineLocalisation());
+    }
+    
+    /**
      * Tests setting and getting the icon hash.
      * @covers ::setIconHash
      * @covers ::getIconHash
@@ -151,6 +164,7 @@ class ItemTest extends TestCase
         $item->setType('abc')
              ->setName('def')
              ->setProvidesRecipeLocalisation(true)
+             ->setProvidesMachineLocalisation(true)
              ->setIconHash('ghi');
         $item->getLabels()->setTranslation('en', 'jkl');
         $item->getDescriptions()->setTranslation('de', 'mno');
@@ -164,7 +178,8 @@ class ItemTest extends TestCase
             'd' => [
                 'de' => 'mno'
             ],
-            'p' => 1,
+            'r' => 1,
+            'm' => 1,
             'i' => 'ghi'
         ];
 
