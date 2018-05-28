@@ -31,7 +31,7 @@ class MachineTest extends TestCase
         $this->assertInstanceOf(LocalisedString::class, $machine->getDescriptions());
         $this->assertEquals([], $machine->getCraftingCategories());
         $this->assertEquals(1., $machine->getCraftingSpeed());
-        $this->assertEquals(0, $machine->getNumberOfIngredientSlots());
+        $this->assertEquals(0, $machine->getNumberOfItemSlots());
         $this->assertEquals(0, $machine->getNumberOfModuleSlots());
         $this->assertEquals(0, $machine->getEnergyUsage());
         $this->assertEquals('', $machine->getIconHash());
@@ -47,8 +47,10 @@ class MachineTest extends TestCase
         $machine->setName('abc')
                 ->setCraftingCategories(['def', 'ghi'])
                 ->setCraftingSpeed(13.37)
-                ->setNumberOfIngredientSlots(42)
-                ->setNumberOfModuleSlots(21)
+                ->setNumberOfItemSlots(42)
+                ->setNumberOfFluidInputSlots(21)
+                ->setNumberOfFluidOutputSlots(13)
+                ->setNumberOfModuleSlots(37)
                 ->setEnergyUsage(1337)
                 ->setIconHash('jkl');
         $machine->getLabels()->setTranslation('en', 'mno');
@@ -58,7 +60,7 @@ class MachineTest extends TestCase
         $machine->setName('cba')
                 ->setCraftingCategories(['fed', 'ihg'])
                 ->setCraftingSpeed(73.31)
-                ->setNumberOfIngredientSlots(24)
+                ->setNumberOfItemSlots(24)
                 ->setNumberOfModuleSlots(12)
                 ->setEnergyUsage(7331)
                 ->setIconHash('lkj');
@@ -68,8 +70,10 @@ class MachineTest extends TestCase
         $this->assertEquals('abc', $clonedMachine->getName());
         $this->assertEquals(['def', 'ghi'], $clonedMachine->getCraftingCategories());
         $this->assertEquals(13.37, $clonedMachine->getCraftingSpeed());
-        $this->assertEquals(42, $clonedMachine->getNumberOfIngredientSlots());
-        $this->assertEquals(21, $clonedMachine->getNumberOfModuleSlots());
+        $this->assertEquals(42, $clonedMachine->getNumberOfItemSlots());
+        $this->assertEquals(21, $clonedMachine->getNumberOfFluidInputSlots());
+        $this->assertEquals(13, $clonedMachine->getNumberOfFluidOutputSlots());
+        $this->assertEquals(37, $clonedMachine->getNumberOfModuleSlots());
         $this->assertEquals(1337, $clonedMachine->getEnergyUsage());
         $this->assertEquals('jkl', $clonedMachine->getIconHash());
         $this->assertEquals('mno', $clonedMachine->getLabels()->getTranslation('en'));
@@ -147,17 +151,41 @@ class MachineTest extends TestCase
     }
 
     /**
-     * Tests setting and getting the number of ingredient slots.
-     * @covers ::setNumberOfIngredientSlots
-     * @covers ::getNumberOfIngredientSlots
+     * Tests setting and getting the number of item slots.
+     * @covers ::setNumberOfItemSlots
+     * @covers ::getNumberOfItemSlots
      */
-    public function testSetAndGetNumberOfIngredientSlots()
+    public function testSetAndGetNumberOfItemSlots()
     {
         $machine = new Machine();
-        $this->assertEquals($machine, $machine->setNumberOfIngredientSlots(42));
-        $this->assertEquals(42, $machine->getNumberOfIngredientSlots());
+        $this->assertEquals($machine, $machine->setNumberOfItemSlots(42));
+        $this->assertEquals(42, $machine->getNumberOfItemSlots());
     }
 
+    /**
+     * Tests setting and getting the number of fluid input slots.
+     * @covers ::setNumberOfFluidInputSlots
+     * @covers ::getNumberOfFluidInputSlots
+     */
+    public function testSetAndGetNumberOfFluidInputSlots()
+    {
+        $machine = new Machine();
+        $this->assertEquals($machine, $machine->setNumberOfFluidInputSlots(42));
+        $this->assertEquals(42, $machine->getNumberOfFluidInputSlots());
+    }
+
+    /**
+     * Tests setting and getting the number of fluid output slots.
+     * @covers ::setNumberOfFluidOutputSlots
+     * @covers ::getNumberOfFluidOutputSlots
+     */
+    public function testSetAndGetNumberOfFluidOutputSlots()
+    {
+        $machine = new Machine();
+        $this->assertEquals($machine, $machine->setNumberOfFluidOutputSlots(42));
+        $this->assertEquals(42, $machine->getNumberOfFluidOutputSlots());
+    }
+    
     /**
      * Tests setting and getting the number of module slots.
      * @covers ::setNumberOfModuleSlots
@@ -205,8 +233,10 @@ class MachineTest extends TestCase
         $machine->setName('abc')
                 ->setCraftingCategories(['def', 'ghi'])
                 ->setCraftingSpeed(13.37)
-                ->setNumberOfIngredientSlots(42)
-                ->setNumberOfModuleSlots(21)
+                ->setNumberOfItemSlots(42)
+                ->setNumberOfFluidInputSlots(21)
+                ->setNumberOfFluidOutputSlots(13)
+                ->setNumberOfModuleSlots(37)
                 ->setEnergyUsage(1337)
                 ->setIconHash('jkl');
         $machine->getLabels()->setTranslation('en', 'mno');
@@ -223,7 +253,9 @@ class MachineTest extends TestCase
             'c' => ['def', 'ghi'],
             's' => 13.37,
             'i' => 42,
-            'm' => 21,
+            'f' => 21,
+            'u' => 13,
+            'm' => 37,
             'e' => 1337,
             'o' => 'jkl'
         ];

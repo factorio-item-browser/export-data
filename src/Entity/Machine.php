@@ -46,10 +46,22 @@ class Machine implements EntityInterface
     protected $craftingSpeed = 1.;
 
     /**
-     * The number of ingredient slots available in the machine.
+     * The number of item slots available in the machine.
      * @var int
      */
-    protected $numberOfIngredientSlots = 0;
+    protected $numberOfItemSlots = 0;
+
+    /**
+     * The number of fluid input slots available in the machine.
+     * @var int
+     */
+    protected $numberOfFluidInputSlots = 0;
+
+    /**
+     * The number of fluid output slots available in the machine.
+     * @var int
+     */
+    protected $numberOfFluidOutputSlots = 0;
 
     /**
      * The number of module slots available in the machine.
@@ -199,23 +211,63 @@ class Machine implements EntityInterface
     }
 
     /**
-     * Sets the number of ingredient slots available in the machine.
-     * @param int $numberOfIngredientSlots
+     * Sets the number of item slots available in the machine.
+     * @param int $numberOfItemSlots
      * @return $this
      */
-    public function setNumberOfIngredientSlots(int $numberOfIngredientSlots)
+    public function setNumberOfItemSlots(int $numberOfItemSlots)
     {
-        $this->numberOfIngredientSlots = $numberOfIngredientSlots;
+        $this->numberOfItemSlots = $numberOfItemSlots;
         return $this;
     }
 
     /**
-     * Returns the number of ingredient slots available in the machine.
+     * Returns the number of item slots available in the machine.
      * @return int
      */
-    public function getNumberOfIngredientSlots(): int
+    public function getNumberOfItemSlots(): int
     {
-        return $this->numberOfIngredientSlots;
+        return $this->numberOfItemSlots;
+    }
+
+    /**
+     * Sets the number of fluid input slots available in the machine.
+     * @param int $numberOfFluidInputSlots
+     * @return $this
+     */
+    public function setNumberOfFluidInputSlots(int $numberOfFluidInputSlots)
+    {
+        $this->numberOfFluidInputSlots = $numberOfFluidInputSlots;
+        return $this;
+    }
+
+    /**
+     * Returns the number of fluid input slots available in the machine.
+     * @return int
+     */
+    public function getNumberOfFluidInputSlots(): int
+    {
+        return $this->numberOfFluidInputSlots;
+    }
+
+    /**
+     * Sets the number of fluid output slots available in the machine.
+     * @param int $numberOfFluidOutputSlots
+     * @return $this
+     */
+    public function setNumberOfFluidOutputSlots(int $numberOfFluidOutputSlots)
+    {
+        $this->numberOfFluidOutputSlots = $numberOfFluidOutputSlots;
+        return $this;
+    }
+
+    /**
+     * Returns the number of fluid output slots available in the machine.
+     * @return int
+     */
+    public function getNumberOfFluidOutputSlots(): int
+    {
+        return $this->numberOfFluidOutputSlots;
     }
 
     /**
@@ -290,7 +342,9 @@ class Machine implements EntityInterface
                     ->setArray('d', $this->descriptions->writeData(), null, [])
                     ->setArray('c', $this->craftingCategories, 'strval', [])
                     ->setFloat('s', $this->craftingSpeed, 1.)
-                    ->setInteger('i', $this->numberOfIngredientSlots, 0)
+                    ->setInteger('i', $this->numberOfItemSlots, 0)
+                    ->setInteger('f', $this->numberOfFluidInputSlots, 0)
+                    ->setInteger('u', $this->numberOfFluidOutputSlots, 0)
                     ->setInteger('m', $this->numberOfModuleSlots, 0)
                     ->setInteger('e', $this->energyUsage, 0)
                     ->setString('o', $this->iconHash, '');
@@ -309,7 +363,9 @@ class Machine implements EntityInterface
         $this->descriptions->readData($data->getObject('d'));
         $this->craftingCategories = array_map('strval', $data->getArray('c'));
         $this->craftingSpeed = $data->getFloat('s', 1.);
-        $this->numberOfIngredientSlots = $data->getInteger('i', 0);
+        $this->numberOfItemSlots = $data->getInteger('i', 0);
+        $this->numberOfFluidInputSlots = $data->getInteger('f', 0);
+        $this->numberOfFluidOutputSlots = $data->getInteger('u', 0);
         $this->numberOfModuleSlots = $data->getInteger('m', 0);
         $this->energyUsage = $data->getInteger('e', 0);
         $this->iconHash = $data->getString('o');
