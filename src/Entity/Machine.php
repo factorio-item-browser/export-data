@@ -79,7 +79,7 @@ class Machine implements EntityInterface
      * The unit used for the energy usage.
      * @var string
      */
-    protected $energyUsageUnit = '';
+    protected $energyUsageUnit = 'W';
 
     /**
      * The icon hash of the machine.
@@ -373,7 +373,7 @@ class Machine implements EntityInterface
                     ->setInteger('u', $this->numberOfFluidOutputSlots, 0)
                     ->setInteger('m', $this->numberOfModuleSlots, 0)
                     ->setFloat('e', $this->energyUsage, 0.)
-                    ->setString('r', $this->energyUsageUnit, '')
+                    ->setString('r', $this->energyUsageUnit, 'W')
                     ->setString('o', $this->iconHash, '');
         return $dataBuilder->getData();
     }
@@ -395,7 +395,7 @@ class Machine implements EntityInterface
         $this->numberOfFluidOutputSlots = $data->getInteger('u', 0);
         $this->numberOfModuleSlots = $data->getInteger('m', 0);
         $this->energyUsage = $data->getFloat('e', 0.);
-        $this->energyUsageUnit = $data->getString('r', '');
+        $this->energyUsageUnit = $data->getString('r', 'W');
         $this->iconHash = $data->getString('o');
         return $this;
     }

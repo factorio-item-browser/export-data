@@ -34,7 +34,7 @@ class MachineTest extends TestCase
         $this->assertEquals(0, $machine->getNumberOfItemSlots());
         $this->assertEquals(0, $machine->getNumberOfModuleSlots());
         $this->assertEquals(0., $machine->getEnergyUsage());
-        $this->assertEquals('', $machine->getEnergyUsageUnit());
+        $this->assertEquals('W', $machine->getEnergyUsageUnit());
         $this->assertEquals('', $machine->getIconHash());
     }
 
