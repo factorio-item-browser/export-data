@@ -70,10 +70,16 @@ class Machine implements EntityInterface
     protected $numberOfModuleSlots = 0;
 
     /**
-     * The energy usage of the machine, in watt.
-     * @var int
+     * The energy usage of the machine.
+     * @var float
      */
-    protected $energyUsage = 0;
+    protected $energyUsage = 0.;
+
+    /**
+     * The unit used for the energy usage.
+     * @var string
+     */
+    protected $energyUsageUnit = '';
 
     /**
      * The icon hash of the machine.
@@ -291,23 +297,43 @@ class Machine implements EntityInterface
     }
 
     /**
-     * Sets the energy usage of the machine, in watt.
-     * @param int $energyUsage
+     * Sets the energy usage of the machine.
+     * @param float $energyUsage
      * @return $this
      */
-    public function setEnergyUsage(int $energyUsage)
+    public function setEnergyUsage(float $energyUsage)
     {
         $this->energyUsage = $energyUsage;
         return $this;
     }
 
     /**
-     * Returns the energy usage of the machine, in watt.
-     * @return int
+     * Returns the energy usage of the machine.
+     * @return float
      */
-    public function getEnergyUsage(): int
+    public function getEnergyUsage(): float
     {
         return $this->energyUsage;
+    }
+
+    /**
+     * Sets the unit used for the energy usage.
+     * @param string $energyUsageUnit
+     * @return $this
+     */
+    public function setEnergyUsageUnit(string $energyUsageUnit)
+    {
+        $this->energyUsageUnit = $energyUsageUnit;
+        return $this;
+    }
+
+    /**
+     * Returns the unit used for the energy usage.
+     * @return string
+     */
+    public function getEnergyUsageUnit(): string
+    {
+        return $this->energyUsageUnit;
     }
 
     /**
@@ -346,7 +372,8 @@ class Machine implements EntityInterface
                     ->setInteger('f', $this->numberOfFluidInputSlots, 0)
                     ->setInteger('u', $this->numberOfFluidOutputSlots, 0)
                     ->setInteger('m', $this->numberOfModuleSlots, 0)
-                    ->setInteger('e', $this->energyUsage, 0)
+                    ->setFloat('e', $this->energyUsage, 0.)
+                    ->setString('r', $this->energyUsageUnit, '')
                     ->setString('o', $this->iconHash, '');
         return $dataBuilder->getData();
     }
@@ -367,7 +394,8 @@ class Machine implements EntityInterface
         $this->numberOfFluidInputSlots = $data->getInteger('f', 0);
         $this->numberOfFluidOutputSlots = $data->getInteger('u', 0);
         $this->numberOfModuleSlots = $data->getInteger('m', 0);
-        $this->energyUsage = $data->getInteger('e', 0);
+        $this->energyUsage = $data->getFloat('e', 0.);
+        $this->energyUsageUnit = $data->getString('r', '');
         $this->iconHash = $data->getString('o');
         return $this;
     }

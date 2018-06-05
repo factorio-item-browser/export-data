@@ -33,7 +33,8 @@ class MachineTest extends TestCase
         $this->assertEquals(1., $machine->getCraftingSpeed());
         $this->assertEquals(0, $machine->getNumberOfItemSlots());
         $this->assertEquals(0, $machine->getNumberOfModuleSlots());
-        $this->assertEquals(0, $machine->getEnergyUsage());
+        $this->assertEquals(0., $machine->getEnergyUsage());
+        $this->assertEquals('', $machine->getEnergyUsageUnit());
         $this->assertEquals('', $machine->getIconHash());
     }
 
@@ -51,10 +52,11 @@ class MachineTest extends TestCase
                 ->setNumberOfFluidInputSlots(21)
                 ->setNumberOfFluidOutputSlots(13)
                 ->setNumberOfModuleSlots(37)
-                ->setEnergyUsage(1337)
-                ->setIconHash('jkl');
-        $machine->getLabels()->setTranslation('en', 'mno');
-        $machine->getDescriptions()->setTranslation('en', 'pqr');
+                ->setEnergyUsage(73.31)
+                ->setEnergyUsageUnit('jkl')
+                ->setIconHash('mno');
+        $machine->getLabels()->setTranslation('en', 'pqr');
+        $machine->getDescriptions()->setTranslation('en', 'stu');
 
         $clonedMachine = clone($machine);
         $machine->setName('cba')
@@ -62,10 +64,11 @@ class MachineTest extends TestCase
                 ->setCraftingSpeed(73.31)
                 ->setNumberOfItemSlots(24)
                 ->setNumberOfModuleSlots(12)
-                ->setEnergyUsage(7331)
-                ->setIconHash('lkj');
-        $machine->getLabels()->setTranslation('en', 'onm');
-        $machine->getDescriptions()->setTranslation('en', 'rqp');
+                ->setEnergyUsage(13.37)
+                ->setEnergyUsageUnit('lkj')
+                ->setIconHash('onm');
+        $machine->getLabels()->setTranslation('en', 'rqp');
+        $machine->getDescriptions()->setTranslation('en', 'uts');
 
         $this->assertEquals('abc', $clonedMachine->getName());
         $this->assertEquals(['def', 'ghi'], $clonedMachine->getCraftingCategories());
@@ -74,10 +77,11 @@ class MachineTest extends TestCase
         $this->assertEquals(21, $clonedMachine->getNumberOfFluidInputSlots());
         $this->assertEquals(13, $clonedMachine->getNumberOfFluidOutputSlots());
         $this->assertEquals(37, $clonedMachine->getNumberOfModuleSlots());
-        $this->assertEquals(1337, $clonedMachine->getEnergyUsage());
-        $this->assertEquals('jkl', $clonedMachine->getIconHash());
-        $this->assertEquals('mno', $clonedMachine->getLabels()->getTranslation('en'));
-        $this->assertEquals('pqr', $clonedMachine->getDescriptions()->getTranslation('en'));
+        $this->assertEquals(73.31, $clonedMachine->getEnergyUsage());
+        $this->assertEquals('jkl', $clonedMachine->getEnergyUsageUnit());
+        $this->assertEquals('mno', $clonedMachine->getIconHash());
+        $this->assertEquals('pqr', $clonedMachine->getLabels()->getTranslation('en'));
+        $this->assertEquals('stu', $clonedMachine->getDescriptions()->getTranslation('en'));
     }
 
     /**
@@ -206,10 +210,22 @@ class MachineTest extends TestCase
     public function testSetAndGetEnergyUsage()
     {
         $machine = new Machine();
-        $this->assertEquals($machine, $machine->setEnergyUsage(42));
-        $this->assertEquals(42, $machine->getEnergyUsage());
+        $this->assertEquals($machine, $machine->setEnergyUsage(13.37));
+        $this->assertEquals(13.37, $machine->getEnergyUsage());
     }
 
+    /**
+     * Tests setting and getting the energy usage unit.
+     * @covers ::setEnergyUsageUnit
+     * @covers ::getEnergyUsageUnit
+     */
+    public function testSetAndGetEnergyUsageUnit()
+    {
+        $machine = new Machine();
+        $this->assertEquals($machine, $machine->setEnergyUsageUnit('abc'));
+        $this->assertEquals('abc', $machine->getEnergyUsageUnit());
+    }
+    
     /**
      * Tests setting and getting the icon hash.
      * @covers ::setIconHash
@@ -237,18 +253,19 @@ class MachineTest extends TestCase
                 ->setNumberOfFluidInputSlots(21)
                 ->setNumberOfFluidOutputSlots(13)
                 ->setNumberOfModuleSlots(37)
-                ->setEnergyUsage(1337)
-                ->setIconHash('jkl');
-        $machine->getLabels()->setTranslation('en', 'mno');
-        $machine->getDescriptions()->setTranslation('en', 'pqr');
+                ->setEnergyUsage(73.31)
+                ->setEnergyUsageUnit('jkl')
+                ->setIconHash('mno');
+        $machine->getLabels()->setTranslation('en', 'pqr');
+        $machine->getDescriptions()->setTranslation('en', 'stu');
 
         $data = [
             'n' => 'abc',
             'l' => [
-                'en' => 'mno'
+                'en' => 'pqr'
             ],
             'd' => [
-                'en' => 'pqr'
+                'en' => 'stu'
             ],
             'c' => ['def', 'ghi'],
             's' => 13.37,
@@ -256,8 +273,9 @@ class MachineTest extends TestCase
             'f' => 21,
             'u' => 13,
             'm' => 37,
-            'e' => 1337,
-            'o' => 'jkl'
+            'e' => 73.31,
+            'r' => 'jkl',
+            'o' => 'mno'
         ];
 
         return [
