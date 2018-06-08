@@ -337,18 +337,19 @@ class CombinationData
     public function writeData(): array
     {
         $dataBuilder = new DataBuilder();
-        $dataBuilder->setArray('i', $this->items, function (Item $item): array {
-                        return $item->writeData();
-                    }, [])
-                    ->setArray('r', $this->recipes, function (Recipe $recipe): array {
-                        return $recipe->writeData();
-                    }, [])
-                    ->setArray('m', $this->machines, function (Machine $machine): array {
-                        return $machine->writeData();
-                    }, [])
-                    ->setArray('c', $this->icons, function (Icon $icon): array {
-                        return $icon->writeData();
-                    }, []);
+        $dataBuilder
+            ->setArray('i', $this->items, function (Item $item): array {
+                return $item->writeData();
+            }, [])
+            ->setArray('r', $this->recipes, function (Recipe $recipe): array {
+                return $recipe->writeData();
+            }, [])
+            ->setArray('m', $this->machines, function (Machine $machine): array {
+                return $machine->writeData();
+            }, [])
+            ->setArray('c', $this->icons, function (Icon $icon): array {
+                return $icon->writeData();
+            }, []);
         return $dataBuilder->getData();
     }
 
