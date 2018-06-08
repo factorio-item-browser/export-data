@@ -44,6 +44,12 @@ class Item implements EntityInterface
     protected $providesRecipeLocalisation = false;
 
     /**
+     * Whether the item is providing the localisation of a machine with the same name.
+     * @var bool
+     */
+    protected $providesMachineLocalisation = false;
+
+    /**
      * The icon hash of the item.
      * @var string
      */
@@ -168,6 +174,26 @@ class Item implements EntityInterface
     }
 
     /**
+     * Sets whether the item is providing the localisation of a machine with the same name.
+     * @param bool $providesMachineLocalisation
+     * @return $this Implementing fluent interface.
+     */
+    public function setProvidesMachineLocalisation(bool $providesMachineLocalisation)
+    {
+        $this->providesMachineLocalisation = $providesMachineLocalisation;
+        return $this;
+    }
+
+    /**
+     * Returns whether the item is providing the localisation of a machine with the same name.
+     * @return bool
+     */
+    public function getProvidesMachineLocalisation(): bool
+    {
+        return $this->providesMachineLocalisation;
+    }
+
+    /**
      * Sets the icon hash of the item.
      * @param string $iconHash
      * @return $this Implementing fluent interface.
@@ -198,7 +224,8 @@ class Item implements EntityInterface
                     ->setString('n', $this->getName(), '')
                     ->setArray('l', $this->labels->writeData(), null, [])
                     ->setArray('d', $this->descriptions->writeData(), null, [])
-                    ->setInteger('p', $this->getProvidesRecipeLocalisation() ? 1 : 0, 0)
+                    ->setInteger('r', $this->getProvidesRecipeLocalisation() ? 1 : 0, 0)
+                    ->setInteger('m', $this->getProvidesMachineLocalisation() ? 1 : 0, 0)
                     ->setString('i', $this->iconHash, '');
         return $dataBuilder->getData();
     }
@@ -214,7 +241,8 @@ class Item implements EntityInterface
         $this->name = $data->getString('n', '');
         $this->labels->readData($data->getObject('l'));
         $this->descriptions->readData($data->getObject('d'));
-        $this->providesRecipeLocalisation = $data->getInteger('p', 0) === 1;
+        $this->providesRecipeLocalisation = $data->getInteger('r', 0) === 1;
+        $this->providesMachineLocalisation = $data->getInteger('m', 0) === 1;
         $this->iconHash = $data->getString('i');
         return $this;
     }

@@ -12,12 +12,13 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Icon\Color
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Icon\Color
  */
 class ColorTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @coversNothing
      */
     public function testConstruct()
     {
@@ -30,6 +31,9 @@ class ColorTest extends TestCase
 
     /**
      * Tests setting and getting the red.
+     * @covers ::setRed
+     * @covers ::getRed
+     * @covers ::<protected>
      */
     public function testSetAndGetRed()
     {
@@ -45,6 +49,9 @@ class ColorTest extends TestCase
 
     /**
      * Tests setting and getting the green.
+     * @covers ::setGreen
+     * @covers ::getGreen
+     * @covers ::<protected>
      */
     public function testSetAndGetGreen()
     {
@@ -60,6 +67,9 @@ class ColorTest extends TestCase
 
     /**
      * Tests setting and getting the blue.
+     * @covers ::setBlue
+     * @covers ::getBlue
+     * @covers ::<protected>
      */
     public function testSetAndGetBlue()
     {
@@ -75,6 +85,9 @@ class ColorTest extends TestCase
 
     /**
      * Tests setting and getting the alpha.
+     * @covers ::setAlpha
+     * @covers ::getAlpha
+     * @covers ::<protected>
      */
     public function testSetAndGetAlpha()
     {
@@ -92,7 +105,7 @@ class ColorTest extends TestCase
      * Provides the data for the writeAndReadData test.
      * @return array
      */
-    public function provideTestWriteAndReadData(): array
+    public function provideWriteAndReadData(): array
     {
         $color = new Color();
         $color->setRed(0.2)
@@ -117,7 +130,9 @@ class ColorTest extends TestCase
      * Tests the writing and reading of the data.
      * @param Color $color
      * @param array $expectedData
-     * @dataProvider provideTestWriteAndReadData
+     * @covers ::writeData
+     * @covers ::readData
+     * @dataProvider provideWriteAndReadData
      */
     public function testWriteAndReadData(Color $color, array $expectedData)
     {

@@ -46,6 +46,12 @@ class Recipe implements EntityInterface
     protected $craftingTime = 0.;
 
     /**
+     * The crafting category of the recipe.
+     * @var string
+     */
+    protected $craftingCategory = '';
+
+    /**
      * The localised labels of the recipe.
      * @var LocalisedString
      */
@@ -215,6 +221,26 @@ class Recipe implements EntityInterface
     }
 
     /**
+     * Sets the crafting category of the recipe.
+     * @param string $craftingCategory
+     * @return $this
+     */
+    public function setCraftingCategory(string $craftingCategory)
+    {
+        $this->craftingCategory = $craftingCategory;
+        return $this;
+    }
+
+    /**
+     * Returns the crafting category of the recipe.
+     * @return string
+     */
+    public function getCraftingCategory(): string
+    {
+        return $this->craftingCategory;
+    }
+
+    /**
      * Sets the localised labels of the recipe.
      * @param LocalisedString $labels
      * @return $this Implementing fluent interface.
@@ -290,6 +316,7 @@ class Recipe implements EntityInterface
                         return $product->writeData();
                     }, [])
                     ->setFloat('c', $this->craftingTime, 0.)
+                    ->setString('a', $this->craftingCategory, '')
                     ->setArray('l', $this->labels->writeData(), null, [])
                     ->setArray('d', $this->descriptions->writeData(), null, [])
                     ->setString('h', $this->iconHash, '');
@@ -312,6 +339,7 @@ class Recipe implements EntityInterface
             return (new Product())->readData($data);
         }, $data->getObjectArray('p'));
         $this->craftingTime = $data->getFloat('c', 0.);
+        $this->craftingCategory = $data->getString('a', '');
         $this->labels->readData($data->getObject('l'));
         $this->descriptions->readData($data->getObject('d'));
         $this->iconHash = $data->getString('h', '');

@@ -15,12 +15,13 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Mod
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Mod
  */
 class ModTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @covers ::__construct
      */
     public function testConstruct()
     {
@@ -40,6 +41,7 @@ class ModTest extends TestCase
 
     /**
      * Tests the cloning.
+     * @covers ::__clone
      */
     public function testClone()
     {
@@ -91,6 +93,8 @@ class ModTest extends TestCase
 
     /**
      * Tests setting and getting the name.
+     * @covers ::setName
+     * @covers ::getName
      */
     public function testSetAndGetName()
     {
@@ -101,6 +105,8 @@ class ModTest extends TestCase
 
     /**
      * Tests setting and getting the titles.
+     * @covers ::setTitles
+     * @covers ::getTitles
      */
     public function testSetAndGetTitles()
     {
@@ -114,6 +120,8 @@ class ModTest extends TestCase
 
     /**
      * Tests setting and getting the descriptions.
+     * @covers ::setDescriptions
+     * @covers ::getDescriptions
      */
     public function testSetAndGetDescriptions()
     {
@@ -127,6 +135,8 @@ class ModTest extends TestCase
 
     /**
      * Tests setting and getting the author.
+     * @covers ::setAuthor
+     * @covers ::getAuthor
      */
     public function testSetAndGetAuthor()
     {
@@ -137,6 +147,8 @@ class ModTest extends TestCase
 
     /**
      * Tests setting and getting the version.
+     * @covers ::setVersion
+     * @covers ::getVersion
      */
     public function testSetAndGetVersion()
     {
@@ -147,6 +159,8 @@ class ModTest extends TestCase
 
     /**
      * Tests setting and getting the fileName.
+     * @covers ::setFileName
+     * @covers ::getFileName
      */
     public function testSetAndGetFileName()
     {
@@ -157,6 +171,8 @@ class ModTest extends TestCase
 
     /**
      * Tests setting and getting the directoryName.
+     * @covers ::setDirectoryName
+     * @covers ::getDirectoryName
      */
     public function testSetAndGetDirectoryName()
     {
@@ -167,6 +183,9 @@ class ModTest extends TestCase
 
     /**
      * Tests setting, adding and getting the dependencies.
+     * @covers ::setDependencies
+     * @covers ::getDependencies
+     * @covers ::addDependency
      */
     public function testSetAddAndGetDependencies()
     {
@@ -187,6 +206,8 @@ class ModTest extends TestCase
 
     /**
      * Tests setting and getting the checksum.
+     * @covers ::setChecksum
+     * @covers ::getChecksum
      */
     public function testSetAndGetChecksum()
     {
@@ -197,6 +218,8 @@ class ModTest extends TestCase
 
     /**
      * Tests setting and getting the order.
+     * @covers ::setOrder
+     * @covers ::getOrder
      */
     public function testSetAndGetOrder()
     {
@@ -207,6 +230,9 @@ class ModTest extends TestCase
 
     /**
      * Tests setting, adding and getting the combinations.
+     * @covers ::setCombinations
+     * @covers ::getCombinations
+     * @covers ::addCombination
      */
     public function testSetAddAndGetCombinations()
     {
@@ -288,6 +314,8 @@ class ModTest extends TestCase
      * Tests the writing and reading of the data.
      * @param Mod $mod
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(Mod $mod, array $expectedData)

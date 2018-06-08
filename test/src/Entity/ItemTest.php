@@ -13,12 +13,13 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Item
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Item
  */
 class ItemTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @covers ::__construct
      */
     public function testConstruct()
     {
@@ -29,11 +30,13 @@ class ItemTest extends TestCase
         $this->assertInstanceOf(LocalisedString::class, $item->getLabels());
         $this->assertInstanceOf(LocalisedString::class, $item->getDescriptions());
         $this->assertEquals(false, $item->getProvidesRecipeLocalisation());
+        $this->assertEquals(false, $item->getProvidesMachineLocalisation());
         $this->assertEquals('', $item->getIconHash());
     }
 
     /**
      * Tests the cloning.
+     * @covers ::__clone
      */
     public function testClone()
     {
@@ -63,6 +66,8 @@ class ItemTest extends TestCase
 
     /**
      * Tests setting and getting the type.
+     * @covers ::setType
+     * @covers ::getType
      */
     public function testSetAndGetType()
     {
@@ -73,6 +78,8 @@ class ItemTest extends TestCase
 
     /**
      * Tests setting and getting the name.
+     * @covers ::setName
+     * @covers ::getName
      */
     public function testSetAndGetName()
     {
@@ -83,6 +90,8 @@ class ItemTest extends TestCase
 
     /**
      * Tests setting and getting the labels.
+     * @covers ::setLabels
+     * @covers ::getLabels
      */
     public function testSetAndGetLabels()
     {
@@ -96,6 +105,8 @@ class ItemTest extends TestCase
 
     /**
      * Tests setting and getting the descriptions.
+     * @covers ::setDescriptions
+     * @covers ::getDescriptions
      */
     public function testSetAndGetDescriptions()
     {
@@ -109,6 +120,8 @@ class ItemTest extends TestCase
 
     /**
      * Tests setting and getting the provides recipe localisation flag.
+     * @covers ::setProvidesRecipeLocalisation
+     * @covers ::getProvidesRecipeLocalisation
      */
     public function testSetAndGetProvidesRecipeLocalisation()
     {
@@ -118,7 +131,21 @@ class ItemTest extends TestCase
     }
 
     /**
+     * Tests setting and getting the provides machine localisation flag.
+     * @covers ::setProvidesMachineLocalisation
+     * @covers ::getProvidesMachineLocalisation
+     */
+    public function testSetAndGetProvidesMachineLocalisation()
+    {
+        $item = new Item();
+        $this->assertEquals($item, $item->setProvidesMachineLocalisation(true));
+        $this->assertEquals(true, $item->getProvidesMachineLocalisation());
+    }
+    
+    /**
      * Tests setting and getting the icon hash.
+     * @covers ::setIconHash
+     * @covers ::getIconHash
      */
     public function testSetAndGetIconHash()
     {
@@ -137,6 +164,7 @@ class ItemTest extends TestCase
         $item->setType('abc')
              ->setName('def')
              ->setProvidesRecipeLocalisation(true)
+             ->setProvidesMachineLocalisation(true)
              ->setIconHash('ghi');
         $item->getLabels()->setTranslation('en', 'jkl');
         $item->getDescriptions()->setTranslation('de', 'mno');
@@ -150,7 +178,8 @@ class ItemTest extends TestCase
             'd' => [
                 'de' => 'mno'
             ],
-            'p' => 1,
+            'r' => 1,
+            'm' => 1,
             'i' => 'ghi'
         ];
 
@@ -164,6 +193,8 @@ class ItemTest extends TestCase
      * Tests the writing and reading of the data.
      * @param Item $item
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(Item $item, array $expectedData)

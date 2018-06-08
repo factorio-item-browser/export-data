@@ -14,12 +14,13 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Mod\Combination
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Mod\Combination
  */
 class CombinationTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @covers ::__construct
      */
     public function testConstruct()
     {
@@ -34,6 +35,7 @@ class CombinationTest extends TestCase
 
     /**
      * Tests the cloning.
+     * @covers ::__clone
      */
     public function testClone()
     {
@@ -67,6 +69,8 @@ class CombinationTest extends TestCase
 
     /**
      * Tests setting and getting the name.
+     * @covers ::setName
+     * @covers ::getName
      */
     public function testSetAndGetName()
     {
@@ -77,6 +81,8 @@ class CombinationTest extends TestCase
 
     /**
      * Tests setting and getting the mainModName.
+     * @covers ::setMainModName
+     * @covers ::getMainModName
      */
     public function testSetAndGetMainModName()
     {
@@ -87,6 +93,9 @@ class CombinationTest extends TestCase
 
     /**
      * Tests setting, adding and getting the loaded mod names.
+     * @covers ::setLoadedModNames
+     * @covers ::getLoadedModNames
+     * @covers ::addLoadedModName
      */
     public function testSetAddAndGetLoadedModNames()
     {
@@ -100,6 +109,9 @@ class CombinationTest extends TestCase
 
     /**
      * Tests setting, adding and getting the loaded optional mod names.
+     * @covers ::setLoadedOptionalModNames
+     * @covers ::getLoadedOptionalModNames
+     * @covers ::addLoadedOptionalModName
      */
     public function testSetAddAndGetLoadedOptionalModNames()
     {
@@ -113,6 +125,8 @@ class CombinationTest extends TestCase
 
     /**
      * Tests setting and getting the data.
+     * @covers ::setData
+     * @covers ::getData
      */
     public function testSetAndGetData()
     {
@@ -126,6 +140,8 @@ class CombinationTest extends TestCase
 
     /**
      * Tests setting and getting the data loaded flag.
+     * @covers ::setIsDataLoaded
+     * @covers ::getIsDataLoaded
      */
     public function testSetAndGetIsDataLoaded()
     {
@@ -171,6 +187,8 @@ class CombinationTest extends TestCase
      * Tests the writing and reading of the data.
      * @param Combination $combination
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(Combination $combination, array $expectedData)

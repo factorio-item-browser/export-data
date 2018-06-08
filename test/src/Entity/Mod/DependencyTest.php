@@ -12,12 +12,13 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Mod\Dependency
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Mod\Dependency
  */
 class DependencyTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @coversNothing
      */
     public function testConstruct()
     {
@@ -29,6 +30,7 @@ class DependencyTest extends TestCase
 
     /**
      * Tests the cloning.
+     * @coversNothing
      */
     public function testClone()
     {
@@ -49,6 +51,8 @@ class DependencyTest extends TestCase
 
     /**
      * Tests setting and getting the required mod name.
+     * @covers ::setRequiredModName
+     * @covers ::getRequiredModName
      */
     public function testSetAndGetRequiredModName()
     {
@@ -59,6 +63,8 @@ class DependencyTest extends TestCase
 
     /**
      * Tests setting and getting the required version.
+     * @covers ::setRequiredVersion
+     * @covers ::getRequiredVersion
      */
     public function testSetAndGetRequiredVersion()
     {
@@ -69,6 +75,8 @@ class DependencyTest extends TestCase
 
     /**
      * Tests setting and getting the mandatory flag.
+     * @covers ::setIsMandatory
+     * @covers ::getIsMandatory
      */
     public function testSetAndGetIsMandatory()
     {
@@ -104,6 +112,8 @@ class DependencyTest extends TestCase
      * Tests the writing and reading of the data.
      * @param Dependency $dependency
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(Dependency $dependency, array $expectedData)

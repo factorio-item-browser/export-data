@@ -15,12 +15,13 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Recipe
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Recipe
  */
 class RecipeTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @covers ::__construct
      */
     public function testConstruct()
     {
@@ -31,6 +32,7 @@ class RecipeTest extends TestCase
         $this->assertEquals([], $recipe->getIngredients());
         $this->assertEquals([], $recipe->getProducts());
         $this->assertEquals(0, $recipe->getCraftingTime());
+        $this->assertEquals('', $recipe->getCraftingCategory());
         $this->assertInstanceOf(LocalisedString::class, $recipe->getLabels());
         $this->assertInstanceOf(LocalisedString::class, $recipe->getDescriptions());
         $this->assertEquals('', $recipe->getIconHash());
@@ -38,6 +40,7 @@ class RecipeTest extends TestCase
 
     /**
      * Tests the cloning.
+     * @covers ::__clone
      */
     public function testClone()
     {
@@ -51,6 +54,8 @@ class RecipeTest extends TestCase
                ->setMode('bar')
                ->addIngredient($ingredient)
                ->addProduct($product)
+               ->setCraftingTime(13.37)
+               ->setCraftingCategory('mno')
                ->setIconHash('baz');
         $recipe->getLabels()->setTranslation('en', 'abc');
         $recipe->getDescriptions()->setTranslation('en', 'def');
@@ -58,6 +63,8 @@ class RecipeTest extends TestCase
         $clonedRecipe = clone($recipe);
         $recipe->setName('oof')
                ->setMode('rab')
+               ->setCraftingTime(73.31)
+               ->setCraftingCategory('onm')
                ->setIconHash('zab');
         $recipe->getLabels()->setTranslation('en', 'cba');
         $recipe->getDescriptions()->setTranslation('en', 'fde');
@@ -66,6 +73,8 @@ class RecipeTest extends TestCase
 
         $this->assertEquals('foo', $clonedRecipe->getName());
         $this->assertEquals('bar', $clonedRecipe->getMode());
+        $this->assertEquals(13.37, $clonedRecipe->getCraftingTime());
+        $this->assertEquals('mno', $clonedRecipe->getCraftingCategory());
         $this->assertEquals('baz', $clonedRecipe->getIconHash());
         $this->assertEquals('abc', $clonedRecipe->getLabels()->getTranslation('en'));
         $this->assertEquals('def', $clonedRecipe->getDescriptions()->getTranslation('en'));
@@ -78,6 +87,8 @@ class RecipeTest extends TestCase
 
     /**
      * Tests setting and getting the name.
+     * @covers ::setName
+     * @covers ::getName
      */
     public function testSetAndGetName()
     {
@@ -88,6 +99,8 @@ class RecipeTest extends TestCase
 
     /**
      * Tests setting and getting the mode.
+     * @covers ::setMode
+     * @covers ::getMode
      */
     public function testSetAndGetMode()
     {
@@ -98,6 +111,9 @@ class RecipeTest extends TestCase
 
     /**
      * Tests setting, adding and getting the ingredients.
+     * @covers ::setIngredients
+     * @covers ::getIngredients
+     * @covers ::addIngredient
      */
     public function testSetAddAndGetIngredients()
     {
@@ -118,6 +134,9 @@ class RecipeTest extends TestCase
 
     /**
      * Tests setting, adding and getting the products.
+     * @covers ::setProducts
+     * @covers ::getProducts
+     * @covers ::addProduct
      */
     public function testSetAddAndGetProducts()
     {
@@ -138,6 +157,8 @@ class RecipeTest extends TestCase
 
     /**
      * Tests setting and getting the crafting time.
+     * @covers ::setCraftingTime
+     * @covers ::getCraftingTime
      */
     public function testSetAndGetCraftingTime()
     {
@@ -147,7 +168,21 @@ class RecipeTest extends TestCase
     }
 
     /**
+     * Tests setting and getting the craftingCategory.
+     * @covers ::setCraftingCategory
+     * @covers ::getCraftingCategory
+     */
+    public function testSetAndGetCraftingCategory()
+    {
+        $recipe = new Recipe();
+        $this->assertEquals($recipe, $recipe->setCraftingCategory('abc'));
+        $this->assertEquals('abc', $recipe->getCraftingCategory());
+    }
+
+    /**
      * Tests setting and getting the labels.
+     * @covers ::setLabels
+     * @covers ::getLabels
      */
     public function testSetAndGetLabels()
     {
@@ -161,6 +196,8 @@ class RecipeTest extends TestCase
 
     /**
      * Tests setting and getting the descriptions.
+     * @covers ::setDescriptions
+     * @covers ::getDescriptions
      */
     public function testSetAndGetDescriptions()
     {
@@ -174,6 +211,8 @@ class RecipeTest extends TestCase
 
     /**
      * Tests setting and getting the icon hash.
+     * @covers ::setIconHash
+     * @covers ::getIconHash
      */
     public function testSetAndGetIconHash()
     {
@@ -240,6 +279,8 @@ class RecipeTest extends TestCase
      * Tests the writing and reading of the data.
      * @param Recipe $recipe
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(Recipe $recipe, array $expectedData)
