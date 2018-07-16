@@ -114,11 +114,13 @@ class IconTest extends TestCase
 
         $icon = new Icon();
         $icon->setHash('ghi')
+             ->setSize(64)
              ->addLayer($layer1)
              ->addLayer($layer2);
 
         $data = [
             'h' => 'ghi',
+            's' => 64,
             'l' => [
                 ['f' => 'abc'],
                 ['f' => 'def'],

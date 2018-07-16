@@ -130,6 +130,7 @@ class Icon implements EntityInterface
     {
         $dataBuilder = new DataBuilder();
         $dataBuilder->setString('h', $this->getHash(), '')
+                    ->setInteger('s', $this->getSize(), self::DEFAULT_SIZE)
                     ->setArray('l', $this->getLayers(), function (Layer $layer): array {
                         return $layer->writeData();
                     }, []);
@@ -144,6 +145,7 @@ class Icon implements EntityInterface
     public function readData(DataContainer $data)
     {
         $this->hash = $data->getString('h', '');
+        $this->size = $data->getInteger('s', self::DEFAULT_SIZE);
         $this->layers = array_map(function (DataContainer $data): Layer {
             return (new Layer())->readData($data);
         }, $data->getObjectArray('l'));
