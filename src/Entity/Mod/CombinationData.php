@@ -297,7 +297,7 @@ class CombinationData
     {
         $result = null;
         foreach ($this->icons as $icon) {
-            if ($icon->getIconHash() === $iconHash) {
+            if ($icon->getHash() === $iconHash) {
                 $result = $icon;
                 break;
             }
@@ -316,13 +316,13 @@ class CombinationData
 
     /**
      * Removes the icon with the specified hash from the combination.
-     * @param string $iconHash
+     * @param string $hash
      * @return $this
      */
-    public function removeIcon(string $iconHash)
+    public function removeIcon(string $hash)
     {
         foreach ($this->icons as $key => $icon) {
-            if ($icon->getIconHash() === $iconHash) {
+            if ($icon->getHash() === $hash) {
                 unset($this->icons[$key]);
                 break;
             }

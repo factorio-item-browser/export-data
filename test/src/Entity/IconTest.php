@@ -25,7 +25,8 @@ class IconTest extends TestCase
     public function testConstruct()
     {
         $icon = new Icon();
-        $this->assertEquals('', $icon->getIconHash());
+        $this->assertEquals('', $icon->getHash());
+        $this->assertEquals(Icon::DEFAULT_SIZE, $icon->getSize());
         $this->assertEquals([], $icon->getLayers());
     }
 
@@ -39,30 +40,42 @@ class IconTest extends TestCase
         $layer->setFileName('foo');
 
         $icon = new Icon();
-        $icon->setIconHash('bar')
+        $icon->setHash('bar')
              ->addLayer($layer);
 
         $clonedIcon = clone($icon);
-        $icon->setIconHash('rab');
+        $icon->setHash('rab');
         $layer->setFileName('oof');
 
-        $this->assertEquals('bar', $clonedIcon->getIconHash());
+        $this->assertEquals('bar', $clonedIcon->getHash());
         $layers = $clonedIcon->getLayers();
         $this->assertEquals('foo', array_pop($layers)->getFileName());
     }
 
     /**
-     * Tests setting and getting the icon hash.
-     * @covers ::setIconHash
-     * @covers ::getIconHash
+     * Tests setting and getting the hash.
+     * @covers ::setHash
+     * @covers ::getHash
      */
-    public function testSetAndGetIconHash()
+    public function testSetAndGetHash()
     {
         $icon = new Icon();
-        $this->assertEquals($icon, $icon->setIconHash('foo'));
-        $this->assertEquals('foo', $icon->getIconHash());
+        $this->assertEquals($icon, $icon->setHash('foo'));
+        $this->assertEquals('foo', $icon->getHash());
     }
 
+    /**
+     * Tests setting and getting the size.
+     * @covers ::setSize
+     * @covers ::getSize
+     */
+    public function testSetAndGetSize()
+    {
+        $icon = new Icon();
+        $this->assertEquals($icon, $icon->setSize(64));
+        $this->assertEquals(64, $icon->getSize());
+    }
+    
     /**
      * Tests setting, adding and getting the layers.
      * @covers ::setLayers
@@ -98,7 +111,7 @@ class IconTest extends TestCase
         $layer2->setFileName('def');
 
         $icon = new Icon();
-        $icon->setIconHash('ghi')
+        $icon->setHash('ghi')
              ->addLayer($layer1)
              ->addLayer($layer2);
 

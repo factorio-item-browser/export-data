@@ -49,7 +49,7 @@ class CombinationDataTest extends TestCase
         $machine = new Machine();
         $machine->setName('mno');
         $icon = new Icon();
-        $icon->setIconHash('pqr');
+        $icon->setHash('pqr');
 
         $combinationData = new CombinationData();
         $combinationData->addItem($item)
@@ -63,7 +63,7 @@ class CombinationDataTest extends TestCase
         $recipe->setName('ihg')
                ->setMode('lkj');
         $machine->setName('onm');
-        $icon->setIconHash('rqp');
+        $icon->setHash('rqp');
 
         $this->assertInstanceOf(Item::class, $clonedCombination->getItem('abc', 'def'));
         $this->assertInstanceOf(Recipe::class, $clonedCombination->getRecipe('ghi', 'jkl'));
@@ -199,11 +199,11 @@ class CombinationDataTest extends TestCase
     public function testSetAddGetAndRemoveIcons()
     {
         $icon1 = new Icon();
-        $icon1->setIconHash('abc');
+        $icon1->setHash('abc');
         $icon2 = new Icon();
-        $icon2->setIconHash('def');
+        $icon2->setHash('def');
         $icon3 = new Icon();
-        $icon3->setIconHash('ghi');
+        $icon3->setHash('ghi');
 
         $combinationData = new CombinationData();
         $this->assertEquals($combinationData, $combinationData->setIcons([$icon1, new Item(), $icon2]));
@@ -244,9 +244,9 @@ class CombinationDataTest extends TestCase
         $machine2 = new Machine();
         $machine2->setName('m21');
         $icon1 = new Icon();
-        $icon1->setIconHash('c42');
+        $icon1->setHash('c42');
         $icon2 = new Icon();
-        $icon2->setIconHash('c21');
+        $icon2->setHash('c21');
 
         $combinationData = new CombinationData();
         $combinationData->addItem($item1)
