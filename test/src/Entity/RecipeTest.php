@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowserTest\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataContainer;
@@ -27,15 +29,15 @@ class RecipeTest extends TestCase
     {
         $recipe = new Recipe();
 
-        $this->assertEquals('', $recipe->getName());
-        $this->assertEquals('', $recipe->getMode());
-        $this->assertEquals([], $recipe->getIngredients());
-        $this->assertEquals([], $recipe->getProducts());
-        $this->assertEquals(0, $recipe->getCraftingTime());
-        $this->assertEquals('', $recipe->getCraftingCategory());
+        $this->assertSame('', $recipe->getName());
+        $this->assertSame('', $recipe->getMode());
+        $this->assertSame([], $recipe->getIngredients());
+        $this->assertSame([], $recipe->getProducts());
+        $this->assertSame(0., $recipe->getCraftingTime());
+        $this->assertSame('', $recipe->getCraftingCategory());
         $this->assertInstanceOf(LocalisedString::class, $recipe->getLabels());
         $this->assertInstanceOf(LocalisedString::class, $recipe->getDescriptions());
-        $this->assertEquals('', $recipe->getIconHash());
+        $this->assertSame('', $recipe->getIconHash());
     }
 
     /**
@@ -71,18 +73,18 @@ class RecipeTest extends TestCase
         $ingredient->setType('ihg');
         $product->setType('lkj');
 
-        $this->assertEquals('foo', $clonedRecipe->getName());
-        $this->assertEquals('bar', $clonedRecipe->getMode());
-        $this->assertEquals(13.37, $clonedRecipe->getCraftingTime());
-        $this->assertEquals('mno', $clonedRecipe->getCraftingCategory());
-        $this->assertEquals('baz', $clonedRecipe->getIconHash());
-        $this->assertEquals('abc', $clonedRecipe->getLabels()->getTranslation('en'));
-        $this->assertEquals('def', $clonedRecipe->getDescriptions()->getTranslation('en'));
+        $this->assertSame('foo', $clonedRecipe->getName());
+        $this->assertSame('bar', $clonedRecipe->getMode());
+        $this->assertSame(13.37, $clonedRecipe->getCraftingTime());
+        $this->assertSame('mno', $clonedRecipe->getCraftingCategory());
+        $this->assertSame('baz', $clonedRecipe->getIconHash());
+        $this->assertSame('abc', $clonedRecipe->getLabels()->getTranslation('en'));
+        $this->assertSame('def', $clonedRecipe->getDescriptions()->getTranslation('en'));
 
         $ingredients = $clonedRecipe->getIngredients();
-        $this->assertEquals('ghi', array_pop($ingredients)->getType());
+        $this->assertSame('ghi', array_pop($ingredients)->getType());
         $products = $clonedRecipe->getProducts();
-        $this->assertEquals('jkl', array_pop($products)->getType());
+        $this->assertSame('jkl', array_pop($products)->getType());
     }
 
     /**
@@ -93,8 +95,8 @@ class RecipeTest extends TestCase
     public function testSetAndGetName()
     {
         $recipe = new Recipe();
-        $this->assertEquals($recipe, $recipe->setName('foo'));
-        $this->assertEquals('foo', $recipe->getName());
+        $this->assertSame($recipe, $recipe->setName('foo'));
+        $this->assertSame('foo', $recipe->getName());
     }
 
     /**
@@ -105,8 +107,8 @@ class RecipeTest extends TestCase
     public function testSetAndGetMode()
     {
         $recipe = new Recipe();
-        $this->assertEquals($recipe, $recipe->setMode('foo'));
-        $this->assertEquals('foo', $recipe->getMode());
+        $this->assertSame($recipe, $recipe->setMode('foo'));
+        $this->assertSame('foo', $recipe->getMode());
     }
 
     /**
@@ -125,11 +127,11 @@ class RecipeTest extends TestCase
         $ingredient3->setType('ghi');
 
         $recipe = new Recipe();
-        $this->assertEquals($recipe, $recipe->setIngredients([$ingredient1, new Product(), $ingredient2]));
-        $this->assertEquals([$ingredient1, $ingredient2], $recipe->getIngredients());
+        $this->assertSame($recipe, $recipe->setIngredients([$ingredient1, new Product(), $ingredient2]));
+        $this->assertSame([$ingredient1, $ingredient2], $recipe->getIngredients());
 
-        $this->assertEquals($recipe, $recipe->addIngredient($ingredient3));
-        $this->assertEquals([$ingredient1, $ingredient2, $ingredient3], $recipe->getIngredients());
+        $this->assertSame($recipe, $recipe->addIngredient($ingredient3));
+        $this->assertSame([$ingredient1, $ingredient2, $ingredient3], $recipe->getIngredients());
     }
 
     /**
@@ -148,11 +150,11 @@ class RecipeTest extends TestCase
         $product3->setType('ghi');
 
         $recipe = new Recipe();
-        $this->assertEquals($recipe, $recipe->setProducts([$product1, new Ingredient(), $product2]));
-        $this->assertEquals([$product1, $product2], $recipe->getProducts());
+        $this->assertSame($recipe, $recipe->setProducts([$product1, new Ingredient(), $product2]));
+        $this->assertSame([$product1, $product2], $recipe->getProducts());
 
-        $this->assertEquals($recipe, $recipe->addProduct($product3));
-        $this->assertEquals([$product1, $product2, $product3], $recipe->getProducts());
+        $this->assertSame($recipe, $recipe->addProduct($product3));
+        $this->assertSame([$product1, $product2, $product3], $recipe->getProducts());
     }
 
     /**
@@ -163,8 +165,8 @@ class RecipeTest extends TestCase
     public function testSetAndGetCraftingTime()
     {
         $recipe = new Recipe();
-        $this->assertEquals($recipe, $recipe->setCraftingTime(13.37));
-        $this->assertEquals(13.37, $recipe->getCraftingTime());
+        $this->assertSame($recipe, $recipe->setCraftingTime(13.37));
+        $this->assertSame(13.37, $recipe->getCraftingTime());
     }
 
     /**
@@ -175,8 +177,8 @@ class RecipeTest extends TestCase
     public function testSetAndGetCraftingCategory()
     {
         $recipe = new Recipe();
-        $this->assertEquals($recipe, $recipe->setCraftingCategory('abc'));
-        $this->assertEquals('abc', $recipe->getCraftingCategory());
+        $this->assertSame($recipe, $recipe->setCraftingCategory('abc'));
+        $this->assertSame('abc', $recipe->getCraftingCategory());
     }
 
     /**
@@ -190,8 +192,8 @@ class RecipeTest extends TestCase
         $labels->setTranslation('en', 'foo');
 
         $item = new Recipe();
-        $this->assertEquals($item, $item->setLabels($labels));
-        $this->assertEquals($labels, $item->getLabels());
+        $this->assertSame($item, $item->setLabels($labels));
+        $this->assertSame($labels, $item->getLabels());
     }
 
     /**
@@ -205,8 +207,8 @@ class RecipeTest extends TestCase
         $descriptions->setTranslation('en', 'foo');
 
         $item = new Recipe();
-        $this->assertEquals($item, $item->setDescriptions($descriptions));
-        $this->assertEquals($descriptions, $item->getDescriptions());
+        $this->assertSame($item, $item->setDescriptions($descriptions));
+        $this->assertSame($descriptions, $item->getDescriptions());
     }
 
     /**
@@ -217,8 +219,8 @@ class RecipeTest extends TestCase
     public function testSetAndGetIconHash()
     {
         $item = new Recipe();
-        $this->assertEquals($item, $item->setIconHash('foo'));
-        $this->assertEquals('foo', $item->getIconHash());
+        $this->assertSame($item, $item->setIconHash('foo'));
+        $this->assertSame('foo', $item->getIconHash());
     }
 
     /**
@@ -289,7 +291,7 @@ class RecipeTest extends TestCase
         $this->assertEquals($expectedData, $data);
 
         $newRecipe = new Recipe();
-        $this->assertEquals($newRecipe, $newRecipe->readData(new DataContainer($data)));
+        $this->assertSame($newRecipe, $newRecipe->readData(new DataContainer($data)));
         $this->assertEquals($newRecipe, $recipe);
     }
 }

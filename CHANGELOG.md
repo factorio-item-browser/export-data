@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Added crafting category to `Recipe` entity.
+- Added the `Machine` entity.
+- Added flag to `Translation` entity for duplicating machine localisation.
+
+### Changed
+
+- Renamed `getIconHash()` to `getHash()` in `Icon` entity.
+
 ## 1.1.0 - 2018-04-05
 
 ### Changed

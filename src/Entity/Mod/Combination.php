@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowser\ExportData\Entity\Mod;
 
 use BluePsyduck\Common\Data\DataBuilder;

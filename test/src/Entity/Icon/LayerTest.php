@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowserTest\ExportData\Entity\Icon;
 
 use BluePsyduck\Common\Data\DataContainer;
@@ -24,11 +26,11 @@ class LayerTest extends TestCase
     public function testConstruct()
     {
         $layer = new Layer();
-        $this->assertEquals('', $layer->getFileName());
+        $this->assertSame('', $layer->getFileName());
         $this->assertInstanceOf(Color::class, $layer->getTintColor());
-        $this->assertEquals(0, $layer->getOffsetX());
-        $this->assertEquals(0, $layer->getOffsetY());
-        $this->assertEquals(1., $layer->getScale());
+        $this->assertSame(0, $layer->getOffsetX());
+        $this->assertSame(0, $layer->getOffsetY());
+        $this->assertSame(1., $layer->getScale());
     }
 
     /**
@@ -51,11 +53,11 @@ class LayerTest extends TestCase
               ->setScale(73.31);
         $layer->getTintColor()->setAlpha(2.4);
 
-        $this->assertEquals('foo', $clonedLayer->getFileName());
-        $this->assertEquals(42, $clonedLayer->getOffsetX());
-        $this->assertEquals(21, $clonedLayer->getOffsetY());
-        $this->assertEquals(13.37, $clonedLayer->getScale());
-        $this->assertEquals(4.2, $clonedLayer->getTintColor()->getAlpha());
+        $this->assertSame('foo', $clonedLayer->getFileName());
+        $this->assertSame(42, $clonedLayer->getOffsetX());
+        $this->assertSame(21, $clonedLayer->getOffsetY());
+        $this->assertSame(13.37, $clonedLayer->getScale());
+        $this->assertSame(4.2, $clonedLayer->getTintColor()->getAlpha());
     }
 
     /**
@@ -66,8 +68,8 @@ class LayerTest extends TestCase
     public function testSetAndGetFileName()
     {
         $layer = new layer();
-        $this->assertEquals($layer, $layer->setFileName('foo'));
-        $this->assertEquals('foo', $layer->getFileName());
+        $this->assertSame($layer, $layer->setFileName('foo'));
+        $this->assertSame('foo', $layer->getFileName());
     }
 
     /**
@@ -81,8 +83,8 @@ class LayerTest extends TestCase
         $color->setAlpha(0.42);
 
         $layer = new layer();
-        $this->assertEquals($layer, $layer->setTintColor($color));
-        $this->assertEquals($color, $layer->getTintColor());
+        $this->assertSame($layer, $layer->setTintColor($color));
+        $this->assertSame($color, $layer->getTintColor());
     }
 
     /**
@@ -93,8 +95,8 @@ class LayerTest extends TestCase
     public function testSetAndGetOffsetX()
     {
         $layer = new layer();
-        $this->assertEquals($layer, $layer->setOffsetX(42));
-        $this->assertEquals(42, $layer->getOffsetX());
+        $this->assertSame($layer, $layer->setOffsetX(42));
+        $this->assertSame(42, $layer->getOffsetX());
     }
 
     /**
@@ -105,8 +107,8 @@ class LayerTest extends TestCase
     public function testSetAndGetOffsetY()
     {
         $layer = new layer();
-        $this->assertEquals($layer, $layer->setOffsetY(42));
-        $this->assertEquals(42, $layer->getOffsetY());
+        $this->assertSame($layer, $layer->setOffsetY(42));
+        $this->assertSame(42, $layer->getOffsetY());
     }
 
     /**
@@ -117,8 +119,8 @@ class LayerTest extends TestCase
     public function testSetAndGetScale()
     {
         $layer = new layer();
-        $this->assertEquals($layer, $layer->setScale(4.2));
-        $this->assertEquals(4.2, $layer->getScale());
+        $this->assertSame($layer, $layer->setScale(4.2));
+        $this->assertSame(4.2, $layer->getScale());
     }
 
     /**
@@ -164,7 +166,7 @@ class LayerTest extends TestCase
         $this->assertEquals($expectedData, $data);
 
         $newLayer = new Layer();
-        $this->assertEquals($newLayer, $newLayer->readData(new DataContainer($data)));
+        $this->assertSame($newLayer, $newLayer->readData(new DataContainer($data)));
         $this->assertEquals($newLayer, $layer);
     }
 }

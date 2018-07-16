@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowserTest\ExportData\Entity\Recipe;
 
 use BluePsyduck\Common\Data\DataContainer;
@@ -24,12 +26,12 @@ class ProductTest extends TestCase
     {
         $product = new Product();
 
-        $this->assertEquals('', $product->getType());
-        $this->assertEquals('', $product->getName());
-        $this->assertEquals(1., $product->getAmountMin());
-        $this->assertEquals(1., $product->getAmountMax());
-        $this->assertEquals(1., $product->getProbability());
-        $this->assertEquals(0, $product->getOrder());
+        $this->assertSame('', $product->getType());
+        $this->assertSame('', $product->getName());
+        $this->assertSame(1., $product->getAmountMin());
+        $this->assertSame(1., $product->getAmountMax());
+        $this->assertSame(1., $product->getProbability());
+        $this->assertSame(0, $product->getOrder());
     }
 
     /**
@@ -54,12 +56,12 @@ class ProductTest extends TestCase
             ->setProbability(1.2)
             ->setOrder(24);
 
-        $this->assertEquals('abc', $clonedProduct->getType());
-        $this->assertEquals('def', $clonedProduct->getName());
-        $this->assertEquals(13.37, $clonedProduct->getAmountMin());
-        $this->assertEquals(4.2, $clonedProduct->getAmountMax());
-        $this->assertEquals(2.1, $clonedProduct->getProbability());
-        $this->assertEquals(42, $clonedProduct->getOrder());
+        $this->assertSame('abc', $clonedProduct->getType());
+        $this->assertSame('def', $clonedProduct->getName());
+        $this->assertSame(13.37, $clonedProduct->getAmountMin());
+        $this->assertSame(4.2, $clonedProduct->getAmountMax());
+        $this->assertSame(2.1, $clonedProduct->getProbability());
+        $this->assertSame(42, $clonedProduct->getOrder());
     }
 
     /**
@@ -70,8 +72,8 @@ class ProductTest extends TestCase
     public function testSetAndGetType()
     {
         $product = new Product();
-        $this->assertEquals($product, $product->setType('foo'));
-        $this->assertEquals('foo', $product->getType());
+        $this->assertSame($product, $product->setType('foo'));
+        $this->assertSame('foo', $product->getType());
     }
 
     /**
@@ -82,8 +84,8 @@ class ProductTest extends TestCase
     public function testSetAndGetName()
     {
         $product = new Product();
-        $this->assertEquals($product, $product->setName('foo'));
-        $this->assertEquals('foo', $product->getName());
+        $this->assertSame($product, $product->setName('foo'));
+        $this->assertSame('foo', $product->getName());
     }
 
     /**
@@ -94,8 +96,8 @@ class ProductTest extends TestCase
     public function testSetAndGetAmountMin()
     {
         $product = new Product();
-        $this->assertEquals($product, $product->setAmountMin(13.37));
-        $this->assertEquals(13.37, $product->getAmountMin());
+        $this->assertSame($product, $product->setAmountMin(13.37));
+        $this->assertSame(13.37, $product->getAmountMin());
     }
 
     /**
@@ -106,8 +108,8 @@ class ProductTest extends TestCase
     public function testSetAndGetAmountMax()
     {
         $product = new Product();
-        $this->assertEquals($product, $product->setAmountMax(13.37));
-        $this->assertEquals(13.37, $product->getAmountMax());
+        $this->assertSame($product, $product->setAmountMax(13.37));
+        $this->assertSame(13.37, $product->getAmountMax());
     }
 
     /**
@@ -118,8 +120,8 @@ class ProductTest extends TestCase
     public function testSetAndGetProbability()
     {
         $product = new Product();
-        $this->assertEquals($product, $product->setProbability(13.37));
-        $this->assertEquals(13.37, $product->getProbability());
+        $this->assertSame($product, $product->setProbability(13.37));
+        $this->assertSame(13.37, $product->getProbability());
     }
 
     /**
@@ -130,8 +132,8 @@ class ProductTest extends TestCase
     public function testSetAndGetOrder()
     {
         $product = new Product();
-        $this->assertEquals($product, $product->setOrder(42));
-        $this->assertEquals(42, $product->getOrder());
+        $this->assertSame($product, $product->setOrder(42));
+        $this->assertSame(42, $product->getOrder());
     }
 
     /**
@@ -177,7 +179,7 @@ class ProductTest extends TestCase
         $this->assertEquals($expectedData, $data);
 
         $newProduct = new Product();
-        $this->assertEquals($newProduct, $newProduct->readData(new DataContainer($data)));
+        $this->assertSame($newProduct, $newProduct->readData(new DataContainer($data)));
         $this->assertEquals($newProduct, $product);
     }
 }

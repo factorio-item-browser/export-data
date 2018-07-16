@@ -28,10 +28,10 @@ class CombinationDataTest extends TestCase
     public function testConstruct()
     {
         $combinationData = new CombinationData();
-        $this->assertEquals([], $combinationData->getItems());
-        $this->assertEquals([], $combinationData->getRecipes());
-        $this->assertEquals([], $combinationData->getMachines());
-        $this->assertEquals([], $combinationData->getIcons());
+        $this->assertSame([], $combinationData->getItems());
+        $this->assertSame([], $combinationData->getRecipes());
+        $this->assertSame([], $combinationData->getMachines());
+        $this->assertSame([], $combinationData->getIcons());
     }
 
     /**
@@ -92,23 +92,23 @@ class CombinationDataTest extends TestCase
               ->setName('pqr');
 
         $combinationData = new CombinationData();
-        $this->assertEquals($combinationData, $combinationData->setItems([$item1, new Recipe(), $item2]));
-        $this->assertEquals([$item1, $item2], $combinationData->getItems());
-        $this->assertEquals($item1, $combinationData->getItem('abc', 'def'));
-        $this->assertEquals($item2, $combinationData->getItem('ghi', 'jkl'));
-        $this->assertEquals(null, $combinationData->getItem('mno', 'pqr'));
+        $this->assertSame($combinationData, $combinationData->setItems([$item1, new Recipe(), $item2]));
+        $this->assertSame([$item1, $item2], $combinationData->getItems());
+        $this->assertSame($item1, $combinationData->getItem('abc', 'def'));
+        $this->assertSame($item2, $combinationData->getItem('ghi', 'jkl'));
+        $this->assertNull($combinationData->getItem('mno', 'pqr'));
 
-        $this->assertEquals($combinationData, $combinationData->addItem($item3));
-        $this->assertEquals([$item1, $item2, $item3], $combinationData->getItems());
-        $this->assertEquals($item1, $combinationData->getItem('abc', 'def'));
-        $this->assertEquals($item2, $combinationData->getItem('ghi', 'jkl'));
-        $this->assertEquals($item3, $combinationData->getItem('mno', 'pqr'));
+        $this->assertSame($combinationData, $combinationData->addItem($item3));
+        $this->assertSame([$item1, $item2, $item3], $combinationData->getItems());
+        $this->assertSame($item1, $combinationData->getItem('abc', 'def'));
+        $this->assertSame($item2, $combinationData->getItem('ghi', 'jkl'));
+        $this->assertSame($item3, $combinationData->getItem('mno', 'pqr'));
 
-        $this->assertEquals($combinationData, $combinationData->removeItem('mno', 'pqr'));
-        $this->assertEquals([$item1, $item2], $combinationData->getItems());
-        $this->assertEquals($item1, $combinationData->getItem('abc', 'def'));
-        $this->assertEquals($item2, $combinationData->getItem('ghi', 'jkl'));
-        $this->assertEquals(null, $combinationData->getItem('mno', 'pqr'));
+        $this->assertSame($combinationData, $combinationData->removeItem('mno', 'pqr'));
+        $this->assertSame([$item1, $item2], $combinationData->getItems());
+        $this->assertSame($item1, $combinationData->getItem('abc', 'def'));
+        $this->assertSame($item2, $combinationData->getItem('ghi', 'jkl'));
+        $this->assertNull($combinationData->getItem('mno', 'pqr'));
     }
 
     /**
@@ -132,23 +132,23 @@ class CombinationDataTest extends TestCase
                 ->setMode('pqr');
 
         $combinationData = new CombinationData();
-        $this->assertEquals($combinationData, $combinationData->setRecipes([$recipe1, new Item(), $recipe2]));
-        $this->assertEquals([$recipe1, $recipe2], $combinationData->getRecipes());
-        $this->assertEquals($recipe1, $combinationData->getRecipe('abc', 'def'));
-        $this->assertEquals($recipe2, $combinationData->getRecipe('ghi', 'jkl'));
-        $this->assertEquals(null, $combinationData->getRecipe('mno', 'pqr'));
+        $this->assertSame($combinationData, $combinationData->setRecipes([$recipe1, new Item(), $recipe2]));
+        $this->assertSame([$recipe1, $recipe2], $combinationData->getRecipes());
+        $this->assertSame($recipe1, $combinationData->getRecipe('abc', 'def'));
+        $this->assertSame($recipe2, $combinationData->getRecipe('ghi', 'jkl'));
+        $this->assertNull($combinationData->getRecipe('mno', 'pqr'));
 
-        $this->assertEquals($combinationData, $combinationData->addRecipe($recipe3));
-        $this->assertEquals([$recipe1, $recipe2, $recipe3], $combinationData->getRecipes());
-        $this->assertEquals($recipe1, $combinationData->getRecipe('abc', 'def'));
-        $this->assertEquals($recipe2, $combinationData->getRecipe('ghi', 'jkl'));
-        $this->assertEquals($recipe3, $combinationData->getRecipe('mno', 'pqr'));
+        $this->assertSame($combinationData, $combinationData->addRecipe($recipe3));
+        $this->assertSame([$recipe1, $recipe2, $recipe3], $combinationData->getRecipes());
+        $this->assertSame($recipe1, $combinationData->getRecipe('abc', 'def'));
+        $this->assertSame($recipe2, $combinationData->getRecipe('ghi', 'jkl'));
+        $this->assertSame($recipe3, $combinationData->getRecipe('mno', 'pqr'));
 
-        $this->assertEquals($combinationData, $combinationData->removeRecipe('mno', 'pqr'));
-        $this->assertEquals([$recipe1, $recipe2], $combinationData->getRecipes());
-        $this->assertEquals($recipe1, $combinationData->getRecipe('abc', 'def'));
-        $this->assertEquals($recipe2, $combinationData->getRecipe('ghi', 'jkl'));
-        $this->assertEquals(null, $combinationData->getRecipe('mno', 'pqr'));
+        $this->assertSame($combinationData, $combinationData->removeRecipe('mno', 'pqr'));
+        $this->assertSame([$recipe1, $recipe2], $combinationData->getRecipes());
+        $this->assertSame($recipe1, $combinationData->getRecipe('abc', 'def'));
+        $this->assertSame($recipe2, $combinationData->getRecipe('ghi', 'jkl'));
+        $this->assertNull($combinationData->getRecipe('mno', 'pqr'));
     }
 
     /**
@@ -169,23 +169,23 @@ class CombinationDataTest extends TestCase
         $machine3->setName('ghi');
 
         $combinationData = new CombinationData();
-        $this->assertEquals($combinationData, $combinationData->setMachines([$machine1, new Item(), $machine2]));
-        $this->assertEquals([$machine1, $machine2], $combinationData->getMachines());
-        $this->assertEquals($machine1, $combinationData->getMachine('abc'));
-        $this->assertEquals($machine2, $combinationData->getMachine('def'));
-        $this->assertEquals(null, $combinationData->getMachine('ghi'));
+        $this->assertSame($combinationData, $combinationData->setMachines([$machine1, new Item(), $machine2]));
+        $this->assertSame([$machine1, $machine2], $combinationData->getMachines());
+        $this->assertSame($machine1, $combinationData->getMachine('abc'));
+        $this->assertSame($machine2, $combinationData->getMachine('def'));
+        $this->assertNull($combinationData->getMachine('ghi'));
 
-        $this->assertEquals($combinationData, $combinationData->addMachine($machine3));
-        $this->assertEquals([$machine1, $machine2, $machine3], $combinationData->getMachines());
-        $this->assertEquals($machine1, $combinationData->getMachine('abc'));
-        $this->assertEquals($machine2, $combinationData->getMachine('def'));
-        $this->assertEquals($machine3, $combinationData->getMachine('ghi'));
+        $this->assertSame($combinationData, $combinationData->addMachine($machine3));
+        $this->assertSame([$machine1, $machine2, $machine3], $combinationData->getMachines());
+        $this->assertSame($machine1, $combinationData->getMachine('abc'));
+        $this->assertSame($machine2, $combinationData->getMachine('def'));
+        $this->assertSame($machine3, $combinationData->getMachine('ghi'));
 
-        $this->assertEquals($combinationData, $combinationData->removeMachine('ghi'));
-        $this->assertEquals([$machine1, $machine2], $combinationData->getMachines());
-        $this->assertEquals($machine1, $combinationData->getMachine('abc'));
-        $this->assertEquals($machine2, $combinationData->getMachine('def'));
-        $this->assertEquals(null, $combinationData->getMachine('ghi'));
+        $this->assertSame($combinationData, $combinationData->removeMachine('ghi'));
+        $this->assertSame([$machine1, $machine2], $combinationData->getMachines());
+        $this->assertSame($machine1, $combinationData->getMachine('abc'));
+        $this->assertSame($machine2, $combinationData->getMachine('def'));
+        $this->assertNull($combinationData->getMachine('ghi'));
     }
 
     /**
@@ -206,23 +206,23 @@ class CombinationDataTest extends TestCase
         $icon3->setHash('ghi');
 
         $combinationData = new CombinationData();
-        $this->assertEquals($combinationData, $combinationData->setIcons([$icon1, new Item(), $icon2]));
-        $this->assertEquals([$icon1, $icon2], $combinationData->getIcons());
-        $this->assertEquals($icon1, $combinationData->getIcon('abc'));
-        $this->assertEquals($icon2, $combinationData->getIcon('def'));
-        $this->assertEquals(null, $combinationData->getIcon('ghi'));
+        $this->assertSame($combinationData, $combinationData->setIcons([$icon1, new Item(), $icon2]));
+        $this->assertSame([$icon1, $icon2], $combinationData->getIcons());
+        $this->assertSame($icon1, $combinationData->getIcon('abc'));
+        $this->assertSame($icon2, $combinationData->getIcon('def'));
+        $this->assertNull($combinationData->getIcon('ghi'));
 
-        $this->assertEquals($combinationData, $combinationData->addIcon($icon3));
-        $this->assertEquals([$icon1, $icon2, $icon3], $combinationData->getIcons());
-        $this->assertEquals($icon1, $combinationData->getIcon('abc'));
-        $this->assertEquals($icon2, $combinationData->getIcon('def'));
-        $this->assertEquals($icon3, $combinationData->getIcon('ghi'));
+        $this->assertSame($combinationData, $combinationData->addIcon($icon3));
+        $this->assertSame([$icon1, $icon2, $icon3], $combinationData->getIcons());
+        $this->assertSame($icon1, $combinationData->getIcon('abc'));
+        $this->assertSame($icon2, $combinationData->getIcon('def'));
+        $this->assertSame($icon3, $combinationData->getIcon('ghi'));
 
-        $this->assertEquals($combinationData, $combinationData->removeIcon('ghi'));
-        $this->assertEquals([$icon1, $icon2], $combinationData->getIcons());
-        $this->assertEquals($icon1, $combinationData->getIcon('abc'));
-        $this->assertEquals($icon2, $combinationData->getIcon('def'));
-        $this->assertEquals(null, $combinationData->getIcon('ghi'));
+        $this->assertSame($combinationData, $combinationData->removeIcon('ghi'));
+        $this->assertSame([$icon1, $icon2], $combinationData->getIcons());
+        $this->assertSame($icon1, $combinationData->getIcon('abc'));
+        $this->assertSame($icon2, $combinationData->getIcon('def'));
+        $this->assertNull($combinationData->getIcon('ghi'));
     }
 
     /**
@@ -297,7 +297,7 @@ class CombinationDataTest extends TestCase
         $this->assertEquals($expectedData, $data);
 
         $newCombinationData = new CombinationData();
-        $this->assertEquals($newCombinationData, $newCombinationData->readData(new DataContainer($data)));
+        $this->assertSame($newCombinationData, $newCombinationData->readData(new DataContainer($data)));
         $this->assertEquals($newCombinationData, $combinationData);
     }
 }

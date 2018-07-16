@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowser\ExportData\Entity\Icon;
 
 use BluePsyduck\Common\Data\DataBuilder;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowserTest\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataContainer;
@@ -25,9 +27,9 @@ class IconTest extends TestCase
     public function testConstruct()
     {
         $icon = new Icon();
-        $this->assertEquals('', $icon->getHash());
-        $this->assertEquals(Icon::DEFAULT_SIZE, $icon->getSize());
-        $this->assertEquals([], $icon->getLayers());
+        $this->assertSame('', $icon->getHash());
+        $this->assertSame(Icon::DEFAULT_SIZE, $icon->getSize());
+        $this->assertSame([], $icon->getLayers());
     }
 
     /**
@@ -47,9 +49,9 @@ class IconTest extends TestCase
         $icon->setHash('rab');
         $layer->setFileName('oof');
 
-        $this->assertEquals('bar', $clonedIcon->getHash());
+        $this->assertSame('bar', $clonedIcon->getHash());
         $layers = $clonedIcon->getLayers();
-        $this->assertEquals('foo', array_pop($layers)->getFileName());
+        $this->assertSame('foo', array_pop($layers)->getFileName());
     }
 
     /**
@@ -60,8 +62,8 @@ class IconTest extends TestCase
     public function testSetAndGetHash()
     {
         $icon = new Icon();
-        $this->assertEquals($icon, $icon->setHash('foo'));
-        $this->assertEquals('foo', $icon->getHash());
+        $this->assertSame($icon, $icon->setHash('foo'));
+        $this->assertSame('foo', $icon->getHash());
     }
 
     /**
@@ -72,8 +74,8 @@ class IconTest extends TestCase
     public function testSetAndGetSize()
     {
         $icon = new Icon();
-        $this->assertEquals($icon, $icon->setSize(64));
-        $this->assertEquals(64, $icon->getSize());
+        $this->assertSame($icon, $icon->setSize(64));
+        $this->assertSame(64, $icon->getSize());
     }
     
     /**
@@ -92,11 +94,11 @@ class IconTest extends TestCase
         $layer3->setFileName('ghi');
 
         $icon = new Icon();
-        $this->assertEquals($icon, $icon->setLayers([$layer1, new Color(), $layer2]));
-        $this->assertEquals([$layer1, $layer2], $icon->getLayers());
+        $this->assertSame($icon, $icon->setLayers([$layer1, new Color(), $layer2]));
+        $this->assertSame([$layer1, $layer2], $icon->getLayers());
 
-        $this->assertEquals($icon, $icon->addLayer($layer3));
-        $this->assertEquals([$layer1, $layer2, $layer3], $icon->getLayers());
+        $this->assertSame($icon, $icon->addLayer($layer3));
+        $this->assertSame([$layer1, $layer2, $layer3], $icon->getLayers());
     }
 
     /**
@@ -143,7 +145,7 @@ class IconTest extends TestCase
         $this->assertEquals($expectedData, $data);
 
         $newIcon = new Icon();
-        $this->assertEquals($newIcon, $newIcon->readData(new DataContainer($data)));
+        $this->assertSame($newIcon, $newIcon->readData(new DataContainer($data)));
         $this->assertEquals($newIcon, $icon);
     }
 }

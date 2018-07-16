@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowserTest\ExportData\Entity\Mod;
 
 use BluePsyduck\Common\Data\DataContainer;
@@ -25,10 +27,10 @@ class CombinationTest extends TestCase
     public function testConstruct()
     {
         $combination = new Combination();
-        $this->assertEquals('', $combination->getName());
-        $this->assertEquals('', $combination->getMainModName());
-        $this->assertEquals([], $combination->getLoadedModNames());
-        $this->assertEquals([], $combination->getLoadedOptionalModNames());
+        $this->assertSame('', $combination->getName());
+        $this->assertSame('', $combination->getMainModName());
+        $this->assertSame([], $combination->getLoadedModNames());
+        $this->assertSame([], $combination->getLoadedOptionalModNames());
         $this->assertInstanceOf(CombinationData::class, $combination->getData());
         $this->assertFalse($combination->getIsDataLoaded());
     }
@@ -59,10 +61,10 @@ class CombinationTest extends TestCase
                     ->setIsDataLoaded(false);
         $combination->getData()->removeItem('foo', 'bar');
 
-        $this->assertEquals('abc', $clonedCombination->getName());
-        $this->assertEquals('def', $clonedCombination->getMainModName());
-        $this->assertEquals(['ghi'], $clonedCombination->getLoadedModNames());
-        $this->assertEquals(['jkl'], $clonedCombination->getLoadedOptionalModNames());
+        $this->assertSame('abc', $clonedCombination->getName());
+        $this->assertSame('def', $clonedCombination->getMainModName());
+        $this->assertSame(['ghi'], $clonedCombination->getLoadedModNames());
+        $this->assertSame(['jkl'], $clonedCombination->getLoadedOptionalModNames());
         $this->assertTrue($clonedCombination->getIsDataLoaded());
         $this->assertInstanceOf(Item::class, $clonedCombination->getData()->getItem('foo', 'bar'));
     }
@@ -75,8 +77,8 @@ class CombinationTest extends TestCase
     public function testSetAndGetName()
     {
         $combination = new Combination();
-        $this->assertEquals($combination, $combination->setName('foo'));
-        $this->assertEquals('foo', $combination->getName());
+        $this->assertSame($combination, $combination->setName('foo'));
+        $this->assertSame('foo', $combination->getName());
     }
 
     /**
@@ -87,8 +89,8 @@ class CombinationTest extends TestCase
     public function testSetAndGetMainModName()
     {
         $combination = new Combination();
-        $this->assertEquals($combination, $combination->setMainModName('foo'));
-        $this->assertEquals('foo', $combination->getMainModName());
+        $this->assertSame($combination, $combination->setMainModName('foo'));
+        $this->assertSame('foo', $combination->getMainModName());
     }
 
     /**
@@ -100,11 +102,11 @@ class CombinationTest extends TestCase
     public function testSetAddAndGetLoadedModNames()
     {
         $combination = new Combination();
-        $this->assertEquals($combination, $combination->setLoadedModNames(['abc', 'def']));
-        $this->assertEquals(['abc', 'def'], $combination->getLoadedModNames());
+        $this->assertSame($combination, $combination->setLoadedModNames(['abc', 'def']));
+        $this->assertSame(['abc', 'def'], $combination->getLoadedModNames());
 
-        $this->assertEquals($combination, $combination->addLoadedModName('ghi'));
-        $this->assertEquals(['abc', 'def', 'ghi'], $combination->getLoadedModNames());
+        $this->assertSame($combination, $combination->addLoadedModName('ghi'));
+        $this->assertSame(['abc', 'def', 'ghi'], $combination->getLoadedModNames());
     }
 
     /**
@@ -116,11 +118,11 @@ class CombinationTest extends TestCase
     public function testSetAddAndGetLoadedOptionalModNames()
     {
         $combination = new Combination();
-        $this->assertEquals($combination, $combination->setLoadedOptionalModNames(['abc', 'def']));
-        $this->assertEquals(['abc', 'def'], $combination->getLoadedOptionalModNames());
+        $this->assertSame($combination, $combination->setLoadedOptionalModNames(['abc', 'def']));
+        $this->assertSame(['abc', 'def'], $combination->getLoadedOptionalModNames());
 
-        $this->assertEquals($combination, $combination->addLoadedOptionalModName('ghi'));
-        $this->assertEquals(['abc', 'def', 'ghi'], $combination->getLoadedOptionalModNames());
+        $this->assertSame($combination, $combination->addLoadedOptionalModName('ghi'));
+        $this->assertSame(['abc', 'def', 'ghi'], $combination->getLoadedOptionalModNames());
     }
 
     /**
@@ -134,8 +136,8 @@ class CombinationTest extends TestCase
         $data->addItem(new Item());
         
         $combination = new Combination();
-        $this->assertEquals($combination, $combination->setData($data));
-        $this->assertEquals($data, $combination->getData());
+        $this->assertSame($combination, $combination->setData($data));
+        $this->assertSame($data, $combination->getData());
     }
 
     /**
@@ -146,8 +148,8 @@ class CombinationTest extends TestCase
     public function testSetAndGetIsDataLoaded()
     {
         $combination = new Combination();
-        $this->assertEquals($combination, $combination->setIsDataLoaded(true));
-        $this->assertEquals(true, $combination->getIsDataLoaded());
+        $this->assertSame($combination, $combination->setIsDataLoaded(true));
+        $this->assertTrue($combination->getIsDataLoaded());
     }
 
     /**
@@ -197,7 +199,7 @@ class CombinationTest extends TestCase
         $this->assertEquals($expectedData, $data);
 
         $newCombination = new Combination();
-        $this->assertEquals($newCombination, $newCombination->readData(new DataContainer($data)));
+        $this->assertSame($newCombination, $newCombination->readData(new DataContainer($data)));
         $this->assertEquals($newCombination, $combination);
     }
 }

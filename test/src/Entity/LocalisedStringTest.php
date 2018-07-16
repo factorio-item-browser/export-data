@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowserTest\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataContainer;
@@ -23,7 +25,7 @@ class LocalisedStringTest extends TestCase
     public function testConstruct()
     {
         $localisedString = new LocalisedString();
-        $this->assertEquals([], $localisedString->getTranslations());
+        $this->assertSame([], $localisedString->getTranslations());
     }
 
     /**
@@ -38,7 +40,7 @@ class LocalisedStringTest extends TestCase
         $clonedLocalisedString = clone($localisedString);
         $localisedString->setTranslation('en', 'oof');
 
-        $this->assertEquals('foo', $clonedLocalisedString->getTranslation('en'));
+        $this->assertSame('foo', $clonedLocalisedString->getTranslation('en'));
     }
 
     /**
@@ -51,15 +53,15 @@ class LocalisedStringTest extends TestCase
     public function testSetAndGetTranslations()
     {
         $localisedString = new LocalisedString();
-        $this->assertEquals($localisedString, $localisedString->setTranslation('en', 'foo'));
-        $this->assertEquals($localisedString, $localisedString->setTranslation('de', 'bar'));
-        $this->assertEquals($localisedString, $localisedString->setTranslation('cz', 'baz'));
-        $this->assertEquals($localisedString, $localisedString->setTranslation('cz', ''));
+        $this->assertSame($localisedString, $localisedString->setTranslation('en', 'foo'));
+        $this->assertSame($localisedString, $localisedString->setTranslation('de', 'bar'));
+        $this->assertSame($localisedString, $localisedString->setTranslation('cz', 'baz'));
+        $this->assertSame($localisedString, $localisedString->setTranslation('cz', ''));
 
-        $this->assertEquals(['en' => 'foo', 'de' => 'bar'], $localisedString->getTranslations());
-        $this->assertEquals('foo', $localisedString->getTranslation('en'));
-        $this->assertEquals('bar', $localisedString->getTranslation('de'));
-        $this->assertEquals('', $localisedString->getTranslation('jp'));
+        $this->assertSame(['en' => 'foo', 'de' => 'bar'], $localisedString->getTranslations());
+        $this->assertSame('foo', $localisedString->getTranslation('en'));
+        $this->assertSame('bar', $localisedString->getTranslation('de'));
+        $this->assertSame('', $localisedString->getTranslation('jp'));
     }
 
     /**
@@ -97,7 +99,7 @@ class LocalisedStringTest extends TestCase
         $this->assertEquals($expectedData, $data);
 
         $newLocalisedString = new LocalisedString();
-        $this->assertEquals($newLocalisedString, $newLocalisedString->readData(new DataContainer($data)));
+        $this->assertSame($newLocalisedString, $newLocalisedString->readData(new DataContainer($data)));
         $this->assertEquals($newLocalisedString, $localisedString);
     }
 }

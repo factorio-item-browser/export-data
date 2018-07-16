@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowserTest\ExportData\Entity\Icon;
 
 use BluePsyduck\Common\Data\DataContainer;
@@ -23,10 +25,10 @@ class ColorTest extends TestCase
     public function testConstruct()
     {
         $color = new Color();
-        $this->assertEquals(1., $color->getRed());
-        $this->assertEquals(1., $color->getGreen());
-        $this->assertEquals(1., $color->getBlue());
-        $this->assertEquals(1., $color->getAlpha());
+        $this->assertSame(1., $color->getRed());
+        $this->assertSame(1., $color->getGreen());
+        $this->assertSame(1., $color->getBlue());
+        $this->assertSame(1., $color->getAlpha());
     }
 
     /**
@@ -38,13 +40,13 @@ class ColorTest extends TestCase
     public function testSetAndGetRed()
     {
         $color = new Color();
-        $this->assertEquals($color, $color->setRed(0.25));
-        $this->assertEquals(0.25, $color->getRed());
-        $this->assertEquals(64, $color->getRed(256));
+        $this->assertSame($color, $color->setRed(0.25));
+        $this->assertSame(0.25, $color->getRed());
+        $this->assertSame(64., $color->getRed(256.));
 
-        $this->assertEquals($color, $color->setRed(64, 256));
-        $this->assertEquals(0.25, $color->getRed());
-        $this->assertEquals(64, $color->getRed(256));
+        $this->assertSame($color, $color->setRed(64., 256.));
+        $this->assertSame(0.25, $color->getRed());
+        $this->assertSame(64., $color->getRed(256.));
     }
 
     /**
@@ -56,13 +58,13 @@ class ColorTest extends TestCase
     public function testSetAndGetGreen()
     {
         $color = new Color();
-        $this->assertEquals($color, $color->setGreen(0.25));
-        $this->assertEquals(0.25, $color->getGreen());
-        $this->assertEquals(64, $color->getGreen(256));
+        $this->assertSame($color, $color->setGreen(0.25));
+        $this->assertSame(0.25, $color->getGreen());
+        $this->assertSame(64., $color->getGreen(256.));
 
-        $this->assertEquals($color, $color->setGreen(64, 256));
-        $this->assertEquals(0.25, $color->getGreen());
-        $this->assertEquals(64, $color->getGreen(256));
+        $this->assertSame($color, $color->setGreen(64., 256.));
+        $this->assertSame(0.25, $color->getGreen());
+        $this->assertSame(64., $color->getGreen(256.));
     }
 
     /**
@@ -74,13 +76,13 @@ class ColorTest extends TestCase
     public function testSetAndGetBlue()
     {
         $color = new Color();
-        $this->assertEquals($color, $color->setBlue(0.25));
-        $this->assertEquals(0.25, $color->getBlue());
-        $this->assertEquals(64, $color->getBlue(256));
+        $this->assertSame($color, $color->setBlue(0.25));
+        $this->assertSame(0.25, $color->getBlue());
+        $this->assertSame(64., $color->getBlue(256.));
 
-        $this->assertEquals($color, $color->setBlue(64, 256));
-        $this->assertEquals(0.25, $color->getBlue());
-        $this->assertEquals(64, $color->getBlue(256));
+        $this->assertSame($color, $color->setBlue(64., 256.));
+        $this->assertSame(0.25, $color->getBlue());
+        $this->assertSame(64., $color->getBlue(256.));
     }
 
     /**
@@ -92,13 +94,13 @@ class ColorTest extends TestCase
     public function testSetAndGetAlpha()
     {
         $color = new Color();
-        $this->assertEquals($color, $color->setAlpha(0.25));
-        $this->assertEquals(0.25, $color->getAlpha());
-        $this->assertEquals(64, $color->getAlpha(256));
+        $this->assertSame($color, $color->setAlpha(0.25));
+        $this->assertSame(0.25, $color->getAlpha());
+        $this->assertSame(64., $color->getAlpha(256.));
 
-        $this->assertEquals($color, $color->setAlpha(64, 256));
-        $this->assertEquals(0.25, $color->getAlpha());
-        $this->assertEquals(64, $color->getAlpha(256));
+        $this->assertSame($color, $color->setAlpha(64., 256.));
+        $this->assertSame(0.25, $color->getAlpha());
+        $this->assertSame(64., $color->getAlpha(256.));
     }
 
     /**
@@ -140,7 +142,7 @@ class ColorTest extends TestCase
         $this->assertEquals($expectedData, $data);
 
         $newColor = new Color();
-        $this->assertEquals($newColor, $newColor->readData(new DataContainer($data)));
+        $this->assertSame($newColor, $newColor->readData(new DataContainer($data)));
         $this->assertEquals($newColor, $color);
     }
 }

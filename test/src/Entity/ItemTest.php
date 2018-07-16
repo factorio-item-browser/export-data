@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowserTest\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataContainer;
@@ -25,13 +27,13 @@ class ItemTest extends TestCase
     {
         $item = new Item();
 
-        $this->assertEquals('', $item->getType());
-        $this->assertEquals('', $item->getName());
+        $this->assertSame('', $item->getType());
+        $this->assertSame('', $item->getName());
         $this->assertInstanceOf(LocalisedString::class, $item->getLabels());
         $this->assertInstanceOf(LocalisedString::class, $item->getDescriptions());
-        $this->assertEquals(false, $item->getProvidesRecipeLocalisation());
-        $this->assertEquals(false, $item->getProvidesMachineLocalisation());
-        $this->assertEquals('', $item->getIconHash());
+        $this->assertFalse($item->getProvidesRecipeLocalisation());
+        $this->assertFalse($item->getProvidesMachineLocalisation());
+        $this->assertSame('', $item->getIconHash());
     }
 
     /**
@@ -56,12 +58,12 @@ class ItemTest extends TestCase
         $item->getLabels()->setTranslation('en', 'cba');
         $item->getDescriptions()->setTranslation('en', 'fde');
 
-        $this->assertEquals('foo', $clonedItem->getType());
-        $this->assertEquals('bar', $clonedItem->getName());
-        $this->assertEquals(true, $clonedItem->getProvidesRecipeLocalisation());
-        $this->assertEquals('baz', $clonedItem->getIconHash());
-        $this->assertEquals('abc', $clonedItem->getLabels()->getTranslation('en'));
-        $this->assertEquals('def', $clonedItem->getDescriptions()->getTranslation('en'));
+        $this->assertSame('foo', $clonedItem->getType());
+        $this->assertSame('bar', $clonedItem->getName());
+        $this->assertTrue($clonedItem->getProvidesRecipeLocalisation());
+        $this->assertSame('baz', $clonedItem->getIconHash());
+        $this->assertSame('abc', $clonedItem->getLabels()->getTranslation('en'));
+        $this->assertSame('def', $clonedItem->getDescriptions()->getTranslation('en'));
     }
 
     /**
@@ -72,8 +74,8 @@ class ItemTest extends TestCase
     public function testSetAndGetType()
     {
         $item = new Item();
-        $this->assertEquals($item, $item->setType('foo'));
-        $this->assertEquals('foo', $item->getType());
+        $this->assertSame($item, $item->setType('foo'));
+        $this->assertSame('foo', $item->getType());
     }
 
     /**
@@ -84,8 +86,8 @@ class ItemTest extends TestCase
     public function testSetAndGetName()
     {
         $item = new Item();
-        $this->assertEquals($item, $item->setName('foo'));
-        $this->assertEquals('foo', $item->getName());
+        $this->assertSame($item, $item->setName('foo'));
+        $this->assertSame('foo', $item->getName());
     }
 
     /**
@@ -99,8 +101,8 @@ class ItemTest extends TestCase
         $labels->setTranslation('en', 'foo');
 
         $item = new Item();
-        $this->assertEquals($item, $item->setLabels($labels));
-        $this->assertEquals($labels, $item->getLabels());
+        $this->assertSame($item, $item->setLabels($labels));
+        $this->assertSame($labels, $item->getLabels());
     }
 
     /**
@@ -114,8 +116,8 @@ class ItemTest extends TestCase
         $descriptions->setTranslation('en', 'foo');
 
         $item = new Item();
-        $this->assertEquals($item, $item->setDescriptions($descriptions));
-        $this->assertEquals($descriptions, $item->getDescriptions());
+        $this->assertSame($item, $item->setDescriptions($descriptions));
+        $this->assertSame($descriptions, $item->getDescriptions());
     }
 
     /**
@@ -126,8 +128,8 @@ class ItemTest extends TestCase
     public function testSetAndGetProvidesRecipeLocalisation()
     {
         $item = new Item();
-        $this->assertEquals($item, $item->setProvidesRecipeLocalisation(true));
-        $this->assertEquals(true, $item->getProvidesRecipeLocalisation());
+        $this->assertSame($item, $item->setProvidesRecipeLocalisation(true));
+        $this->assertTrue($item->getProvidesRecipeLocalisation());
     }
 
     /**
@@ -138,8 +140,8 @@ class ItemTest extends TestCase
     public function testSetAndGetProvidesMachineLocalisation()
     {
         $item = new Item();
-        $this->assertEquals($item, $item->setProvidesMachineLocalisation(true));
-        $this->assertEquals(true, $item->getProvidesMachineLocalisation());
+        $this->assertSame($item, $item->setProvidesMachineLocalisation(true));
+        $this->assertTrue($item->getProvidesMachineLocalisation());
     }
     
     /**
@@ -150,8 +152,8 @@ class ItemTest extends TestCase
     public function testSetAndGetIconHash()
     {
         $item = new Item();
-        $this->assertEquals($item, $item->setIconHash('foo'));
-        $this->assertEquals('foo', $item->getIconHash());
+        $this->assertSame($item, $item->setIconHash('foo'));
+        $this->assertSame('foo', $item->getIconHash());
     }
 
     /**
@@ -203,7 +205,7 @@ class ItemTest extends TestCase
         $this->assertEquals($expectedData, $data);
 
         $newItem = new Item();
-        $this->assertEquals($newItem, $newItem->readData(new DataContainer($data)));
+        $this->assertSame($newItem, $newItem->readData(new DataContainer($data)));
         $this->assertEquals($newItem, $item);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowserTest\ExportData\Entity\Recipe;
 
 use BluePsyduck\Common\Data\DataContainer;
@@ -24,10 +26,10 @@ class IngredientTest extends TestCase
     {
         $ingredient = new Ingredient();
 
-        $this->assertEquals('', $ingredient->getType());
-        $this->assertEquals('', $ingredient->getName());
-        $this->assertEquals(1., $ingredient->getAmount());
-        $this->assertEquals(0, $ingredient->getOrder());
+        $this->assertSame('', $ingredient->getType());
+        $this->assertSame('', $ingredient->getName());
+        $this->assertSame(1., $ingredient->getAmount());
+        $this->assertSame(0, $ingredient->getOrder());
     }
 
     /**
@@ -48,10 +50,10 @@ class IngredientTest extends TestCase
                    ->setAmount(73.31)
                    ->setOrder(24);
 
-        $this->assertEquals('abc', $clonedIngredient->getType());
-        $this->assertEquals('def', $clonedIngredient->getName());
-        $this->assertEquals(13.37, $clonedIngredient->getAmount());
-        $this->assertEquals(42, $clonedIngredient->getOrder());
+        $this->assertSame('abc', $clonedIngredient->getType());
+        $this->assertSame('def', $clonedIngredient->getName());
+        $this->assertSame(13.37, $clonedIngredient->getAmount());
+        $this->assertSame(42, $clonedIngredient->getOrder());
     }
     
     /**
@@ -62,8 +64,8 @@ class IngredientTest extends TestCase
     public function testSetAndGetType()
     {
         $ingredient = new Ingredient();
-        $this->assertEquals($ingredient, $ingredient->setType('foo'));
-        $this->assertEquals('foo', $ingredient->getType());
+        $this->assertSame($ingredient, $ingredient->setType('foo'));
+        $this->assertSame('foo', $ingredient->getType());
     }
 
     /**
@@ -74,8 +76,8 @@ class IngredientTest extends TestCase
     public function testSetAndGetName()
     {
         $ingredient = new Ingredient();
-        $this->assertEquals($ingredient, $ingredient->setName('foo'));
-        $this->assertEquals('foo', $ingredient->getName());
+        $this->assertSame($ingredient, $ingredient->setName('foo'));
+        $this->assertSame('foo', $ingredient->getName());
     }
 
     /**
@@ -86,8 +88,8 @@ class IngredientTest extends TestCase
     public function testSetAndGetAmount()
     {
         $ingredient = new Ingredient();
-        $this->assertEquals($ingredient, $ingredient->setAmount(13.37));
-        $this->assertEquals(13.37, $ingredient->getAmount());
+        $this->assertSame($ingredient, $ingredient->setAmount(13.37));
+        $this->assertSame(13.37, $ingredient->getAmount());
     }
 
     /**
@@ -98,8 +100,8 @@ class IngredientTest extends TestCase
     public function testSetAndGetOrder()
     {
         $ingredient = new Ingredient();
-        $this->assertEquals($ingredient, $ingredient->setOrder(42));
-        $this->assertEquals(42, $ingredient->getOrder());
+        $this->assertSame($ingredient, $ingredient->setOrder(42));
+        $this->assertSame(42, $ingredient->getOrder());
     }
 
     /**
@@ -141,7 +143,7 @@ class IngredientTest extends TestCase
         $this->assertEquals($expectedData, $data);
 
         $newIngredient = new Ingredient();
-        $this->assertEquals($newIngredient, $newIngredient->readData(new DataContainer($data)));
+        $this->assertSame($newIngredient, $newIngredient->readData(new DataContainer($data)));
         $this->assertEquals($newIngredient, $ingredient);
     }
 }
