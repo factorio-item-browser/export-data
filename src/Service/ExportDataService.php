@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowser\ExportData\Service;
 
 use BluePsyduck\Common\Data\DataContainer;
@@ -63,7 +65,7 @@ class ExportDataService
      */
     protected function sortMods()
     {
-        uasort($this->mods, function(Mod $left, Mod $right): int {
+        uasort($this->mods, function (Mod $left, Mod $right): int {
             return $left->getOrder() <=> $right->getOrder();
         });
         return $this;
@@ -117,7 +119,7 @@ class ExportDataService
     public function saveMods()
     {
         $this->sortMods();
-        $data = array_values(array_map(function(Mod $mod): array  {
+        $data = array_values(array_map(function (Mod $mod): array {
             return $mod->writeData();
         }, $this->mods));
         $this->writeFile(Path::FILE_MODS_LIST, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));

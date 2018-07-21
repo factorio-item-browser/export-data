@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowser\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataBuilder;
@@ -15,10 +17,21 @@ use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
 class Icon implements EntityInterface
 {
     /**
+     * The default size of the icons.
+     */
+    public const DEFAULT_SIZE = 32;
+
+    /**
      * The hash of the icon.
      * @var string
      */
-    protected $iconHash = '';
+    protected $hash = '';
+
+    /**
+     * The original size of the icon.
+     * @var int
+     */
+    protected $size = self::DEFAULT_SIZE;
 
     /**
      * The layers of the icon.
@@ -38,12 +51,12 @@ class Icon implements EntityInterface
 
     /**
      * Sets the hash of the icon.
-     * @param string $iconHash
+     * @param string $hash
      * @return $this Implementing fluent interface.
      */
-    public function setIconHash(string $iconHash)
+    public function setHash(string $hash)
     {
-        $this->iconHash = $iconHash;
+        $this->hash = $hash;
         return $this;
     }
 
@@ -51,9 +64,29 @@ class Icon implements EntityInterface
      * Returns the hash of the icon.
      * @return string
      */
-    public function getIconHash(): string
+    public function getHash(): string
     {
-        return $this->iconHash;
+        return $this->hash;
+    }
+
+    /**
+     * Sets the original size of the icon.
+     * @param int $size
+     * @return $this
+     */
+    public function setSize(int $size)
+    {
+        $this->size = $size;
+        return $this;
+    }
+
+    /**
+     * Returns the original size of the icon.
+     * @return int
+     */
+    public function getSize(): int
+    {
+        return $this->size;
     }
 
     /**
@@ -96,7 +129,8 @@ class Icon implements EntityInterface
     public function writeData(): array
     {
         $dataBuilder = new DataBuilder();
-        $dataBuilder->setString('h', $this->getIconHash(), '')
+        $dataBuilder->setString('h', $this->getHash(), '')
+                    ->setInteger('s', $this->getSize(), self::DEFAULT_SIZE)
                     ->setArray('l', $this->getLayers(), function (Layer $layer): array {
                         return $layer->writeData();
                     }, []);
@@ -110,7 +144,8 @@ class Icon implements EntityInterface
      */
     public function readData(DataContainer $data)
     {
-        $this->iconHash = $data->getString('h', '');
+        $this->hash = $data->getString('h', '');
+        $this->size = $data->getInteger('s', self::DEFAULT_SIZE);
         $this->layers = array_map(function (DataContainer $data): Layer {
             return (new Layer())->readData($data);
         }, $data->getObjectArray('l'));

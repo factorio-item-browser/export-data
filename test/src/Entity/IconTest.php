@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowserTest\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataContainer;
@@ -14,22 +16,25 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Icon
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Icon
  */
 class IconTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @coversNothing
      */
     public function testConstruct()
     {
         $icon = new Icon();
-        $this->assertEquals('', $icon->getIconHash());
-        $this->assertEquals([], $icon->getLayers());
+        $this->assertSame('', $icon->getHash());
+        $this->assertSame(Icon::DEFAULT_SIZE, $icon->getSize());
+        $this->assertSame([], $icon->getLayers());
     }
 
     /**
      * Tests the cloning.
+     * @covers ::__clone
      */
     public function testClone()
     {
@@ -37,30 +42,47 @@ class IconTest extends TestCase
         $layer->setFileName('foo');
 
         $icon = new Icon();
-        $icon->setIconHash('bar')
+        $icon->setHash('bar')
              ->addLayer($layer);
 
         $clonedIcon = clone($icon);
-        $icon->setIconHash('rab');
+        $icon->setHash('rab');
         $layer->setFileName('oof');
 
-        $this->assertEquals('bar', $clonedIcon->getIconHash());
+        $this->assertSame('bar', $clonedIcon->getHash());
         $layers = $clonedIcon->getLayers();
-        $this->assertEquals('foo', array_pop($layers)->getFileName());
+        $this->assertSame('foo', array_pop($layers)->getFileName());
     }
 
     /**
-     * Tests setting and getting the icon hash.
+     * Tests setting and getting the hash.
+     * @covers ::setHash
+     * @covers ::getHash
      */
-    public function testSetAndGetIconHash()
+    public function testSetAndGetHash()
     {
         $icon = new Icon();
-        $this->assertEquals($icon, $icon->setIconHash('foo'));
-        $this->assertEquals('foo', $icon->getIconHash());
+        $this->assertSame($icon, $icon->setHash('foo'));
+        $this->assertSame('foo', $icon->getHash());
     }
 
     /**
+     * Tests setting and getting the size.
+     * @covers ::setSize
+     * @covers ::getSize
+     */
+    public function testSetAndGetSize()
+    {
+        $icon = new Icon();
+        $this->assertSame($icon, $icon->setSize(64));
+        $this->assertSame(64, $icon->getSize());
+    }
+    
+    /**
      * Tests setting, adding and getting the layers.
+     * @covers ::setLayers
+     * @covers ::getLayers
+     * @covers ::addLayer
      */
     public function testSetAddAndGetLayers()
     {
@@ -72,11 +94,11 @@ class IconTest extends TestCase
         $layer3->setFileName('ghi');
 
         $icon = new Icon();
-        $this->assertEquals($icon, $icon->setLayers([$layer1, new Color(), $layer2]));
-        $this->assertEquals([$layer1, $layer2], $icon->getLayers());
+        $this->assertSame($icon, $icon->setLayers([$layer1, new Color(), $layer2]));
+        $this->assertSame([$layer1, $layer2], $icon->getLayers());
 
-        $this->assertEquals($icon, $icon->addLayer($layer3));
-        $this->assertEquals([$layer1, $layer2, $layer3], $icon->getLayers());
+        $this->assertSame($icon, $icon->addLayer($layer3));
+        $this->assertSame([$layer1, $layer2, $layer3], $icon->getLayers());
     }
 
     /**
@@ -91,12 +113,14 @@ class IconTest extends TestCase
         $layer2->setFileName('def');
 
         $icon = new Icon();
-        $icon->setIconHash('ghi')
+        $icon->setHash('ghi')
+             ->setSize(64)
              ->addLayer($layer1)
              ->addLayer($layer2);
 
         $data = [
             'h' => 'ghi',
+            's' => 64,
             'l' => [
                 ['f' => 'abc'],
                 ['f' => 'def'],
@@ -113,6 +137,8 @@ class IconTest extends TestCase
      * Tests the writing and reading of the data.
      * @param Icon $icon
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(Icon $icon, array $expectedData)
@@ -121,7 +147,7 @@ class IconTest extends TestCase
         $this->assertEquals($expectedData, $data);
 
         $newIcon = new Icon();
-        $this->assertEquals($newIcon, $newIcon->readData(new DataContainer($data)));
+        $this->assertSame($newIcon, $newIcon->readData(new DataContainer($data)));
         $this->assertEquals($newIcon, $icon);
     }
 }

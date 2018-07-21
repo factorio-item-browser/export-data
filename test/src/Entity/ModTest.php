@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowserTest\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataContainer;
@@ -15,31 +17,33 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Mod
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Mod
  */
 class ModTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @covers ::__construct
      */
     public function testConstruct()
     {
         $mod = new Mod();
-        $this->assertEquals('', $mod->getName());
+        $this->assertSame('', $mod->getName());
         $this->assertInstanceOf(LocalisedString::class, $mod->getTitles());
         $this->assertInstanceOf(LocalisedString::class, $mod->getDescriptions());
-        $this->assertEquals('', $mod->getAuthor());
-        $this->assertEquals('', $mod->getVersion());
-        $this->assertEquals('', $mod->getFileName());
-        $this->assertEquals('', $mod->getDirectoryName());
-        $this->assertEquals([], $mod->getDependencies());
-        $this->assertEquals('', $mod->getChecksum());
-        $this->assertEquals(0, $mod->getOrder());
-        $this->assertEquals([], $mod->getCombinations());
+        $this->assertSame('', $mod->getAuthor());
+        $this->assertSame('', $mod->getVersion());
+        $this->assertSame('', $mod->getFileName());
+        $this->assertSame('', $mod->getDirectoryName());
+        $this->assertSame([], $mod->getDependencies());
+        $this->assertSame('', $mod->getChecksum());
+        $this->assertSame(0, $mod->getOrder());
+        $this->assertSame([], $mod->getCombinations());
     }
 
     /**
      * Tests the cloning.
+     * @covers ::__clone
      */
     public function testClone()
     {
@@ -74,33 +78,37 @@ class ModTest extends TestCase
         $dependency->setRequiredModName('oof');
         $combination->setName('rab');
 
-        $this->assertEquals('abc', $clonedMod->getName());
-        $this->assertEquals('def', $clonedMod->getAuthor());
-        $this->assertEquals('4.2.0', $clonedMod->getVersion());
-        $this->assertEquals('ghi', $clonedMod->getFileName());
-        $this->assertEquals('jkl', $clonedMod->getDirectoryName());
-        $this->assertEquals('mno', $clonedMod->getChecksum());
-        $this->assertEquals(42, $clonedMod->getOrder());
-        $this->assertEquals('pqr', $clonedMod->getTitles()->getTranslation('en'));
-        $this->assertEquals('stu', $clonedMod->getDescriptions()->getTranslation('en'));
+        $this->assertSame('abc', $clonedMod->getName());
+        $this->assertSame('def', $clonedMod->getAuthor());
+        $this->assertSame('4.2.0', $clonedMod->getVersion());
+        $this->assertSame('ghi', $clonedMod->getFileName());
+        $this->assertSame('jkl', $clonedMod->getDirectoryName());
+        $this->assertSame('mno', $clonedMod->getChecksum());
+        $this->assertSame(42, $clonedMod->getOrder());
+        $this->assertSame('pqr', $clonedMod->getTitles()->getTranslation('en'));
+        $this->assertSame('stu', $clonedMod->getDescriptions()->getTranslation('en'));
         $dependencies = $clonedMod->getDependencies();
-        $this->assertEquals('foo', array_pop($dependencies)->getRequiredModName());
+        $this->assertSame('foo', array_pop($dependencies)->getRequiredModName());
         $combinations = $clonedMod->getCombinations();
-        $this->assertEquals('bar', array_pop($combinations)->getName());
+        $this->assertSame('bar', array_pop($combinations)->getName());
     }
 
     /**
      * Tests setting and getting the name.
+     * @covers ::setName
+     * @covers ::getName
      */
     public function testSetAndGetName()
     {
         $mod = new Mod();
-        $this->assertEquals($mod, $mod->setName('foo'));
-        $this->assertEquals('foo', $mod->getName());
+        $this->assertSame($mod, $mod->setName('foo'));
+        $this->assertSame('foo', $mod->getName());
     }
 
     /**
      * Tests setting and getting the titles.
+     * @covers ::setTitles
+     * @covers ::getTitles
      */
     public function testSetAndGetTitles()
     {
@@ -108,12 +116,14 @@ class ModTest extends TestCase
         $titles->setTranslation('en', 'foo');
         
         $mod = new Mod();
-        $this->assertEquals($mod, $mod->setTitles($titles));
-        $this->assertEquals($titles, $mod->getTitles());
+        $this->assertSame($mod, $mod->setTitles($titles));
+        $this->assertSame($titles, $mod->getTitles());
     }
 
     /**
      * Tests setting and getting the descriptions.
+     * @covers ::setDescriptions
+     * @covers ::getDescriptions
      */
     public function testSetAndGetDescriptions()
     {
@@ -121,52 +131,63 @@ class ModTest extends TestCase
         $descriptions->setTranslation('en', 'foo');
 
         $mod = new Mod();
-        $this->assertEquals($mod, $mod->setDescriptions($descriptions));
-        $this->assertEquals($descriptions, $mod->getDescriptions());
+        $this->assertSame($mod, $mod->setDescriptions($descriptions));
+        $this->assertSame($descriptions, $mod->getDescriptions());
     }
 
     /**
      * Tests setting and getting the author.
+     * @covers ::setAuthor
+     * @covers ::getAuthor
      */
     public function testSetAndGetAuthor()
     {
         $mod = new Mod();
-        $this->assertEquals($mod, $mod->setAuthor('foo'));
-        $this->assertEquals('foo', $mod->getAuthor());
+        $this->assertSame($mod, $mod->setAuthor('foo'));
+        $this->assertSame('foo', $mod->getAuthor());
     }
 
     /**
      * Tests setting and getting the version.
+     * @covers ::setVersion
+     * @covers ::getVersion
      */
     public function testSetAndGetVersion()
     {
         $mod = new Mod();
-        $this->assertEquals($mod, $mod->setVersion('4.2.0'));
-        $this->assertEquals('4.2.0', $mod->getVersion());
+        $this->assertSame($mod, $mod->setVersion('4.2.0'));
+        $this->assertSame('4.2.0', $mod->getVersion());
     }
 
     /**
      * Tests setting and getting the fileName.
+     * @covers ::setFileName
+     * @covers ::getFileName
      */
     public function testSetAndGetFileName()
     {
         $mod = new Mod();
-        $this->assertEquals($mod, $mod->setFileName('foo'));
-        $this->assertEquals('foo', $mod->getFileName());
+        $this->assertSame($mod, $mod->setFileName('foo'));
+        $this->assertSame('foo', $mod->getFileName());
     }
 
     /**
      * Tests setting and getting the directoryName.
+     * @covers ::setDirectoryName
+     * @covers ::getDirectoryName
      */
     public function testSetAndGetDirectoryName()
     {
         $mod = new Mod();
-        $this->assertEquals($mod, $mod->setDirectoryName('foo'));
-        $this->assertEquals('foo', $mod->getDirectoryName());
+        $this->assertSame($mod, $mod->setDirectoryName('foo'));
+        $this->assertSame('foo', $mod->getDirectoryName());
     }
 
     /**
      * Tests setting, adding and getting the dependencies.
+     * @covers ::setDependencies
+     * @covers ::getDependencies
+     * @covers ::addDependency
      */
     public function testSetAddAndGetDependencies()
     {
@@ -178,35 +199,42 @@ class ModTest extends TestCase
         $dependency3->setRequiredModName('ghi');
 
         $mod = new Mod();
-        $this->assertEquals($mod, $mod->setDependencies([$dependency1, new Mod(), $dependency2]));
-        $this->assertEquals([$dependency1, $dependency2], $mod->getDependencies());
+        $this->assertSame($mod, $mod->setDependencies([$dependency1, new Mod(), $dependency2]));
+        $this->assertSame([$dependency1, $dependency2], $mod->getDependencies());
 
-        $this->assertEquals($mod, $mod->addDependency($dependency3));
-        $this->assertEquals([$dependency1, $dependency2, $dependency3], $mod->getDependencies());
+        $this->assertSame($mod, $mod->addDependency($dependency3));
+        $this->assertSame([$dependency1, $dependency2, $dependency3], $mod->getDependencies());
     }
 
     /**
      * Tests setting and getting the checksum.
+     * @covers ::setChecksum
+     * @covers ::getChecksum
      */
     public function testSetAndGetChecksum()
     {
         $mod = new Mod();
-        $this->assertEquals($mod, $mod->setChecksum('foo'));
-        $this->assertEquals('foo', $mod->getChecksum());
+        $this->assertSame($mod, $mod->setChecksum('foo'));
+        $this->assertSame('foo', $mod->getChecksum());
     }
 
     /**
      * Tests setting and getting the order.
+     * @covers ::setOrder
+     * @covers ::getOrder
      */
     public function testSetAndGetOrder()
     {
         $mod = new Mod();
-        $this->assertEquals($mod, $mod->setOrder(42));
-        $this->assertEquals(42, $mod->getOrder());
+        $this->assertSame($mod, $mod->setOrder(42));
+        $this->assertSame(42, $mod->getOrder());
     }
 
     /**
      * Tests setting, adding and getting the combinations.
+     * @covers ::setCombinations
+     * @covers ::getCombinations
+     * @covers ::addCombination
      */
     public function testSetAddAndGetCombinations()
     {
@@ -218,11 +246,11 @@ class ModTest extends TestCase
         $combination3->setName('ghi');
 
         $mod = new Mod();
-        $this->assertEquals($mod, $mod->setCombinations([$combination1, new Mod(), $combination2]));
-        $this->assertEquals([$combination1, $combination2], $mod->getCombinations());
+        $this->assertSame($mod, $mod->setCombinations([$combination1, new Mod(), $combination2]));
+        $this->assertSame([$combination1, $combination2], $mod->getCombinations());
 
-        $this->assertEquals($mod, $mod->addCombination($combination3));
-        $this->assertEquals([$combination1, $combination2, $combination3], $mod->getCombinations());
+        $this->assertSame($mod, $mod->addCombination($combination3));
+        $this->assertSame([$combination1, $combination2, $combination3], $mod->getCombinations());
     }
 
     /**
@@ -288,6 +316,8 @@ class ModTest extends TestCase
      * Tests the writing and reading of the data.
      * @param Mod $mod
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(Mod $mod, array $expectedData)
@@ -296,7 +326,7 @@ class ModTest extends TestCase
         $this->assertEquals($expectedData, $data);
 
         $newMod = new Mod();
-        $this->assertEquals($newMod, $newMod->readData(new DataContainer($data)));
+        $this->assertSame($newMod, $newMod->readData(new DataContainer($data)));
         $this->assertEquals($newMod, $mod);
     }
 }

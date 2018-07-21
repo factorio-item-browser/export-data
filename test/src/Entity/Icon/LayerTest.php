@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FactorioItemBrowserTest\ExportData\Entity\Icon;
 
 use BluePsyduck\Common\Data\DataContainer;
@@ -13,25 +15,27 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass FactorioItemBrowser\ExportData\Entity\Icon\Color
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Icon\Layer
  */
 class LayerTest extends TestCase
 {
     /**
      * Tests the constructing.
+     * @covers ::__construct
      */
     public function testConstruct()
     {
         $layer = new Layer();
-        $this->assertEquals('', $layer->getFileName());
+        $this->assertSame('', $layer->getFileName());
         $this->assertInstanceOf(Color::class, $layer->getTintColor());
-        $this->assertEquals(0, $layer->getOffsetX());
-        $this->assertEquals(0, $layer->getOffsetY());
-        $this->assertEquals(1., $layer->getScale());
+        $this->assertSame(0, $layer->getOffsetX());
+        $this->assertSame(0, $layer->getOffsetY());
+        $this->assertSame(1., $layer->getScale());
     }
 
     /**
      * Tests the cloning.
+     * @covers ::__clone
      */
     public function testClone()
     {
@@ -49,25 +53,29 @@ class LayerTest extends TestCase
               ->setScale(73.31);
         $layer->getTintColor()->setAlpha(2.4);
 
-        $this->assertEquals('foo', $clonedLayer->getFileName());
-        $this->assertEquals(42, $clonedLayer->getOffsetX());
-        $this->assertEquals(21, $clonedLayer->getOffsetY());
-        $this->assertEquals(13.37, $clonedLayer->getScale());
-        $this->assertEquals(4.2, $clonedLayer->getTintColor()->getAlpha());
+        $this->assertSame('foo', $clonedLayer->getFileName());
+        $this->assertSame(42, $clonedLayer->getOffsetX());
+        $this->assertSame(21, $clonedLayer->getOffsetY());
+        $this->assertSame(13.37, $clonedLayer->getScale());
+        $this->assertSame(4.2, $clonedLayer->getTintColor()->getAlpha());
     }
 
     /**
      * Tests setting and getting the file name.
+     * @covers ::setFileName
+     * @covers ::getFileName
      */
     public function testSetAndGetFileName()
     {
         $layer = new layer();
-        $this->assertEquals($layer, $layer->setFileName('foo'));
-        $this->assertEquals('foo', $layer->getFileName());
+        $this->assertSame($layer, $layer->setFileName('foo'));
+        $this->assertSame('foo', $layer->getFileName());
     }
 
     /**
      * Tests setting and getting the tint color.
+     * @covers ::setTintColor
+     * @covers ::getTintColor
      */
     public function testSetAndGetTintColor()
     {
@@ -75,38 +83,44 @@ class LayerTest extends TestCase
         $color->setAlpha(0.42);
 
         $layer = new layer();
-        $this->assertEquals($layer, $layer->setTintColor($color));
-        $this->assertEquals($color, $layer->getTintColor());
+        $this->assertSame($layer, $layer->setTintColor($color));
+        $this->assertSame($color, $layer->getTintColor());
     }
 
     /**
      * Tests setting and getting the offset X.
+     * @covers ::setOffsetX
+     * @covers ::getOffsetX
      */
     public function testSetAndGetOffsetX()
     {
         $layer = new layer();
-        $this->assertEquals($layer, $layer->setOffsetX(42));
-        $this->assertEquals(42, $layer->getOffsetX());
+        $this->assertSame($layer, $layer->setOffsetX(42));
+        $this->assertSame(42, $layer->getOffsetX());
     }
 
     /**
      * Tests setting and getting the offset Y.
+     * @covers ::setOffsetY
+     * @covers ::getOffsetY
      */
     public function testSetAndGetOffsetY()
     {
         $layer = new layer();
-        $this->assertEquals($layer, $layer->setOffsetY(42));
-        $this->assertEquals(42, $layer->getOffsetY());
+        $this->assertSame($layer, $layer->setOffsetY(42));
+        $this->assertSame(42, $layer->getOffsetY());
     }
 
     /**
      * Tests setting and getting the scale.
+     * @covers ::setScale
+     * @covers ::getScale
      */
     public function testSetAndGetScale()
     {
         $layer = new layer();
-        $this->assertEquals($layer, $layer->setScale(4.2));
-        $this->assertEquals(4.2, $layer->getScale());
+        $this->assertSame($layer, $layer->setScale(4.2));
+        $this->assertSame(4.2, $layer->getScale());
     }
 
     /**
@@ -142,6 +156,8 @@ class LayerTest extends TestCase
      * Tests the writing and reading of the data.
      * @param Layer $layer
      * @param array $expectedData
+     * @covers ::writeData
+     * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
     public function testWriteAndReadData(Layer $layer, array $expectedData)
@@ -150,7 +166,7 @@ class LayerTest extends TestCase
         $this->assertEquals($expectedData, $data);
 
         $newLayer = new Layer();
-        $this->assertEquals($newLayer, $newLayer->readData(new DataContainer($data)));
+        $this->assertSame($newLayer, $newLayer->readData(new DataContainer($data)));
         $this->assertEquals($newLayer, $layer);
     }
 }
