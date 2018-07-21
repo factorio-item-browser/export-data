@@ -82,9 +82,11 @@ class RecipeTest extends TestCase
         $this->assertSame('def', $clonedRecipe->getDescriptions()->getTranslation('en'));
 
         $ingredients = $clonedRecipe->getIngredients();
-        $this->assertSame('ghi', array_pop($ingredients)->getType());
+        $this->assertCount(1, $ingredients);
+        $this->assertSame('ghi', $ingredients[0]->getType());
         $products = $clonedRecipe->getProducts();
-        $this->assertSame('jkl', array_pop($products)->getType());
+        $this->assertCount(1, $products);
+        $this->assertSame('jkl', $products[0]->getType());
     }
 
     /**
@@ -127,7 +129,7 @@ class RecipeTest extends TestCase
         $ingredient3->setType('ghi');
 
         $recipe = new Recipe();
-        $this->assertSame($recipe, $recipe->setIngredients([$ingredient1, new Product(), $ingredient2]));
+        $this->assertSame($recipe, $recipe->setIngredients([$ingredient1, $ingredient2]));
         $this->assertSame([$ingredient1, $ingredient2], $recipe->getIngredients());
 
         $this->assertSame($recipe, $recipe->addIngredient($ingredient3));
@@ -150,7 +152,7 @@ class RecipeTest extends TestCase
         $product3->setType('ghi');
 
         $recipe = new Recipe();
-        $this->assertSame($recipe, $recipe->setProducts([$product1, new Ingredient(), $product2]));
+        $this->assertSame($recipe, $recipe->setProducts([$product1, $product2]));
         $this->assertSame([$product1, $product2], $recipe->getProducts());
 
         $this->assertSame($recipe, $recipe->addProduct($product3));

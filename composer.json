@@ -17,7 +17,10 @@
   },
   "require-dev": {
     "mikey179/vfsStream": "^1.6",
+    "phpstan/phpstan": "^0.10",
+    "phpstan/phpstan-phpunit": "^0.10",
     "phpunit/phpunit": "^7.1",
+    "rregeer/phpunit-coverage-check": "^0.1",
     "squizlabs/php_codesniffer": "^3.3"
   },
   "autoload": {
@@ -31,12 +34,16 @@
     }
   },
   "scripts": {
+    "coverage-check": "coverage-check test/log/clover.xml 100",
     "phpcbf": "phpcbf -p --colors",
     "phpcs": "phpcs -p --colors",
-    "phpunit": "phpunit --colors=always --coverage-html=test/log",
+    "phpstan": "phpstan analyse --no-interaction --ansi",
+    "phpunit": "phpunit --colors=always --coverage-html=test/log --coverage-clover=test/log/clover.xml",
     "test": [
       "@phpunit",
-      "@phpcs"
+      "@coverage-check",
+      "@phpcs",
+      "@phpstan"
     ]
   }
 }

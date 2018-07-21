@@ -88,9 +88,11 @@ class ModTest extends TestCase
         $this->assertSame('pqr', $clonedMod->getTitles()->getTranslation('en'));
         $this->assertSame('stu', $clonedMod->getDescriptions()->getTranslation('en'));
         $dependencies = $clonedMod->getDependencies();
-        $this->assertSame('foo', array_pop($dependencies)->getRequiredModName());
+        $this->assertCount(1, $dependencies);
+        $this->assertSame('foo', $dependencies[0]->getRequiredModName());
         $combinations = $clonedMod->getCombinations();
-        $this->assertSame('bar', array_pop($combinations)->getName());
+        $this->assertCount(1, $combinations);
+        $this->assertSame('bar', $combinations[0]->getName());
     }
 
     /**
@@ -199,7 +201,7 @@ class ModTest extends TestCase
         $dependency3->setRequiredModName('ghi');
 
         $mod = new Mod();
-        $this->assertSame($mod, $mod->setDependencies([$dependency1, new Mod(), $dependency2]));
+        $this->assertSame($mod, $mod->setDependencies([$dependency1, $dependency2]));
         $this->assertSame([$dependency1, $dependency2], $mod->getDependencies());
 
         $this->assertSame($mod, $mod->addDependency($dependency3));
@@ -246,7 +248,7 @@ class ModTest extends TestCase
         $combination3->setName('ghi');
 
         $mod = new Mod();
-        $this->assertSame($mod, $mod->setCombinations([$combination1, new Mod(), $combination2]));
+        $this->assertSame($mod, $mod->setCombinations([$combination1, $combination2]));
         $this->assertSame([$combination1, $combination2], $mod->getCombinations());
 
         $this->assertSame($mod, $mod->addCombination($combination3));

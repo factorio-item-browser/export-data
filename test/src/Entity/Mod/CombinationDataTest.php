@@ -92,7 +92,7 @@ class CombinationDataTest extends TestCase
               ->setName('pqr');
 
         $combinationData = new CombinationData();
-        $this->assertSame($combinationData, $combinationData->setItems([$item1, new Recipe(), $item2]));
+        $this->assertSame($combinationData, $combinationData->setItems([$item1, $item2]));
         $this->assertSame([$item1, $item2], $combinationData->getItems());
         $this->assertSame($item1, $combinationData->getItem('abc', 'def'));
         $this->assertSame($item2, $combinationData->getItem('ghi', 'jkl'));
@@ -132,7 +132,7 @@ class CombinationDataTest extends TestCase
                 ->setMode('pqr');
 
         $combinationData = new CombinationData();
-        $this->assertSame($combinationData, $combinationData->setRecipes([$recipe1, new Item(), $recipe2]));
+        $this->assertSame($combinationData, $combinationData->setRecipes([$recipe1, $recipe2]));
         $this->assertSame([$recipe1, $recipe2], $combinationData->getRecipes());
         $this->assertSame($recipe1, $combinationData->getRecipe('abc', 'def'));
         $this->assertSame($recipe2, $combinationData->getRecipe('ghi', 'jkl'));
@@ -169,7 +169,7 @@ class CombinationDataTest extends TestCase
         $machine3->setName('ghi');
 
         $combinationData = new CombinationData();
-        $this->assertSame($combinationData, $combinationData->setMachines([$machine1, new Item(), $machine2]));
+        $this->assertSame($combinationData, $combinationData->setMachines([$machine1, $machine2]));
         $this->assertSame([$machine1, $machine2], $combinationData->getMachines());
         $this->assertSame($machine1, $combinationData->getMachine('abc'));
         $this->assertSame($machine2, $combinationData->getMachine('def'));
@@ -206,7 +206,7 @@ class CombinationDataTest extends TestCase
         $icon3->setHash('ghi');
 
         $combinationData = new CombinationData();
-        $this->assertSame($combinationData, $combinationData->setIcons([$icon1, new Item(), $icon2]));
+        $this->assertSame($combinationData, $combinationData->setIcons([$icon1, $icon2]));
         $this->assertSame([$icon1, $icon2], $combinationData->getIcons());
         $this->assertSame($icon1, $combinationData->getIcon('abc'));
         $this->assertSame($icon2, $combinationData->getIcon('def'));
