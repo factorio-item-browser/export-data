@@ -122,7 +122,10 @@ class ExportDataService
         $data = array_values(array_map(function (Mod $mod): array {
             return $mod->writeData();
         }, $this->mods));
-        $this->writeFile(Path::FILE_MODS_LIST, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $this->writeFile(
+            Path::FILE_MODS_LIST,
+            (string) json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+        );
         return $this;
     }
 
@@ -136,7 +139,7 @@ class ExportDataService
     {
         $path = $this->getCombinationDataPath($combination);
         $data = $combination->getData()->writeData();
-        $this->writeFile($path, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $this->writeFile($path, (string) json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         return $this;
     }
 

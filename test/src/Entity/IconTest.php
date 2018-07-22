@@ -6,7 +6,6 @@ namespace FactorioItemBrowserTest\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon;
-use FactorioItemBrowser\ExportData\Entity\Icon\Color;
 use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
 use PHPUnit\Framework\TestCase;
 
@@ -51,7 +50,8 @@ class IconTest extends TestCase
 
         $this->assertSame('bar', $clonedIcon->getHash());
         $layers = $clonedIcon->getLayers();
-        $this->assertSame('foo', array_pop($layers)->getFileName());
+        $this->assertCount(1, $layers);
+        $this->assertSame('foo', $layers[0]->getFileName());
     }
 
     /**
@@ -94,7 +94,7 @@ class IconTest extends TestCase
         $layer3->setFileName('ghi');
 
         $icon = new Icon();
-        $this->assertSame($icon, $icon->setLayers([$layer1, new Color(), $layer2]));
+        $this->assertSame($icon, $icon->setLayers([$layer1, $layer2]));
         $this->assertSame([$layer1, $layer2], $icon->getLayers());
 
         $this->assertSame($icon, $icon->addLayer($layer3));
