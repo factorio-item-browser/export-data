@@ -10,7 +10,7 @@ cache:
     - $HOME/.composer/cache/files
 
 install:
-  - composer install --dev --prefer-dist --no-interaction
+  - composer install --prefer-dist --no-interaction
 
 script:
   - vendor/bin/phpunit --coverage-clover=coverage.xml
