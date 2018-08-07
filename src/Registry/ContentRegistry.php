@@ -14,24 +14,24 @@ class ContentRegistry extends AbstractRegistry
 {
     /**
      * Sets content into the registry.
-     * @param string $iconHash
+     * @param string $hash
      * @param string $content
      * @return $this
      */
-    public function set(string $iconHash, string $content)
+    public function set(string $hash, string $content)
     {
-        $this->saveContent($iconHash, $content);
+        $this->saveContent($hash, $content);
         return $this;
     }
 
     /**
      * Returns content from the registry.
-     * @param string $iconHash
+     * @param string $hash
      * @return string|null
      */
-    public function get(string $iconHash): ?string
+    public function get(string $hash): ?string
     {
-        return $this->loadContent($iconHash);
+        return $this->loadContent($hash);
     }
 
     /**

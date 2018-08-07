@@ -19,7 +19,7 @@ class ModRegistry extends AbstractRegistry
     /**
      * The namespace to use for the mods.
      */
-    protected const NAMESPACE = 'mods';
+    protected const NAMESPACE = 'mod';
 
     /**
      * The hash to use for the file of the mods.
@@ -28,7 +28,7 @@ class ModRegistry extends AbstractRegistry
 
     /**
      * The mods of the registry.
-     * @var array
+     * @var array|Mod[]
      */
     protected $mods = [];
 
@@ -55,8 +55,22 @@ class ModRegistry extends AbstractRegistry
     public function set(Mod $mod)
     {
         $this->loadMods();
-        $this->mods[$mod->getName()] = $mod->writeData();
-        $this->saveContent(self::HASH_FILE_MODS, (string) json_encode($this->mods));
+        $this->mods[$mod->getName()] = $mod;
+        $this->saveMods();
+        return $this;
+    }
+
+    /**
+     * Saves the currently known mod to the adapter.
+     * @return $this
+     */
+    protected function saveMods()
+    {
+        $mods = [];
+        foreach ($this->mods as $mod) {
+            $mods[] = $mod->writeData();
+        }
+        $this->saveContent(self::HASH_FILE_MODS, $this->encodeContent($mods));
         return $this;
     }
 
@@ -68,13 +82,27 @@ class ModRegistry extends AbstractRegistry
     public function get(string $modName): ?Mod
     {
         $this->loadMods();
+        return $this->mods[$modName] ?? null;
+    }
 
-        $result = null;
-        if (isset($this->mods[$modName])) {
-            $result = new Mod();
-            $result->readData(new DataContainer($this->mods[$modName]));
+    /**
+     * Loads the mods from the file.
+     * @return $this
+     */
+    protected function loadMods()
+    {
+        if (!$this->isLoaded) {
+            $this->mods = [];
+            foreach ($this->decodeContent((string) $this->loadContent(self::HASH_FILE_MODS)) as $modData) {
+                if (is_array($modData)) {
+                    $mod = new Mod();
+                    $mod->readData(new DataContainer($modData));
+                    $this->mods[$mod->getName()] = $mod;
+                }
+            }
+            $this->isLoaded = true;
         }
-        return $result;
+        return $this;
     }
 
     /**
@@ -86,18 +114,5 @@ class ModRegistry extends AbstractRegistry
         $this->loadMods();
 
         return array_keys($this->mods);
-    }
-
-    /**
-     * Loads the mods from the file.
-     * @return $this
-     */
-    protected function loadMods()
-    {
-        if (!$this->isLoaded) {
-            $this->mods = $this->decodeContent((string) $this->loadContent(self::HASH_FILE_MODS));
-            $this->isLoaded = true;
-        }
-        return $this;
     }
 }

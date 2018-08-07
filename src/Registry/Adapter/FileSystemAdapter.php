@@ -38,13 +38,17 @@ class FileSystemAdapter implements AdapterInterface
      * @param string $hash
      * @param string $content
      * @return void
+     * @throws ExportDataException
      */
     public function save(string $namespace, string $hash, string $content): void
     {
         $fileName = $this->getFileName($namespace, $hash);
         $this->ensureDirectory(dirname($fileName));
 
-        $success = file_put_contents($fileName, $content);
+        $success = false;
+        if (!file_exists($fileName) || is_readable($fileName)) {
+            $success = file_put_contents($fileName, $content);
+        }
         if (!$success) {
             throw new ExportDataException('Unable to write file ' . $fileName);
         }
@@ -61,7 +65,7 @@ class FileSystemAdapter implements AdapterInterface
     {
         $result = null;
         $fileName = $this->getFileName($namespace, $hash);
-        if (file_exists($fileName)) {
+        if (file_exists($fileName) && is_readable($fileName)) {
             $result = file_get_contents($fileName);
         }
         return is_string($result) ? $result : null;
@@ -72,7 +76,6 @@ class FileSystemAdapter implements AdapterInterface
      * @param string $namespace
      * @param string $hash
      * @return string
-     * @throws ExportDataException
      */
     protected function getFileName(string $namespace, string $hash): string
     {

@@ -4,239 +4,132 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTest\ExportData\Service;
 
+use BluePsyduck\Common\Test\ReflectionTrait;
+use FactorioItemBrowser\ExportData\Entity\Icon;
 use FactorioItemBrowser\ExportData\Entity\Item;
-use FactorioItemBrowser\ExportData\Entity\Mod;
-use FactorioItemBrowser\ExportData\Entity\Mod\Combination;
-use FactorioItemBrowser\ExportData\Entity\Mod\CombinationData;
-use FactorioItemBrowser\ExportData\Exception\ExportDataException;
+use FactorioItemBrowser\ExportData\Entity\Machine;
+use FactorioItemBrowser\ExportData\Entity\Recipe;
+use FactorioItemBrowser\ExportData\Registry\Adapter\AdapterInterface;
 use FactorioItemBrowser\ExportData\Service\ExportDataService;
-use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
+use ReflectionException;
 
 /**
- * The PHPUnit test of the export data service class.
+ * The PHPUnit test of the ExportDataService class.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- *
  * @coversDefaultClass \FactorioItemBrowser\ExportData\Service\ExportDataService
  */
 class ExportDataServiceTest extends TestCase
 {
+    use ReflectionTrait;
+
     /**
-     * Tests setting, getting and removing mods.
+     * Tests the getIconRegistry method.
+     * @throws ReflectionException
      * @covers ::__construct
-     * @covers ::getMod
-     * @covers ::getMods
-     * @covers ::setMod
-     * @covers ::removeMod
+     * @covers ::getIconRegistry
      */
-    public function testSetGetAndRemoveMods()
+    public function testGetIconRegistry()
     {
-        $mod1 = new Mod();
-        $mod1->setName('abc');
-        $mod2 = new Mod();
-        $mod2->setName('def');
+        /* @var AdapterInterface $adapter */
+        $adapter = $this->createMock(AdapterInterface::class);
+        $expectedEntityClassName = Icon::class;
 
-        $service = new ExportDataService(vfsStream::setup('export')->url());
-
-        $this->assertSame([], $service->getMods());
-        $this->assertSame($service, $service->setMod($mod1));
-        $this->assertSame(['abc' => $mod1], $service->getMods());
-        $this->assertSame($mod1, $service->getMod('abc'));
-//        $this->assertNull($service->getMod('def'));
-
-        $this->assertSame($service, $service->setMod($mod2));
-        $this->assertSame(['abc' => $mod1, 'def' => $mod2], $service->getMods());
-        $this->assertSame($mod1, $service->getMod('abc'));
-        $this->assertSame($mod2, $service->getMod('def'));
-
-        $this->assertSame($service, $service->removeMod('abc'));
-        $this->assertSame(['def' => $mod2], $service->getMods());
-        $this->assertNull($service->getMod('abc'));
-        $this->assertSame($mod2, $service->getMod('def'));
+        $service = new ExportDataService($adapter);
+        $registry = $service->getIconRegistry();
+        $this->assertSame($adapter, $this->extractProperty($registry, 'adapter'));
+        $this->assertSame($expectedEntityClassName, $this->extractProperty($registry, 'entityClassName'));
     }
 
     /**
-     * Tests loading the mods.
-     * @covers ::loadMods
-     * @covers ::sortMods
+     * Tests the getMachineRegistry method.
+     * @throws ReflectionException
+     * @covers ::__construct
+     * @covers ::getMachineRegistry
      */
-    public function testLoadMods()
+    public function testGetMachineRegistry()
     {
-        $content = '[{"n":"abc","o":42},{"n":"def","o":21}]';
-        $mod1 = new Mod();
-        $mod1->setName('abc')
-             ->setOrder(42);
-        $mod2 = new Mod();
-        $mod2->setName('def')
-             ->setOrder(21);
-        $expectedMods = [
-            'def' => $mod2,
-            'abc' => $mod1
-        ];
+        /* @var AdapterInterface $adapter */
+        $adapter = $this->createMock(AdapterInterface::class);
+        $expectedEntityClassName = Machine::class;
 
-        $directory = vfsStream::setup('export', null, ['mods/list.json' => $content]);
-        $service = new ExportDataService($directory->url());
-
-        $this->assertSame($service, $service->loadMods());
-        $this->assertEquals($expectedMods, $service->getMods());
-        $this->assertEquals($mod2, current($service->getMods()));
+        $service = new ExportDataService($adapter);
+        $registry = $service->getMachineRegistry();
+        $this->assertSame($adapter, $this->extractProperty($registry, 'adapter'));
+        $this->assertSame($expectedEntityClassName, $this->extractProperty($registry, 'entityClassName'));
     }
 
     /**
-     * Tests saving the mods.
-     * @covers ::saveMods
-     * @covers ::sortMods
+     * Tests the getItemRegistry method.
+     * @throws ReflectionException
+     * @covers ::__construct
+     * @covers ::getItemRegistry
      */
-    public function testSaveMods()
+    public function testGetItemRegistry()
     {
-        $mod1 = new Mod();
-        $mod1->setName('abc')
-             ->setOrder(42);
-        $mod2 = new Mod();
-        $mod2->setName('def')
-             ->setOrder(21);
+        /* @var AdapterInterface $adapter */
+        $adapter = $this->createMock(AdapterInterface::class);
+        $expectedEntityClassName = Item::class;
 
-        $directory = vfsStream::setup('export');
-        $service = new ExportDataService($directory->url());
-        $expectedContent = '[{"n":"def","o":21},{"n":"abc","o":42}]';
-
-        $service->setMod($mod1)
-                ->setMod($mod2);
-
-        $this->assertSame($service, $service->saveMods());
-        $this->assertTrue($directory->hasChild('mods/list.json'));
-        $this->assertSame($expectedContent, file_get_contents($directory->getChild('mods/list.json')->url()));
+        $service = new ExportDataService($adapter);
+        $registry = $service->getItemRegistry();
+        $this->assertSame($adapter, $this->extractProperty($registry, 'adapter'));
+        $this->assertSame($expectedEntityClassName, $this->extractProperty($registry, 'entityClassName'));
     }
 
     /**
-     * Tests saving combination data.
-     * @covers ::saveCombinationData
-     * @covers ::getCombinationDataPath
+     * Tests the getModRegistry method.
+     * @throws ReflectionException
+     * @covers ::__construct
+     * @covers ::getModRegistry
      */
-    public function testSaveCombinationData()
+    public function testGetModRegistry()
     {
-        $item = new Item();
-        $item->setName('abc');
+        /* @var AdapterInterface $adapter */
+        $adapter = $this->createMock(AdapterInterface::class);
+        $expectedNamespace = 'mod';
 
-        $combination = new Combination();
-        $combination->setName('abc')
-                    ->setMainModName('def');
-        $combination->getData()->addItem($item);
-        $content = '{"i":[{"n":"abc"}]}';
-
-        $directory = vfsStream::setup('export');
-        $service = new ExportDataService($directory->url());
-
-        $this->assertSame($service, $service->saveCombinationData($combination));
-        $this->assertTrue($directory->hasChild('mods/def/abc.json'));
-        $this->assertSame($content, file_get_contents($directory->getChild('mods/def/abc.json')->url()));
+        $service = new ExportDataService($adapter);
+        $registry = $service->getModRegistry();
+        $this->assertSame($adapter, $this->extractProperty($registry, 'adapter'));
+        $this->assertSame($expectedNamespace, $this->extractProperty($registry, 'namespace'));
     }
 
     /**
-     * Tests loading combination data.
-     * @covers ::loadCombinationData
-     * @covers ::getCombinationDataPath
+     * Tests the getRecipeRegistry method.
+     * @throws ReflectionException
+     * @covers ::__construct
+     * @covers ::getRecipeRegistry
      */
-    public function testLoadCombinationData()
+    public function testGetRecipeRegistry()
     {
-        $content = '{"i":[{"n":"abc"}]}';
-        $combination = new Combination();
-        $combination->setName('abc')
-                    ->setMainModName('def');
+        /* @var AdapterInterface $adapter */
+        $adapter = $this->createMock(AdapterInterface::class);
+        $expectedEntityClassName = Recipe::class;
 
-        $item = new Item();
-        $item->setName('abc');
-        $expectedCombinationData = new CombinationData();
-        $expectedCombinationData->addItem($item);
-
-        $directory = vfsStream::setup('export', null, ['mods/def/abc.json' => $content]);
-        $service = new ExportDataService($directory->url());
-
-        $this->assertSame($service, $service->loadCombinationData($combination));
-        $this->assertEquals($expectedCombinationData, $combination->getData());
-        $this->assertTrue($combination->getIsDataLoaded());
+        $service = new ExportDataService($adapter);
+        $registry = $service->getRecipeRegistry();
+        $this->assertSame($adapter, $this->extractProperty($registry, 'adapter'));
+        $this->assertSame($expectedEntityClassName, $this->extractProperty($registry, 'entityClassName'));
     }
 
     /**
-     * Tests saving an icon.
-     * @covers ::saveIcon
-     * @covers ::<protected>
+     * Tests the getRenderedIconRegistry method.
+     * @throws ReflectionException
+     * @covers ::__construct
+     * @covers ::getRenderedIconRegistry
      */
-    public function testSaveIcon()
+    public function testGetRenderedIconRegistry()
     {
-        $iconHash = 'abcdef';
-        $iconContent = 'foo';
-        $directory = vfsStream::setup('export');
-        $service = new ExportDataService($directory->url());
+        /* @var AdapterInterface $adapter */
+        $adapter = $this->createMock(AdapterInterface::class);
+        $expectedNamespace = 'renderedIcon';
 
-        $this->assertSame($service, $service->saveIcon($iconHash, $iconContent));
-        $this->assertTrue($directory->hasChild('icons/ab/abcdef.png'));
-        $this->assertSame($iconContent, file_get_contents($directory->getChild('icons/ab/abcdef.png')->url()));
-    }
-
-    /**
-     * Tests loading an icon.
-     * @covers ::loadIcon
-     * @covers ::<protected>
-     */
-    public function testLoadIcon()
-    {
-        $iconHash = 'abcdef';
-        $iconContent = 'foo';
-        $directory = vfsStream::setup('export', null, ['icons/ab/abcdef.png' => $iconContent]);
-        $service = new ExportDataService($directory->url());
-
-        $this->assertSame($iconContent, $service->loadIcon($iconHash));
-    }
-
-    /**
-     * Tests reading errors.
-     * @covers ::<protected>
-     */
-    public function testReadError()
-    {
-        $directory = vfsStream::setup('export');
-        $service = new ExportDataService($directory->url());
-
-        $this->expectException(ExportDataException::class);
-        $this->expectExceptionMessage('Unable to read file');
-
-        $this->assertSame('', $service->loadIcon('abcdef'));
-    }
-
-    /**
-     * Provides the data for the writeError test.
-     * @return array
-     */
-    public function provideWriteError(): array
-    {
-        return [
-            [false, 'Unable to create directory'],
-            [true, 'Unable to write file']
-        ];
-    }
-
-    /**
-     * Tests writing errors.
-     * @param bool $withDirectory
-     * @param string $expectedException
-     * @covers ::<protected>
-     * @dataProvider provideWriteError
-     */
-    public function testWriteError(bool $withDirectory, string $expectedException)
-    {
-        $directory = vfsStream::setup('export', 0400, []);
-        if ($withDirectory) {
-            $directory->addChild(vfsStream::newDirectory('icons/ab', 0400));
-        }
-        $service = new ExportDataService($directory->url());
-
-        $this->expectException(ExportDataException::class);
-        $this->expectExceptionMessage($expectedException);
-
-        $this->assertSame($service, $service->saveIcon('abcdef', 'fail'));
-        $this->assertFalse($directory->hasChild('icons/ab/abcdef.png'));
+        $service = new ExportDataService($adapter);
+        $registry = $service->getRenderedIconRegistry();
+        $this->assertSame($adapter, $this->extractProperty($registry, 'adapter'));
+        $this->assertSame($expectedNamespace, $this->extractProperty($registry, 'namespace'));
     }
 }
