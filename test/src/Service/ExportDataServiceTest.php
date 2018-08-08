@@ -8,6 +8,7 @@ use BluePsyduck\Common\Test\ReflectionTrait;
 use FactorioItemBrowser\ExportData\Entity\Icon;
 use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\Machine;
+use FactorioItemBrowser\ExportData\Entity\Mod\Combination;
 use FactorioItemBrowser\ExportData\Entity\Recipe;
 use FactorioItemBrowser\ExportData\Registry\Adapter\AdapterInterface;
 use FactorioItemBrowser\ExportData\Service\ExportDataService;
@@ -25,6 +26,24 @@ class ExportDataServiceTest extends TestCase
 {
     use ReflectionTrait;
 
+    /**
+     * Tests the getCombinationRegistry method.
+     * @throws ReflectionException
+     * @covers ::__construct
+     * @covers ::getCombinationRegistry
+     */
+    public function testGetCombinationRegistry()
+    {
+        /* @var AdapterInterface $adapter */
+        $adapter = $this->createMock(AdapterInterface::class);
+        $expectedEntityClassName = Combination::class;
+
+        $service = new ExportDataService($adapter);
+        $registry = $service->getCombinationRegistry();
+        $this->assertSame($adapter, $this->extractProperty($registry, 'adapter'));
+        $this->assertSame($expectedEntityClassName, $this->extractProperty($registry, 'entityClassName'));
+    }
+    
     /**
      * Tests the getIconRegistry method.
      * @throws ReflectionException

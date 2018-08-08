@@ -7,6 +7,7 @@ namespace FactorioItemBrowser\ExportData\Service;
 use FactorioItemBrowser\ExportData\Entity\Icon;
 use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\Machine;
+use FactorioItemBrowser\ExportData\Entity\Mod\Combination;
 use FactorioItemBrowser\ExportData\Entity\Recipe;
 use FactorioItemBrowser\ExportData\Registry\Adapter\AdapterInterface;
 use FactorioItemBrowser\ExportData\Registry\ContentRegistry;
@@ -25,6 +26,12 @@ class ExportDataService
      * The namespace to use for the rendered icons.
      */
     protected const NAMESPACE_RENDERED_ICONS = 'renderedIcon';
+
+    /**
+     * The registry of the combinations.
+     * @var EntityRegistry
+     */
+    protected $combinationRegistry;
 
     /**
      * The registry of the icons.
@@ -68,12 +75,22 @@ class ExportDataService
      */
     public function __construct(AdapterInterface $adapter)
     {
+        $this->combinationRegistry = new EntityRegistry($adapter, Combination::class);
         $this->iconRegistry = new EntityRegistry($adapter, Icon::class);
+        $this->itemRegistry = new EntityRegistry($adapter, Item::class);
         $this->machineRegistry = new EntityRegistry($adapter, Machine::class);
         $this->modRegistry = new ModRegistry($adapter);
-        $this->itemRegistry = new EntityRegistry($adapter, Item::class);
         $this->recipeRegistry = new EntityRegistry($adapter, Recipe::class);
         $this->renderedIconRegistry = new ContentRegistry($adapter, self::NAMESPACE_RENDERED_ICONS);
+    }
+
+    /**
+     * Returns the registry of the combinations.
+     * @return EntityRegistry
+     */
+    public function getCombinationRegistry(): EntityRegistry
+    {
+        return $this->combinationRegistry;
     }
 
     /**
