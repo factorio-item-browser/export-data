@@ -7,6 +7,8 @@ namespace FactorioItemBrowserTest\ExportData\Entity\Icon;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon\Color;
 use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
+use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -168,5 +170,38 @@ class LayerTest extends TestCase
         $newLayer = new Layer();
         $this->assertSame($newLayer, $newLayer->readData(new DataContainer($data)));
         $this->assertEquals($newLayer, $layer);
+    }
+
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash()
+    {
+        /* @var Color|MockObject $tintColor */
+        $tintColor = $this->getMockBuilder(Color::class)
+                          ->setMethods(['calculateHash'])
+                          ->getMock();
+        $tintColor->expects($this->once())
+                  ->method('calculateHash')
+                  ->willReturn('def');
+
+        $layer = new Layer();
+        $layer->setFileName('abc')
+              ->setTintColor($tintColor)
+              ->setOffsetX(42)
+              ->setOffsetY(21)
+              ->setScale(13.37);
+
+        $expectedResult = HashUtils::calculateHashOfArray([
+            'abc',
+            'def',
+            42,
+            21,
+            13.37
+        ]);
+
+        $result = $layer->calculateHash();
+        $this->assertSame($expectedResult, $result);
     }
 }

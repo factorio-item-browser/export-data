@@ -6,6 +6,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
+use FactorioItemBrowser\ExportData\Utils\HashUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -101,5 +102,24 @@ class LocalisedStringTest extends TestCase
         $newLocalisedString = new LocalisedString();
         $this->assertSame($newLocalisedString, $newLocalisedString->readData(new DataContainer($data)));
         $this->assertEquals($newLocalisedString, $localisedString);
+    }
+
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash()
+    {
+        $localisedString = new LocalisedString();
+        $localisedString->setTranslation('en', 'abc')
+                        ->setTranslation('de', 'def');
+
+        $expectedResult = HashUtils::calculateHashOfArray([
+            'en' => 'abc',
+            'de' => 'def',
+        ]);
+
+        $result = $localisedString->calculateHash();
+        $this->assertSame($expectedResult, $result);
     }
 }

@@ -7,8 +7,9 @@ namespace FactorioItemBrowserTest\ExportData\Entity;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
 use FactorioItemBrowser\ExportData\Entity\Mod;
-use FactorioItemBrowser\ExportData\Entity\Mod\Combination;
 use FactorioItemBrowser\ExportData\Entity\Mod\Dependency;
+use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -38,7 +39,7 @@ class ModTest extends TestCase
         $this->assertSame([], $mod->getDependencies());
         $this->assertSame('', $mod->getChecksum());
         $this->assertSame(0, $mod->getOrder());
-        $this->assertSame([], $mod->getCombinations());
+        $this->assertSame([], $mod->getCombinationHashes());
     }
 
     /**
@@ -49,8 +50,6 @@ class ModTest extends TestCase
     {
         $dependency = new Dependency();
         $dependency->setRequiredModName('foo');
-        $combination = new Combination();
-        $combination->setName('bar');
 
         $mod = new Mod();
         $mod->setName('abc')
@@ -61,7 +60,7 @@ class ModTest extends TestCase
             ->addDependency($dependency)
             ->setChecksum('mno')
             ->setOrder(42)
-            ->addCombination($combination);
+            ->setCombinationHashes(['vwx']);
         $mod->getTitles()->setTranslation('en', 'pqr');
         $mod->getDescriptions()->setTranslation('en', 'stu');
 
@@ -72,11 +71,11 @@ class ModTest extends TestCase
             ->setFileName('ihg')
             ->setDirectoryName('lkj')
             ->setChecksum('onm')
-            ->setOrder(24);
+            ->setOrder(24)
+            ->setCombinationHashes(['xwv']);
         $mod->getTitles()->setTranslation('en', 'rqp');
         $mod->getDescriptions()->setTranslation('en', 'uts');
         $dependency->setRequiredModName('oof');
-        $combination->setName('rab');
 
         $this->assertSame('abc', $clonedMod->getName());
         $this->assertSame('def', $clonedMod->getAuthor());
@@ -85,14 +84,12 @@ class ModTest extends TestCase
         $this->assertSame('jkl', $clonedMod->getDirectoryName());
         $this->assertSame('mno', $clonedMod->getChecksum());
         $this->assertSame(42, $clonedMod->getOrder());
+        $this->assertSame(['vwx'], $clonedMod->getCombinationHashes());
         $this->assertSame('pqr', $clonedMod->getTitles()->getTranslation('en'));
         $this->assertSame('stu', $clonedMod->getDescriptions()->getTranslation('en'));
         $dependencies = $clonedMod->getDependencies();
         $this->assertCount(1, $dependencies);
         $this->assertSame('foo', $dependencies[0]->getRequiredModName());
-        $combinations = $clonedMod->getCombinations();
-        $this->assertCount(1, $combinations);
-        $this->assertSame('bar', $combinations[0]->getName());
     }
 
     /**
@@ -233,26 +230,19 @@ class ModTest extends TestCase
     }
 
     /**
-     * Tests setting, adding and getting the combinations.
-     * @covers ::setCombinations
-     * @covers ::getCombinations
-     * @covers ::addCombination
+     * Tests setting, adding and getting the combination hashes.
+     * @covers ::setCombinationHashes
+     * @covers ::getCombinationHashes
+     * @covers ::addCombinationHash
      */
-    public function testSetAddAndGetCombinations()
+    public function testSetAddAndGetCombinationHashes()
     {
-        $combination1 = new Combination();
-        $combination1->setName('abc');
-        $combination2 = new Combination();
-        $combination2->setName('def');
-        $combination3 = new Combination();
-        $combination3->setName('ghi');
-
         $mod = new Mod();
-        $this->assertSame($mod, $mod->setCombinations([$combination1, $combination2]));
-        $this->assertSame([$combination1, $combination2], $mod->getCombinations());
+        $this->assertSame($mod, $mod->setCombinationHashes(['abc', 'def']));
+        $this->assertSame(['abc', 'def'], $mod->getCombinationHashes());
 
-        $this->assertSame($mod, $mod->addCombination($combination3));
-        $this->assertSame([$combination1, $combination2, $combination3], $mod->getCombinations());
+        $this->assertSame($mod, $mod->addCombinationHash('ghi'));
+        $this->assertSame(['abc', 'def', 'ghi'], $mod->getCombinationHashes());
     }
 
     /**
@@ -265,11 +255,6 @@ class ModTest extends TestCase
         $dependency1->setRequiredModName('foo');
         $dependency2 = new Dependency();
         $dependency2->setRequiredModName('bar');
-        $combination1 = new Combination();
-        $combination1->setName('oof');
-        $combination2 = new Combination();
-        $combination2->setName('rab');
-
 
         $mod = new Mod();
         $mod->setName('abc')
@@ -280,18 +265,19 @@ class ModTest extends TestCase
             ->addDependency($dependency1)
             ->addDependency($dependency2)
             ->setChecksum('mno')
-            ->addCombination($combination1)
-            ->addCombination($combination2);
+            ->addCombinationHash('vwx')
+            ->addCombinationHash('yza')
+            ->setOrder(42);
         $mod->getTitles()->setTranslation('en', 'pqr');
         $mod->getDescriptions()->setTranslation('de', 'stu');
 
         $data = [
             'n' => 'abc',
             't' => [
-                'en' => 'pqr'
+                'en' => 'pqr',
             ],
             'd' => [
-                'de' => 'stu'
+                'de' => 'stu',
             ],
             'a' => 'def',
             'v' => '4.2.0',
@@ -299,13 +285,14 @@ class ModTest extends TestCase
             'i' => 'jkl',
             'e' => [
                 ['m' => 'foo'],
-                ['m' => 'bar']
+                ['m' => 'bar'],
             ],
-            'c' => 'mno',
-            'm' => [
-                ['n' => 'oof'],
-                ['n' => 'rab']
-            ]
+            's' => 'mno',
+            'c' => [
+                'vwx',
+                'yza',
+            ],
+            'o' => 42,
         ];
 
         return [
@@ -330,5 +317,75 @@ class ModTest extends TestCase
         $newMod = new Mod();
         $this->assertSame($newMod, $newMod->readData(new DataContainer($data)));
         $this->assertEquals($newMod, $mod);
+    }
+    
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash()
+    {
+        /* @var Dependency|MockObject $dependency1 */
+        $dependency1 = $this->getMockBuilder(Dependency::class)
+                            ->setMethods(['calculateHash'])
+                            ->getMock();
+        $dependency1->expects($this->once())
+                    ->method('calculateHash')
+                    ->willReturn('bcd');
+        
+        /* @var Dependency|MockObject $dependency2 */
+        $dependency2 = $this->getMockBuilder(Dependency::class)
+                            ->setMethods(['calculateHash'])
+                            ->getMock();
+        $dependency2->expects($this->once())
+                    ->method('calculateHash')
+                    ->willReturn('efg');
+        
+        /* @var LocalisedString|MockObject $titles */
+        $titles = $this->getMockBuilder(LocalisedString::class)
+                       ->setMethods(['calculateHash'])
+                       ->getMock();
+        $titles->expects($this->once())
+               ->method('calculateHash')
+               ->willReturn('hij');
+
+        /* @var LocalisedString|MockObject $descriptions */
+        $descriptions = $this->getMockBuilder(LocalisedString::class)
+                             ->setMethods(['calculateHash'])
+                             ->getMock();
+        $descriptions->expects($this->once())
+                     ->method('calculateHash')
+                     ->willReturn('klm');
+
+        $mod = new Mod();
+        $mod->setName('abc')
+            ->setTitles($titles)
+            ->setDescriptions($descriptions)
+            ->setAuthor('def')
+            ->setVersion('4.2.0')
+            ->setFileName('ghi')
+            ->setDirectoryName('jkl')
+            ->addDependency($dependency1)
+            ->addDependency($dependency2)
+            ->setChecksum('mno')
+            ->addCombinationHash('vwx')
+            ->addCombinationHash('yza')
+            ->setOrder(42);
+
+        $expectedResult = HashUtils::calculateHashOfArray([
+            'abc',
+            'hij',
+            'klm',
+            'def',
+            '4.2.0',
+            'ghi',
+            'jkl',
+            ['bcd', 'efg'],
+            'mno',
+            42,
+        ]);
+
+        $result = $mod->calculateHash();
+        $this->assertSame($expectedResult, $result);
     }
 }

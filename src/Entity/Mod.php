@@ -6,8 +6,8 @@ namespace FactorioItemBrowser\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
-use FactorioItemBrowser\ExportData\Entity\Mod\Combination;
 use FactorioItemBrowser\ExportData\Entity\Mod\Dependency;
+use FactorioItemBrowser\ExportData\Utils\HashUtils;
 
 /**
  * The class representing a mod.
@@ -78,10 +78,10 @@ class Mod implements EntityInterface
     protected $order = 0;
 
     /**
-     * The combinations of the mod.
-     * @var array
+     * The combination hashes of the mod.
+     * @var array|string[]
      */
-    protected $combinations = [];
+    protected $combinationHashes = [];
 
     /**
      * Initializes the mod.
@@ -102,9 +102,6 @@ class Mod implements EntityInterface
         $this->dependencies = array_map(function (Dependency $dependency): Dependency {
             return clone($dependency);
         }, $this->dependencies);
-        $this->combinations = array_map(function (Combination $combination): Combination {
-            return clone($combination);
-        }, $this->combinations);
     }
 
     /**
@@ -321,36 +318,34 @@ class Mod implements EntityInterface
     }
 
     /**
-     * Sets the combination of the mods.
-     * @param array|Combination[] $combinations
+     * Sets the combination hashes of the mod.
+     * @param array|string[] $combinationHashes
      * @return $this
      */
-    public function setCombinations(array $combinations)
+    public function setCombinationHashes(array $combinationHashes)
     {
-        $this->combinations = array_values(array_filter($combinations, function ($combination): bool {
-            return $combination instanceof Combination;
-        }));
+        $this->combinationHashes = $combinationHashes;
         return $this;
     }
 
     /**
-     * Adds a combination to the mod.
-     * @param Combination $combination
+     * Adds a combination hash to the mod.
+     * @param string $combinationHash
      * @return $this
      */
-    public function addCombination(Combination $combination)
+    public function addCombinationHash(string $combinationHash)
     {
-        $this->combinations[] = $combination;
+        $this->combinationHashes[] = $combinationHash;
         return $this;
     }
 
     /**
-     * Returns the combinations of the mod.
-     * @return array|Combination[]
+     * Returns the combination hashes of the mod.
+     * @return array|string[]
      */
-    public function getCombinations(): array
+    public function getCombinationHashes(): array
     {
-        return $this->combinations;
+        return $this->combinationHashes;
     }
 
     /**
@@ -370,11 +365,9 @@ class Mod implements EntityInterface
                     ->setArray('e', $this->dependencies, function (Dependency $dependency): array {
                         return $dependency->writeData();
                     }, [])
-                    ->setString('c', $this->checksum, '')
+                    ->setString('s', $this->checksum, '')
                     ->setInteger('o', $this->order, 0)
-                    ->setArray('m', $this->combinations, function (Combination $combination): array {
-                        return $combination->writeData();
-                    }, []);
+                    ->setArray('c', $this->combinationHashes, 'strval', []);
         return $dataBuilder->getData();
     }
 
@@ -395,11 +388,31 @@ class Mod implements EntityInterface
         $this->dependencies = array_map(function (DataContainer $data): Dependency {
             return (new Dependency())->readData($data);
         }, $data->getObjectArray('e'));
-        $this->checksum = $data->getString('c', '');
+        $this->checksum = $data->getString('s', '');
         $this->order = $data->getInteger('o', 0);
-        $this->combinations = array_map(function (DataContainer $data): Combination {
-            return (new Combination())->readData($data);
-        }, $data->getObjectArray('m'));
+        $this->combinationHashes = array_map('strval', $data->getArray('c'));
         return $this;
+    }
+
+    /**
+     * Calculates a hash value representing the entity.
+     * @return string
+     */
+    public function calculateHash(): string
+    {
+        return HashUtils::calculateHashOfArray([
+            $this->name,
+            $this->titles->calculateHash(),
+            $this->descriptions->calculateHash(),
+            $this->author,
+            $this->version,
+            $this->fileName,
+            $this->directoryName,
+            array_map(function (Dependency $dependency): string {
+                return $dependency->calculateHash();
+            }, $this->dependencies),
+            $this->checksum,
+            $this->order,
+        ]);
     }
 }

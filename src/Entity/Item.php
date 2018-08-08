@@ -6,6 +6,7 @@ namespace FactorioItemBrowser\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
+use FactorioItemBrowser\ExportData\Utils\HashUtils;
 
 /**
  * The class representing an item from the export.
@@ -247,5 +248,22 @@ class Item implements EntityInterface
         $this->providesMachineLocalisation = $data->getInteger('m', 0) === 1;
         $this->iconHash = $data->getString('i');
         return $this;
+    }
+
+    /**
+     * Calculates a hash value representing the entity.
+     * @return string
+     */
+    public function calculateHash(): string
+    {
+        return HashUtils::calculateHashOfArray([
+            $this->type,
+            $this->name,
+            $this->labels->calculateHash(),
+            $this->descriptions->calculateHash(),
+            $this->providesRecipeLocalisation,
+            $this->providesMachineLocalisation,
+            $this->iconHash,
+        ]);
     }
 }

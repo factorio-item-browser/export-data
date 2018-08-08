@@ -6,6 +6,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity\Icon;
 
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon\Color;
+use FactorioItemBrowser\ExportData\Utils\HashUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -144,5 +145,28 @@ class ColorTest extends TestCase
         $newColor = new Color();
         $this->assertSame($newColor, $newColor->readData(new DataContainer($data)));
         $this->assertEquals($newColor, $color);
+    }
+
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash()
+    {
+        $color = new Color();
+        $color->setRed(0.2)
+              ->setGreen(0.4)
+              ->setBlue(0.6)
+              ->setAlpha(0.8);
+
+        $expectedResult = HashUtils::calculateHashOfArray([
+            0.2,
+            0.4,
+            0.6,
+            0.8
+        ]);
+
+        $result = $color->calculateHash();
+        $this->assertSame($expectedResult, $result);
     }
 }

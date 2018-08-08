@@ -7,6 +7,8 @@ namespace FactorioItemBrowserTest\ExportData\Entity;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
+use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -207,5 +209,50 @@ class ItemTest extends TestCase
         $newItem = new Item();
         $this->assertSame($newItem, $newItem->readData(new DataContainer($data)));
         $this->assertEquals($newItem, $item);
+    }
+
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash()
+    {
+        /* @var LocalisedString|MockObject $labels */
+        $labels = $this->getMockBuilder(LocalisedString::class)
+                       ->setMethods(['calculateHash'])
+                       ->getMock();
+        $labels->expects($this->once())
+               ->method('calculateHash')
+               ->willReturn('jkl');
+
+        /* @var LocalisedString|MockObject $descriptions */
+        $descriptions = $this->getMockBuilder(LocalisedString::class)
+                             ->setMethods(['calculateHash'])
+                             ->getMock();
+        $descriptions->expects($this->once())
+                     ->method('calculateHash')
+                     ->willReturn('mno');
+
+        $item = new Item();
+        $item->setType('abc')
+             ->setName('def')
+             ->setProvidesRecipeLocalisation(true)
+             ->setProvidesMachineLocalisation(true)
+             ->setIconHash('ghi')
+             ->setLabels($labels)
+             ->setDescriptions($descriptions);
+
+        $expectedResult = HashUtils::calculateHashOfArray([
+            'abc',
+            'def',
+            'jkl',
+            'mno',
+            true,
+            true,
+            'ghi',
+        ]);
+
+        $result = $item->calculateHash();
+        $this->assertSame($expectedResult, $result);
     }
 }

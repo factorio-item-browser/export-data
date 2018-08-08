@@ -100,11 +100,15 @@ class EntityRegistryTest extends TestCase
 
         /* @var EntityInterface|MockObject $entity */
         $entity = $this->getMockBuilder(EntityInterface::class)
-                       ->setMethods(['writeData'])
+                       ->setMethods(['calculateHash', 'writeData'])
                        ->getMockForAbstractClass();
+        $entity->expects($this->once())
+               ->method('calculateHash')
+               ->willReturn($hash);
         $entity->expects($this->once())
                ->method('writeData')
                ->willReturn($entityData);
+
 
         /* @var EntityRegistry|MockObject $registry */
         $registry = $this->getMockBuilder(EntityRegistry::class)
@@ -115,10 +119,6 @@ class EntityRegistryTest extends TestCase
                  ->method('encodeContent')
                  ->with($entityData)
                  ->willReturn($encodedContent);
-        $registry->expects($this->once())
-                 ->method('calculateHash')
-                 ->with($encodedContent)
-                 ->willReturn($hash);
         $registry->expects($this->once())
                  ->method('saveContent')
                  ->with($hash, $encodedContent);
@@ -207,22 +207,6 @@ class EntityRegistryTest extends TestCase
 
         $result = $registry->getAllHashes();
         $this->assertSame($hashes, $result);
-    }
-
-    /**
-     * Tests the calculateHash method.
-     * @throws ReflectionException
-     * @covers ::calculateHash
-     */
-    public function testCalculateHash()
-    {
-        $content = 'abc';
-        $expectedResult = '900150983cd24fb0';
-
-        /* @var EntityRegistry $registry */
-        $registry = $this->createMock(EntityRegistry::class);
-        $result = $this->invokeMethod($registry, 'calculateHash', $content);
-        $this->assertSame($expectedResult, $result);
     }
 
     /**

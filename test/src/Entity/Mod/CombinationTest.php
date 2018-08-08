@@ -7,7 +7,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity\Mod;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\Mod\Combination;
-use FactorioItemBrowser\ExportData\Entity\Mod\CombinationData;
+use FactorioItemBrowser\ExportData\Utils\HashUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,7 +22,7 @@ class CombinationTest extends TestCase
 {
     /**
      * Tests the constructing.
-     * @covers ::__construct
+     * @coversNothing
      */
     public function testConstruct()
     {
@@ -31,13 +31,15 @@ class CombinationTest extends TestCase
         $this->assertSame('', $combination->getMainModName());
         $this->assertSame([], $combination->getLoadedModNames());
         $this->assertSame([], $combination->getLoadedOptionalModNames());
-        $this->assertInstanceOf(CombinationData::class, $combination->getData());
-        $this->assertFalse($combination->getIsDataLoaded());
+        $this->assertSame([], $combination->getItemHashes());
+        $this->assertSame([], $combination->getRecipeHashes());
+        $this->assertSame([], $combination->getMachineHashes());
+        $this->assertSame([], $combination->getIconHashes());
     }
 
     /**
      * Tests the cloning.
-     * @covers ::__clone
+     * @coversNothing
      */
     public function testClone()
     {
@@ -50,23 +52,30 @@ class CombinationTest extends TestCase
                     ->setMainModName('def')
                     ->setLoadedModNames(['ghi'])
                     ->setLoadedOptionalModNames(['jkl'])
-                    ->setIsDataLoaded(true);
-        $combination->getData()->addItem($item);
+                    ->setItemHashes(['mno'])
+                    ->setRecipeHashes(['pqr'])
+                    ->setMachineHashes(['stu'])
+                    ->setIconHashes(['vwx']);
 
         $clonedCombination = clone($combination);
         $combination->setName('cba')
                     ->setMainModName('fed')
                     ->setLoadedModNames(['ihg'])
                     ->setLoadedOptionalModNames(['lkj'])
-                    ->setIsDataLoaded(false);
-        $combination->getData()->removeItem('foo', 'bar');
+                    ->setItemHashes(['onm'])
+                    ->setRecipeHashes(['rqp'])
+                    ->setMachineHashes(['uts'])
+                    ->setIconHashes(['xwv']);
+
 
         $this->assertSame('abc', $clonedCombination->getName());
         $this->assertSame('def', $clonedCombination->getMainModName());
         $this->assertSame(['ghi'], $clonedCombination->getLoadedModNames());
         $this->assertSame(['jkl'], $clonedCombination->getLoadedOptionalModNames());
-        $this->assertTrue($clonedCombination->getIsDataLoaded());
-        $this->assertInstanceOf(Item::class, $clonedCombination->getData()->getItem('foo', 'bar'));
+        $this->assertSame(['mno'], $clonedCombination->getItemHashes());
+        $this->assertSame(['pqr'], $clonedCombination->getRecipeHashes());
+        $this->assertSame(['stu'], $clonedCombination->getMachineHashes());
+        $this->assertSame(['vwx'], $clonedCombination->getIconHashes());
     }
 
     /**
@@ -126,32 +135,69 @@ class CombinationTest extends TestCase
     }
 
     /**
-     * Tests setting and getting the data.
-     * @covers ::setData
-     * @covers ::getData
+     * Tests setting, adding and getting the item hashes.
+     * @covers ::setItemHashes
+     * @covers ::getItemHashes
+     * @covers ::addItemHash
      */
-    public function testSetAndGetData()
+    public function testSetAddAndGetItemHashes()
     {
-        $data = new CombinationData();
-        $data->addItem(new Item());
-        
         $combination = new Combination();
-        $this->assertSame($combination, $combination->setData($data));
-        $this->assertSame($data, $combination->getData());
+        $this->assertSame($combination, $combination->setItemHashes(['abc', 'def']));
+        $this->assertSame(['abc', 'def'], $combination->getItemHashes());
+
+        $this->assertSame($combination, $combination->addItemHash('ghi'));
+        $this->assertSame(['abc', 'def', 'ghi'], $combination->getItemHashes());
     }
 
     /**
-     * Tests setting and getting the data loaded flag.
-     * @covers ::setIsDataLoaded
-     * @covers ::getIsDataLoaded
+     * Tests setting, adding and getting the recipe hashes.
+     * @covers ::setRecipeHashes
+     * @covers ::getRecipeHashes
+     * @covers ::addRecipeHash
      */
-    public function testSetAndGetIsDataLoaded()
+    public function testSetAddAndGetRecipeHashes()
     {
         $combination = new Combination();
-        $this->assertSame($combination, $combination->setIsDataLoaded(true));
-        $this->assertTrue($combination->getIsDataLoaded());
+        $this->assertSame($combination, $combination->setRecipeHashes(['abc', 'def']));
+        $this->assertSame(['abc', 'def'], $combination->getRecipeHashes());
+
+        $this->assertSame($combination, $combination->addRecipeHash('ghi'));
+        $this->assertSame(['abc', 'def', 'ghi'], $combination->getRecipeHashes());
     }
 
+    /**
+     * Tests setting, adding and getting the machine hashes.
+     * @covers ::setMachineHashes
+     * @covers ::getMachineHashes
+     * @covers ::addMachineHash
+     */
+    public function testSetAddAndGetMachineHashes()
+    {
+        $combination = new Combination();
+        $this->assertSame($combination, $combination->setMachineHashes(['abc', 'def']));
+        $this->assertSame(['abc', 'def'], $combination->getMachineHashes());
+
+        $this->assertSame($combination, $combination->addMachineHash('ghi'));
+        $this->assertSame(['abc', 'def', 'ghi'], $combination->getMachineHashes());
+    }
+
+    /**
+     * Tests setting, adding and getting the icon hashes.
+     * @covers ::setIconHashes
+     * @covers ::getIconHashes
+     * @covers ::addIconHash
+     */
+    public function testSetAddAndGetIconHashes()
+    {
+        $combination = new Combination();
+        $this->assertSame($combination, $combination->setIconHashes(['abc', 'def']));
+        $this->assertSame(['abc', 'def'], $combination->getIconHashes());
+
+        $this->assertSame($combination, $combination->addIconHash('ghi'));
+        $this->assertSame(['abc', 'def', 'ghi'], $combination->getIconHashes());
+    }
+    
     /**
      * Provides the data for the writeAndReadData test.
      * @return array
@@ -164,19 +210,43 @@ class CombinationTest extends TestCase
                     ->addLoadedModName('ghi')
                     ->addLoadedModName('jkl')
                     ->addLoadedOptionalModName('mno')
-                    ->addLoadedOptionalModName('pqr');
+                    ->addLoadedOptionalModName('pqr')
+                    ->addItemHash('stu')
+                    ->addItemHash('vwx')
+                    ->addRecipeHash('yza')
+                    ->addRecipeHash('bcd')
+                    ->addMachineHash('efg')
+                    ->addMachineHash('hij')
+                    ->addIconHash('klm')
+                    ->addIconHash('opq');
 
         $data = [
             'n' => 'abc',
             'm' => 'def',
             'l' => [
                 'ghi',
-                'jkl'
+                'jkl',
             ],
             'o' => [
                 'mno',
-                'pqr'
-            ]
+                'pqr',
+            ],
+            'i' => [
+                'stu',
+                'vwx',
+            ],
+            'r' => [
+                'yza',
+                'bcd',
+            ],
+            'a' => [
+                'efg',
+                'hij',
+            ],
+            'c' => [
+                'klm',
+                'opq',
+            ],
         ];
 
         return [
@@ -201,5 +271,38 @@ class CombinationTest extends TestCase
         $newCombination = new Combination();
         $this->assertSame($newCombination, $newCombination->readData(new DataContainer($data)));
         $this->assertEquals($newCombination, $combination);
+    }
+
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash()
+    {
+        $combination = new Combination();
+        $combination->setName('abc')
+                    ->setMainModName('def')
+                    ->addLoadedModName('ghi')
+                    ->addLoadedModName('jkl')
+                    ->addLoadedOptionalModName('mno')
+                    ->addLoadedOptionalModName('pqr')
+                    ->addItemHash('stu')
+                    ->addItemHash('vwx')
+                    ->addRecipeHash('yza')
+                    ->addRecipeHash('bcd')
+                    ->addMachineHash('efg')
+                    ->addMachineHash('hij')
+                    ->addIconHash('klm')
+                    ->addIconHash('opq');
+
+        $expectedResult = HashUtils::calculateHashOfArray([
+            'abc',
+            'def',
+            ['ghi', 'jkl'],
+            ['mno', 'pqr'],
+        ]);
+
+        $result = $combination->calculateHash();
+        $this->assertSame($expectedResult, $result);
     }
 }

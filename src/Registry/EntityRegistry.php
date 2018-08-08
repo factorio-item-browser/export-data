@@ -68,8 +68,8 @@ class EntityRegistry extends AbstractRegistry
      */
     public function set(EntityInterface $entity): string
     {
+        $hash = $entity->calculateHash();
         $content = $this->encodeContent($entity->writeData());
-        $hash = $this->calculateHash($content);
         $this->saveContent($hash, $content);
         return $hash;
     }
@@ -96,16 +96,6 @@ class EntityRegistry extends AbstractRegistry
     public function getAllHashes(): array
     {
         return $this->adapter->getAllHashes($this->namespace);
-    }
-
-    /**
-     * Calculates the hash of the specified content.
-     * @param string $content
-     * @return string
-     */
-    protected function calculateHash(string $content): string
-    {
-        return substr(hash('md5', $content), 0, 16);
     }
 
     /**

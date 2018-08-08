@@ -6,6 +6,7 @@ namespace FactorioItemBrowser\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
+use FactorioItemBrowser\ExportData\Utils\HashUtils;
 
 /**
  * The class representing a (crafting) machine from the export.
@@ -363,7 +364,7 @@ class Machine implements EntityInterface
     public function writeData(): array
     {
         $dataBuilder = new DataBuilder();
-        $dataBuilder->setString('n', $this->getName(), '')
+        $dataBuilder->setString('n', $this->name, '')
                     ->setArray('l', $this->labels->writeData(), null, [])
                     ->setArray('d', $this->descriptions->writeData(), null, [])
                     ->setArray('c', $this->craftingCategories, 'strval', [])
@@ -398,5 +399,27 @@ class Machine implements EntityInterface
         $this->energyUsageUnit = $data->getString('r', 'W');
         $this->iconHash = $data->getString('o');
         return $this;
+    }
+
+    /**
+     * Calculates a hash value representing the entity.
+     * @return string
+     */
+    public function calculateHash(): string
+    {
+        return HashUtils::calculateHashOfArray([
+            $this->name,
+            $this->labels->calculateHash(),
+            $this->descriptions->calculateHash(),
+            $this->craftingCategories,
+            $this->craftingSpeed,
+            $this->numberOfItemSlots,
+            $this->numberOfFluidInputSlots,
+            $this->numberOfFluidOutputSlots,
+            $this->numberOfModuleSlots,
+            $this->energyUsage,
+            $this->energyUsageUnit,
+            $this->iconHash,
+        ]);
     }
 }

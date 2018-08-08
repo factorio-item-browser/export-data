@@ -6,6 +6,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity\Mod;
 
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Mod\Dependency;
+use FactorioItemBrowser\ExportData\Utils\HashUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -126,5 +127,26 @@ class DependencyTest extends TestCase
         $newDependency = new Dependency();
         $this->assertSame($newDependency, $newDependency->readData(new DataContainer($data)));
         $this->assertEquals($newDependency, $dependency);
+    }
+
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash()
+    {
+        $dependency = new Dependency();
+        $dependency->setRequiredModName('abc')
+                   ->setRequiredVersion('4.2.0')
+                   ->setIsMandatory(true);
+
+        $expectedResult = HashUtils::calculateHashOfArray([
+            'abc',
+            '4.2.0',
+            true,
+        ]);
+
+        $result = $dependency->calculateHash();
+        $this->assertSame($expectedResult, $result);
     }
 }

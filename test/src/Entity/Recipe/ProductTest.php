@@ -6,6 +6,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity\Recipe;
 
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
+use FactorioItemBrowser\ExportData\Utils\HashUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -181,5 +182,32 @@ class ProductTest extends TestCase
         $newProduct = new Product();
         $this->assertSame($newProduct, $newProduct->readData(new DataContainer($data)));
         $this->assertEquals($newProduct, $product);
+    }
+
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash()
+    {
+        $product = new Product();
+        $product->setType('abc')
+                   ->setName('def')
+                   ->setAmountMin(13.37)
+                   ->setAmountMax(73.31)
+                   ->setProbability(4.2)
+                   ->setOrder(42);
+
+        $expectedResult = HashUtils::calculateHashOfArray([
+            'abc',
+            'def',
+            13.37,
+            73.31,
+            4.2,
+            42,
+        ]);
+
+        $result = $product->calculateHash();
+        $this->assertSame($expectedResult, $result);
     }
 }

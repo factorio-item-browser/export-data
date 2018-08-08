@@ -9,6 +9,8 @@ use FactorioItemBrowser\ExportData\Entity\LocalisedString;
 use FactorioItemBrowser\ExportData\Entity\Recipe;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
+use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -238,7 +240,7 @@ class RecipeTest extends TestCase
         $product1 = new Product();
         $product1->setType('vwx');
         $product2 = new Product();
-        $product2->setType('yz');
+        $product2->setType('yza');
 
         $recipe = new Recipe();
         $recipe->setName('abc')
@@ -248,6 +250,7 @@ class RecipeTest extends TestCase
                ->addProduct($product1)
                ->addProduct($product2)
                ->setCraftingTime(13.37)
+               ->setCraftingCategory('bcd')
                ->setIconHash('ghi');
         $recipe->getLabels()->setTranslation('en', 'jkl');
         $recipe->getDescriptions()->setTranslation('de', 'mno');
@@ -261,9 +264,10 @@ class RecipeTest extends TestCase
             ],
             'p' => [
                 ['t' => 'vwx'],
-                ['t' => 'yz']
+                ['t' => 'yza']
             ],
             'c' => 13.37,
+            'a' => 'bcd',
             'l' => [
                 'en' => 'jkl'
             ],
@@ -295,5 +299,88 @@ class RecipeTest extends TestCase
         $newRecipe = new Recipe();
         $this->assertSame($newRecipe, $newRecipe->readData(new DataContainer($data)));
         $this->assertEquals($newRecipe, $recipe);
+    }
+
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash()
+    {
+        /* @var Ingredient|MockObject $ingredient1 */
+        $ingredient1 = $this->getMockBuilder(Ingredient::class)
+                            ->setMethods(['calculateHash'])
+                            ->getMock();
+        $ingredient1->expects($this->once())
+                    ->method('calculateHash')
+                    ->willReturn('mno');
+        
+        /* @var Ingredient|MockObject $ingredient2 */
+        $ingredient2 = $this->getMockBuilder(Ingredient::class)
+                            ->setMethods(['calculateHash'])
+                            ->getMock();
+        $ingredient2->expects($this->once())
+                    ->method('calculateHash')
+                    ->willReturn('pqr');
+        
+        /* @var Product|MockObject $product1 */
+        $product1 = $this->getMockBuilder(Product::class)
+                         ->setMethods(['calculateHash'])
+                         ->getMock();
+        $product1->expects($this->once())
+                 ->method('calculateHash')
+                 ->willReturn('stu');
+        
+        /* @var Product|MockObject $product2 */
+        $product2 = $this->getMockBuilder(Product::class)
+                         ->setMethods(['calculateHash'])
+                         ->getMock();
+        $product2->expects($this->once())
+                 ->method('calculateHash')
+                 ->willReturn('vwx');
+        
+        /* @var LocalisedString|MockObject $labels */
+        $labels = $this->getMockBuilder(LocalisedString::class)
+                       ->setMethods(['calculateHash'])
+                       ->getMock();
+        $labels->expects($this->once())
+               ->method('calculateHash')
+               ->willReturn('yza');
+
+        /* @var LocalisedString|MockObject $descriptions */
+        $descriptions = $this->getMockBuilder(LocalisedString::class)
+                             ->setMethods(['calculateHash'])
+                             ->getMock();
+        $descriptions->expects($this->once())
+                     ->method('calculateHash')
+                     ->willReturn('bcd');
+        
+        $recipe = new Recipe();
+        $recipe->setName('abc')
+               ->setMode('def')
+               ->addIngredient($ingredient1)
+               ->addIngredient($ingredient2)
+               ->addProduct($product1)
+               ->addProduct($product2)
+               ->setCraftingTime(13.37)
+               ->setCraftingCategory('ghi')
+               ->setLabels($labels)
+               ->setDescriptions($descriptions)
+               ->setIconHash('jkl');
+
+        $expectedResult = HashUtils::calculateHashOfArray([
+            'abc',
+            'def',
+            ['mno', 'pqr'],
+            ['stu', 'vwx'],
+            13.37,
+            'ghi',
+            'yza',
+            'bcd',
+            'jkl',
+        ]);
+
+        $result = $recipe->calculateHash();
+        $this->assertSame($expectedResult, $result);
     }
 }

@@ -7,6 +7,8 @@ namespace FactorioItemBrowserTest\ExportData\Entity;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon;
 use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
+use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -26,7 +28,6 @@ class IconTest extends TestCase
     public function testConstruct()
     {
         $icon = new Icon();
-        $this->assertSame('', $icon->getHash());
         $this->assertSame(Icon::DEFAULT_SIZE, $icon->getSize());
         $this->assertSame([], $icon->getLayers());
     }
@@ -41,29 +42,17 @@ class IconTest extends TestCase
         $layer->setFileName('foo');
 
         $icon = new Icon();
-        $icon->setHash('bar')
+        $icon->setSize(64)
              ->addLayer($layer);
 
         $clonedIcon = clone($icon);
-        $icon->setHash('rab');
+        $icon->setSize(46);
         $layer->setFileName('oof');
 
-        $this->assertSame('bar', $clonedIcon->getHash());
+        $this->assertSame(64, $clonedIcon->getSize());
         $layers = $clonedIcon->getLayers();
         $this->assertCount(1, $layers);
         $this->assertSame('foo', $layers[0]->getFileName());
-    }
-
-    /**
-     * Tests setting and getting the hash.
-     * @covers ::setHash
-     * @covers ::getHash
-     */
-    public function testSetAndGetHash()
-    {
-        $icon = new Icon();
-        $this->assertSame($icon, $icon->setHash('foo'));
-        $this->assertSame('foo', $icon->getHash());
     }
 
     /**
@@ -113,13 +102,11 @@ class IconTest extends TestCase
         $layer2->setFileName('def');
 
         $icon = new Icon();
-        $icon->setHash('ghi')
-             ->setSize(64)
+        $icon->setSize(64)
              ->addLayer($layer1)
              ->addLayer($layer2);
 
         $data = [
-            'h' => 'ghi',
             's' => 64,
             'l' => [
                 ['f' => 'abc'],
@@ -149,5 +136,41 @@ class IconTest extends TestCase
         $newIcon = new Icon();
         $this->assertSame($newIcon, $newIcon->readData(new DataContainer($data)));
         $this->assertEquals($newIcon, $icon);
+    }
+
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash()
+    {
+        /* @var Layer|MockObject $layer1 */
+        $layer1 = $this->getMockBuilder(Layer::class)
+                       ->setMethods(['calculateHash'])
+                       ->getMock();
+        $layer1->expects($this->once())
+               ->method('calculateHash')
+               ->willReturn('abc');
+
+        /* @var Layer|MockObject $layer2 */
+        $layer2 = $this->getMockBuilder(Layer::class)
+                       ->setMethods(['calculateHash'])
+                       ->getMock();
+        $layer2->expects($this->once())
+               ->method('calculateHash')
+               ->willReturn('def');
+
+        $icon = new Icon();
+        $icon->setSize(64)
+             ->addLayer($layer1)
+             ->addLayer($layer2);
+
+        $expectedResult = HashUtils::calculateHashOfArray([
+            64,
+            ['abc', 'def'],
+        ]);
+
+        $result = $icon->calculateHash();
+        $this->assertSame($expectedResult, $result);
     }
 }

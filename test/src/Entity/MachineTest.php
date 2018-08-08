@@ -7,6 +7,8 @@ namespace FactorioItemBrowserTest\ExportData\Entity;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
 use FactorioItemBrowser\ExportData\Entity\Machine;
+use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -300,5 +302,60 @@ class MachineTest extends TestCase
         $newMachine = new Machine();
         $this->assertSame($newMachine, $newMachine->readData(new DataContainer($data)));
         $this->assertEquals($newMachine, $machine);
+    }
+
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash()
+    {
+        /* @var LocalisedString|MockObject $labels */
+        $labels = $this->getMockBuilder(LocalisedString::class)
+                       ->setMethods(['calculateHash'])
+                       ->getMock();
+        $labels->expects($this->once())
+               ->method('calculateHash')
+               ->willReturn('pqr');
+
+        /* @var LocalisedString|MockObject $descriptions */
+        $descriptions = $this->getMockBuilder(LocalisedString::class)
+                             ->setMethods(['calculateHash'])
+                             ->getMock();
+        $descriptions->expects($this->once())
+                     ->method('calculateHash')
+                     ->willReturn('stu');
+
+        $machine = new Machine();
+        $machine->setName('abc')
+                ->setLabels($labels)
+                ->setDescriptions($descriptions)
+                ->setCraftingCategories(['def', 'ghi'])
+                ->setCraftingSpeed(13.37)
+                ->setNumberOfItemSlots(42)
+                ->setNumberOfFluidInputSlots(21)
+                ->setNumberOfFluidOutputSlots(13)
+                ->setNumberOfModuleSlots(37)
+                ->setEnergyUsage(73.31)
+                ->setEnergyUsageUnit('jkl')
+                ->setIconHash('mno');
+
+        $expectedResult = HashUtils::calculateHashOfArray([
+            'abc',
+            'pqr',
+            'stu',
+            ['def', 'ghi'],
+            13.37,
+            42,
+            21,
+            13,
+            37,
+            73.31,
+            'jkl',
+            'mno',
+        ]);
+
+        $result = $machine->calculateHash();
+        $this->assertSame($expectedResult, $result);
     }
 }
