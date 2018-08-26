@@ -17,22 +17,10 @@ use FactorioItemBrowser\ExportData\Registry\Adapter\AdapterInterface;
 class EntityRegistry extends AbstractRegistry
 {
     /**
-     * The adapter to persist the data.
-     * @var AdapterInterface
-     */
-    protected $adapter;
-
-    /**
      * The name of the entity class to use in the registry.
      * @var string
      */
     protected $entityClassName;
-
-    /**
-     * The namespace of the registry to use in the adapter.
-     * @var string
-     */
-    protected $namespace;
 
     /**
      * The internal cache of the registry.
