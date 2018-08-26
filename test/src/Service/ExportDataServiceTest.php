@@ -32,7 +32,7 @@ class ExportDataServiceTest extends TestCase
      * @covers ::__construct
      * @covers ::getCombinationRegistry
      */
-    public function testGetCombinationRegistry()
+    public function testGetCombinationRegistry(): void
     {
         /* @var AdapterInterface $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
@@ -50,7 +50,7 @@ class ExportDataServiceTest extends TestCase
      * @covers ::__construct
      * @covers ::getIconRegistry
      */
-    public function testGetIconRegistry()
+    public function testGetIconRegistry(): void
     {
         /* @var AdapterInterface $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
@@ -68,7 +68,7 @@ class ExportDataServiceTest extends TestCase
      * @covers ::__construct
      * @covers ::getMachineRegistry
      */
-    public function testGetMachineRegistry()
+    public function testGetMachineRegistry(): void
     {
         /* @var AdapterInterface $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
@@ -86,7 +86,7 @@ class ExportDataServiceTest extends TestCase
      * @covers ::__construct
      * @covers ::getItemRegistry
      */
-    public function testGetItemRegistry()
+    public function testGetItemRegistry(): void
     {
         /* @var AdapterInterface $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
@@ -104,7 +104,7 @@ class ExportDataServiceTest extends TestCase
      * @covers ::__construct
      * @covers ::getModRegistry
      */
-    public function testGetModRegistry()
+    public function testGetModRegistry(): void
     {
         /* @var AdapterInterface $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
@@ -122,7 +122,7 @@ class ExportDataServiceTest extends TestCase
      * @covers ::__construct
      * @covers ::getRecipeRegistry
      */
-    public function testGetRecipeRegistry()
+    public function testGetRecipeRegistry(): void
     {
         /* @var AdapterInterface $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
@@ -140,7 +140,7 @@ class ExportDataServiceTest extends TestCase
      * @covers ::__construct
      * @covers ::getRenderedIconRegistry
      */
-    public function testGetRenderedIconRegistry()
+    public function testGetRenderedIconRegistry(): void
     {
         /* @var AdapterInterface $adapter */
         $adapter = $this->createMock(AdapterInterface::class);

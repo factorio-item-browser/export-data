@@ -23,7 +23,7 @@ class LocalisedStringTest extends TestCase
      * Tests the constructing.
      * @coversNothing
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $localisedString = new LocalisedString();
         $this->assertSame([], $localisedString->getTranslations());
@@ -33,7 +33,7 @@ class LocalisedStringTest extends TestCase
      * Tests the cloning.
      * @coversNothing
      */
-    public function testClone()
+    public function testClone(): void
     {
         $localisedString = new LocalisedString();
         $localisedString->setTranslation('en', 'foo');
@@ -51,7 +51,7 @@ class LocalisedStringTest extends TestCase
      * @covers ::setTranslation
      * @covers ::getTranslation
      */
-    public function testSetAndGetTranslations()
+    public function testSetAndGetTranslations(): void
     {
         $localisedString = new LocalisedString();
         $this->assertSame($localisedString, $localisedString->setTranslation('en', 'foo'));
@@ -94,7 +94,7 @@ class LocalisedStringTest extends TestCase
      * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
-    public function testWriteAndReadData(LocalisedString $localisedString, array $expectedData)
+    public function testWriteAndReadData(LocalisedString $localisedString, array $expectedData): void
     {
         $data = $localisedString->writeData();
         $this->assertEquals($expectedData, $data);
@@ -108,7 +108,7 @@ class LocalisedStringTest extends TestCase
      * Tests the calculateHash method.
      * @covers ::calculateHash
      */
-    public function testCalculateHash()
+    public function testCalculateHash(): void
     {
         $localisedString = new LocalisedString();
         $localisedString->setTranslation('en', 'abc')

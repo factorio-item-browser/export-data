@@ -17,30 +17,18 @@ use PHPUnit\Framework\TestCase;
 class VoidAdapterTest extends TestCase
 {
     /**
-     * Tests the save method.
+     * Tests the save and load method.
      * @covers ::save
-     */
-    public function testSave()
-    {
-        $namespace = 'abc';
-        $hash = 'def';
-        $content = 'ghi';
-
-        $adapter = new VoidAdapter();
-        $adapter->save($namespace, $hash, $content);
-        $this->assertTrue(true); // We have nothing to assert...
-    }
-    
-    /**
-     * Tests the load method.
      * @covers ::load
      */
-    public function testLoad()
+    public function testSaveAndLoad(): void
     {
         $namespace = 'abc';
         $hash = 'def';
         
         $adapter = new VoidAdapter();
+        $adapter->save($namespace, $hash, 'ghi');
+
         $result = $adapter->load($namespace, $hash);
         $this->assertNull($result);
     }
@@ -49,7 +37,7 @@ class VoidAdapterTest extends TestCase
      * Tests the getAllHashes method.
      * @covers ::getAllHashes
      */
-    public function testGetAllHashes()
+    public function testGetAllHashes(): void
     {
         $namespace = 'abc';
         $expectedResult = [];

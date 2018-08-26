@@ -49,7 +49,7 @@ class FileSystemAdapter implements AdapterInterface
         if (!file_exists($fileName) || is_readable($fileName)) {
             $success = file_put_contents($fileName, $content);
         }
-        if (!$success) {
+        if ($success === false) {
             throw new ExportDataException('Unable to write file ' . $fileName);
         }
         return;

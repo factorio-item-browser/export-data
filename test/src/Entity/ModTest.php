@@ -26,12 +26,12 @@ class ModTest extends TestCase
      * Tests the constructing.
      * @covers ::__construct
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $mod = new Mod();
         $this->assertSame('', $mod->getName());
-        $this->assertInstanceOf(LocalisedString::class, $mod->getTitles());
-        $this->assertInstanceOf(LocalisedString::class, $mod->getDescriptions());
+        $this->assertEquals(new LocalisedString(), $mod->getTitles());
+        $this->assertEquals(new LocalisedString(), $mod->getDescriptions());
         $this->assertSame('', $mod->getAuthor());
         $this->assertSame('', $mod->getVersion());
         $this->assertSame('', $mod->getFileName());
@@ -46,7 +46,7 @@ class ModTest extends TestCase
      * Tests the cloning.
      * @covers ::__clone
      */
-    public function testClone()
+    public function testClone(): void
     {
         $dependency = new Dependency();
         $dependency->setRequiredModName('foo');
@@ -97,7 +97,7 @@ class ModTest extends TestCase
      * @covers ::setName
      * @covers ::getName
      */
-    public function testSetAndGetName()
+    public function testSetAndGetName(): void
     {
         $mod = new Mod();
         $this->assertSame($mod, $mod->setName('foo'));
@@ -109,7 +109,7 @@ class ModTest extends TestCase
      * @covers ::setTitles
      * @covers ::getTitles
      */
-    public function testSetAndGetTitles()
+    public function testSetAndGetTitles(): void
     {
         $titles = new LocalisedString();
         $titles->setTranslation('en', 'foo');
@@ -124,7 +124,7 @@ class ModTest extends TestCase
      * @covers ::setDescriptions
      * @covers ::getDescriptions
      */
-    public function testSetAndGetDescriptions()
+    public function testSetAndGetDescriptions(): void
     {
         $descriptions = new LocalisedString();
         $descriptions->setTranslation('en', 'foo');
@@ -139,7 +139,7 @@ class ModTest extends TestCase
      * @covers ::setAuthor
      * @covers ::getAuthor
      */
-    public function testSetAndGetAuthor()
+    public function testSetAndGetAuthor(): void
     {
         $mod = new Mod();
         $this->assertSame($mod, $mod->setAuthor('foo'));
@@ -151,7 +151,7 @@ class ModTest extends TestCase
      * @covers ::setVersion
      * @covers ::getVersion
      */
-    public function testSetAndGetVersion()
+    public function testSetAndGetVersion(): void
     {
         $mod = new Mod();
         $this->assertSame($mod, $mod->setVersion('4.2.0'));
@@ -163,7 +163,7 @@ class ModTest extends TestCase
      * @covers ::setFileName
      * @covers ::getFileName
      */
-    public function testSetAndGetFileName()
+    public function testSetAndGetFileName(): void
     {
         $mod = new Mod();
         $this->assertSame($mod, $mod->setFileName('foo'));
@@ -175,7 +175,7 @@ class ModTest extends TestCase
      * @covers ::setDirectoryName
      * @covers ::getDirectoryName
      */
-    public function testSetAndGetDirectoryName()
+    public function testSetAndGetDirectoryName(): void
     {
         $mod = new Mod();
         $this->assertSame($mod, $mod->setDirectoryName('foo'));
@@ -188,7 +188,7 @@ class ModTest extends TestCase
      * @covers ::getDependencies
      * @covers ::addDependency
      */
-    public function testSetAddAndGetDependencies()
+    public function testSetAddAndGetDependencies(): void
     {
         $dependency1 = new Dependency();
         $dependency1->setRequiredModName('abc');
@@ -210,7 +210,7 @@ class ModTest extends TestCase
      * @covers ::setChecksum
      * @covers ::getChecksum
      */
-    public function testSetAndGetChecksum()
+    public function testSetAndGetChecksum(): void
     {
         $mod = new Mod();
         $this->assertSame($mod, $mod->setChecksum('foo'));
@@ -222,7 +222,7 @@ class ModTest extends TestCase
      * @covers ::setOrder
      * @covers ::getOrder
      */
-    public function testSetAndGetOrder()
+    public function testSetAndGetOrder(): void
     {
         $mod = new Mod();
         $this->assertSame($mod, $mod->setOrder(42));
@@ -235,7 +235,7 @@ class ModTest extends TestCase
      * @covers ::getCombinationHashes
      * @covers ::addCombinationHash
      */
-    public function testSetAddAndGetCombinationHashes()
+    public function testSetAddAndGetCombinationHashes(): void
     {
         $mod = new Mod();
         $this->assertSame($mod, $mod->setCombinationHashes(['abc', 'def']));
@@ -309,7 +309,7 @@ class ModTest extends TestCase
      * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
-    public function testWriteAndReadData(Mod $mod, array $expectedData)
+    public function testWriteAndReadData(Mod $mod, array $expectedData): void
     {
         $data = $mod->writeData();
         $this->assertEquals($expectedData, $data);
@@ -323,7 +323,7 @@ class ModTest extends TestCase
      * Tests the calculateHash method.
      * @covers ::calculateHash
      */
-    public function testCalculateHash()
+    public function testCalculateHash(): void
     {
         /* @var Dependency|MockObject $dependency1 */
         $dependency1 = $this->getMockBuilder(Dependency::class)

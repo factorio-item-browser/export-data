@@ -23,7 +23,7 @@ class ColorTest extends TestCase
      * Tests the constructing.
      * @coversNothing
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $color = new Color();
         $this->assertSame(1., $color->getRed());
@@ -38,7 +38,7 @@ class ColorTest extends TestCase
      * @covers ::getRed
      * @covers ::<protected>
      */
-    public function testSetAndGetRed()
+    public function testSetAndGetRed(): void
     {
         $color = new Color();
         $this->assertSame($color, $color->setRed(0.25));
@@ -56,7 +56,7 @@ class ColorTest extends TestCase
      * @covers ::getGreen
      * @covers ::<protected>
      */
-    public function testSetAndGetGreen()
+    public function testSetAndGetGreen(): void
     {
         $color = new Color();
         $this->assertSame($color, $color->setGreen(0.25));
@@ -74,7 +74,7 @@ class ColorTest extends TestCase
      * @covers ::getBlue
      * @covers ::<protected>
      */
-    public function testSetAndGetBlue()
+    public function testSetAndGetBlue(): void
     {
         $color = new Color();
         $this->assertSame($color, $color->setBlue(0.25));
@@ -92,7 +92,7 @@ class ColorTest extends TestCase
      * @covers ::getAlpha
      * @covers ::<protected>
      */
-    public function testSetAndGetAlpha()
+    public function testSetAndGetAlpha(): void
     {
         $color = new Color();
         $this->assertSame($color, $color->setAlpha(0.25));
@@ -137,7 +137,7 @@ class ColorTest extends TestCase
      * @covers ::readData
      * @dataProvider provideWriteAndReadData
      */
-    public function testWriteAndReadData(Color $color, array $expectedData)
+    public function testWriteAndReadData(Color $color, array $expectedData): void
     {
         $data = $color->writeData();
         $this->assertEquals($expectedData, $data);
@@ -151,7 +151,7 @@ class ColorTest extends TestCase
      * Tests the calculateHash method.
      * @covers ::calculateHash
      */
-    public function testCalculateHash()
+    public function testCalculateHash(): void
     {
         $color = new Color();
         $color->setRed(0.2)

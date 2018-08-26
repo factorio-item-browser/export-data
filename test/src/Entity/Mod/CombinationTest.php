@@ -24,7 +24,7 @@ class CombinationTest extends TestCase
      * Tests the constructing.
      * @coversNothing
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $combination = new Combination();
         $this->assertSame('', $combination->getName());
@@ -41,7 +41,7 @@ class CombinationTest extends TestCase
      * Tests the cloning.
      * @coversNothing
      */
-    public function testClone()
+    public function testClone(): void
     {
         $item = new Item();
         $item->setType('foo')
@@ -83,7 +83,7 @@ class CombinationTest extends TestCase
      * @covers ::setName
      * @covers ::getName
      */
-    public function testSetAndGetName()
+    public function testSetAndGetName(): void
     {
         $combination = new Combination();
         $this->assertSame($combination, $combination->setName('foo'));
@@ -95,7 +95,7 @@ class CombinationTest extends TestCase
      * @covers ::setMainModName
      * @covers ::getMainModName
      */
-    public function testSetAndGetMainModName()
+    public function testSetAndGetMainModName(): void
     {
         $combination = new Combination();
         $this->assertSame($combination, $combination->setMainModName('foo'));
@@ -108,7 +108,7 @@ class CombinationTest extends TestCase
      * @covers ::getLoadedModNames
      * @covers ::addLoadedModName
      */
-    public function testSetAddAndGetLoadedModNames()
+    public function testSetAddAndGetLoadedModNames(): void
     {
         $combination = new Combination();
         $this->assertSame($combination, $combination->setLoadedModNames(['abc', 'def']));
@@ -124,7 +124,7 @@ class CombinationTest extends TestCase
      * @covers ::getLoadedOptionalModNames
      * @covers ::addLoadedOptionalModName
      */
-    public function testSetAddAndGetLoadedOptionalModNames()
+    public function testSetAddAndGetLoadedOptionalModNames(): void
     {
         $combination = new Combination();
         $this->assertSame($combination, $combination->setLoadedOptionalModNames(['abc', 'def']));
@@ -140,7 +140,7 @@ class CombinationTest extends TestCase
      * @covers ::getItemHashes
      * @covers ::addItemHash
      */
-    public function testSetAddAndGetItemHashes()
+    public function testSetAddAndGetItemHashes(): void
     {
         $combination = new Combination();
         $this->assertSame($combination, $combination->setItemHashes(['abc', 'def']));
@@ -156,7 +156,7 @@ class CombinationTest extends TestCase
      * @covers ::getRecipeHashes
      * @covers ::addRecipeHash
      */
-    public function testSetAddAndGetRecipeHashes()
+    public function testSetAddAndGetRecipeHashes(): void
     {
         $combination = new Combination();
         $this->assertSame($combination, $combination->setRecipeHashes(['abc', 'def']));
@@ -172,7 +172,7 @@ class CombinationTest extends TestCase
      * @covers ::getMachineHashes
      * @covers ::addMachineHash
      */
-    public function testSetAddAndGetMachineHashes()
+    public function testSetAddAndGetMachineHashes(): void
     {
         $combination = new Combination();
         $this->assertSame($combination, $combination->setMachineHashes(['abc', 'def']));
@@ -188,7 +188,7 @@ class CombinationTest extends TestCase
      * @covers ::getIconHashes
      * @covers ::addIconHash
      */
-    public function testSetAddAndGetIconHashes()
+    public function testSetAddAndGetIconHashes(): void
     {
         $combination = new Combination();
         $this->assertSame($combination, $combination->setIconHashes(['abc', 'def']));
@@ -263,7 +263,7 @@ class CombinationTest extends TestCase
      * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
-    public function testWriteAndReadData(Combination $combination, array $expectedData)
+    public function testWriteAndReadData(Combination $combination, array $expectedData): void
     {
         $data = $combination->writeData();
         $this->assertEquals($expectedData, $data);
@@ -277,7 +277,7 @@ class CombinationTest extends TestCase
      * Tests the calculateHash method.
      * @covers ::calculateHash
      */
-    public function testCalculateHash()
+    public function testCalculateHash(): void
     {
         $combination = new Combination();
         $combination->setName('abc')

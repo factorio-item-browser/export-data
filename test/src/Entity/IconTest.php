@@ -25,7 +25,7 @@ class IconTest extends TestCase
      * Tests the constructing.
      * @coversNothing
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $icon = new Icon();
         $this->assertSame(Icon::DEFAULT_SIZE, $icon->getSize());
@@ -36,7 +36,7 @@ class IconTest extends TestCase
      * Tests the cloning.
      * @covers ::__clone
      */
-    public function testClone()
+    public function testClone(): void
     {
         $layer = new Layer();
         $layer->setFileName('foo');
@@ -60,7 +60,7 @@ class IconTest extends TestCase
      * @covers ::setSize
      * @covers ::getSize
      */
-    public function testSetAndGetSize()
+    public function testSetAndGetSize(): void
     {
         $icon = new Icon();
         $this->assertSame($icon, $icon->setSize(64));
@@ -73,7 +73,7 @@ class IconTest extends TestCase
      * @covers ::getLayers
      * @covers ::addLayer
      */
-    public function testSetAddAndGetLayers()
+    public function testSetAddAndGetLayers(): void
     {
         $layer1 = new Layer();
         $layer1->setFileName('abc');
@@ -128,7 +128,7 @@ class IconTest extends TestCase
      * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
-    public function testWriteAndReadData(Icon $icon, array $expectedData)
+    public function testWriteAndReadData(Icon $icon, array $expectedData): void
     {
         $data = $icon->writeData();
         $this->assertEquals($expectedData, $data);
@@ -142,7 +142,7 @@ class IconTest extends TestCase
      * Tests the calculateHash method.
      * @covers ::calculateHash
      */
-    public function testCalculateHash()
+    public function testCalculateHash(): void
     {
         /* @var Layer|MockObject $layer1 */
         $layer1 = $this->getMockBuilder(Layer::class)

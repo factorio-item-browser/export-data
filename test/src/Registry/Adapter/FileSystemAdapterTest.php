@@ -28,7 +28,7 @@ class FileSystemAdapterTest extends TestCase
      * @covers ::__construct
      * @throws ReflectionException
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $directory = 'abc';
 
@@ -57,7 +57,7 @@ class FileSystemAdapterTest extends TestCase
      * @covers ::save
      * @dataProvider provideSave
      */
-    public function testSave(int $filePermission, bool $expectException)
+    public function testSave(int $filePermission, bool $expectException): void
     {
         $directory = vfsStream::setup('root');
         $directory->addChild(vfsStream::newFile('foo', $filePermission));
@@ -114,7 +114,7 @@ class FileSystemAdapterTest extends TestCase
      * @covers ::load
      * @dataProvider provideLoad
      */
-    public function testLoad(?string $content, int $filePermission, ?string $expectedResult)
+    public function testLoad(?string $content, int $filePermission, ?string $expectedResult): void
     {
         $directory = vfsStream::setup('root', $filePermission);
         if ($content !== null) {
@@ -147,7 +147,7 @@ class FileSystemAdapterTest extends TestCase
      * @covers ::getFileName
      * @throws ReflectionException
      */
-    public function testGetFileName()
+    public function testGetFileName(): void
     {
         $directory = 'abc';
         $namespace = 'def';
@@ -176,7 +176,7 @@ class FileSystemAdapterTest extends TestCase
     /**
      * Tests the ensureDirectory method.
      * @param int $parentDirectoryPermission
-     * @param int $directoryPermission
+     * @param int|null $directoryPermission
      * @param bool $expectException
      * @param bool $expectDirectory
      * @throws ReflectionException
@@ -188,7 +188,7 @@ class FileSystemAdapterTest extends TestCase
         ?int $directoryPermission,
         bool $expectException,
         bool $expectDirectory
-    ) {
+    ): void {
         $vfs = vfsStream::setup('root', $parentDirectoryPermission);
         $directory = vfsStream::url('root/abc');
         if ($directoryPermission !== null) {
@@ -209,7 +209,7 @@ class FileSystemAdapterTest extends TestCase
      * Tests the getAllHashes method.
      * @covers ::getAllHashes
      */
-    public function testGetAllHashes()
+    public function testGetAllHashes(): void
     {
         $directory = vfsStream::url('root');
         $namespace = 'abc';

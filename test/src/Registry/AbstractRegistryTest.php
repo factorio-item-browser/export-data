@@ -27,7 +27,7 @@ class AbstractRegistryTest extends TestCase
      * @covers ::__construct
      * @throws ReflectionException
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         /* @var AdapterInterface $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
@@ -47,7 +47,7 @@ class AbstractRegistryTest extends TestCase
      * @covers ::saveContent
      * @throws ReflectionException
      */
-    public function testSaveContent()
+    public function testSaveContent(): void
     {
         $cache = ['abc' => 'def'];
         $hash = 'ghi';
@@ -135,7 +135,7 @@ class AbstractRegistryTest extends TestCase
         ?string $resultLoad,
         ?string $expectedResult,
         array $expectedCache
-    ) {
+    ): void {
         $namespace = 'abc';
 
         /* @var AdapterInterface|MockObject $adapter */
@@ -163,7 +163,7 @@ class AbstractRegistryTest extends TestCase
      * @covers ::encodeContent
      * @throws ReflectionException
      */
-    public function testEncodeContent()
+    public function testEncodeContent(): void
     {
         $content = [
             'abc' => 'def',
@@ -207,7 +207,7 @@ class AbstractRegistryTest extends TestCase
      * @covers ::decodeContent
      * @dataProvider provideDecodeContent
      */
-    public function testDecodeContent(string $content, array $expectedResult)
+    public function testDecodeContent(string $content, array $expectedResult): void
     {
         /* @var AbstractRegistry|MockObject $registry */
         $registry = $this->getMockBuilder(AbstractRegistry::class)

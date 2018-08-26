@@ -23,7 +23,7 @@ class DependencyTest extends TestCase
      * Tests the constructing.
      * @coversNothing
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $dependency = new Dependency();
         $this->assertSame('', $dependency->getRequiredModName());
@@ -35,7 +35,7 @@ class DependencyTest extends TestCase
      * Tests the cloning.
      * @coversNothing
      */
-    public function testClone()
+    public function testClone(): void
     {
         $dependency = new Dependency();
         $dependency->setRequiredModName('foo')
@@ -57,7 +57,7 @@ class DependencyTest extends TestCase
      * @covers ::setRequiredModName
      * @covers ::getRequiredModName
      */
-    public function testSetAndGetRequiredModName()
+    public function testSetAndGetRequiredModName(): void
     {
         $dependency = new Dependency();
         $this->assertSame($dependency, $dependency->setRequiredModName('foo'));
@@ -69,7 +69,7 @@ class DependencyTest extends TestCase
      * @covers ::setRequiredVersion
      * @covers ::getRequiredVersion
      */
-    public function testSetAndGetRequiredVersion()
+    public function testSetAndGetRequiredVersion(): void
     {
         $dependency = new Dependency();
         $this->assertSame($dependency, $dependency->setRequiredVersion('4.2.0'));
@@ -81,7 +81,7 @@ class DependencyTest extends TestCase
      * @covers ::setIsMandatory
      * @covers ::getIsMandatory
      */
-    public function testSetAndGetIsMandatory()
+    public function testSetAndGetIsMandatory(): void
     {
         $dependency = new Dependency();
         $this->assertSame($dependency, $dependency->setIsMandatory(true));
@@ -119,7 +119,7 @@ class DependencyTest extends TestCase
      * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
-    public function testWriteAndReadData(Dependency $dependency, array $expectedData)
+    public function testWriteAndReadData(Dependency $dependency, array $expectedData): void
     {
         $data = $dependency->writeData();
         $this->assertEquals($expectedData, $data);
@@ -133,7 +133,7 @@ class DependencyTest extends TestCase
      * Tests the calculateHash method.
      * @covers ::calculateHash
      */
-    public function testCalculateHash()
+    public function testCalculateHash(): void
     {
         $dependency = new Dependency();
         $dependency->setRequiredModName('abc')

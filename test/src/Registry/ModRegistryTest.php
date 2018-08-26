@@ -28,7 +28,7 @@ class ModRegistryTest extends TestCase
      * @throws ReflectionException
      * @covers ::__construct
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         /* @var AdapterInterface $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
@@ -45,7 +45,7 @@ class ModRegistryTest extends TestCase
      * @throws ReflectionException
      * @covers ::set
      */
-    public function testSet()
+    public function testSet(): void
     {
         $mod1 = new Mod();
         $mod1->setName('abc');
@@ -76,7 +76,7 @@ class ModRegistryTest extends TestCase
      * @throws ReflectionException
      * @covers ::saveMods
      */
-    public function testSaveMods()
+    public function testSaveMods(): void
     {
         $mod1 = new Mod();
         $mod1->setName('abc');
@@ -131,7 +131,7 @@ class ModRegistryTest extends TestCase
      * @covers ::get
      * @dataProvider provideGet
      */
-    public function testGet(array $mods, string $modName, ?Mod $expectedResult)
+    public function testGet(array $mods, string $modName, ?Mod $expectedResult): void
     {
         /* @var ModRegistry|MockObject $registry */
         $registry = $this->getMockBuilder(ModRegistry::class)
@@ -199,7 +199,7 @@ class ModRegistryTest extends TestCase
         string $resultLoadContent,
         array $decodedContent,
         array $expectedMods
-    ) {
+    ): void {
         /* @var ModRegistry|MockObject $registry */
         $registry = $this->getMockBuilder(ModRegistry::class)
                          ->setMethods(['loadContent', 'decodeContent'])
@@ -227,7 +227,7 @@ class ModRegistryTest extends TestCase
      * @throws ReflectionException
      * @covers ::getAllNames
      */
-    public function testGetAllNames()
+    public function testGetAllNames(): void
     {
         $mods = ['abc' => 'def', 'ghi' => 'jkl'];
         $expectedResult = ['abc', 'ghi'];

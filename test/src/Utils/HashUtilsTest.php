@@ -20,7 +20,7 @@ class HashUtilsTest extends TestCase
      * Tests the calculateHash method.
      * @covers ::calculateHash
      */
-    public function testCalculateHash()
+    public function testCalculateHash(): void
     {
         $content = 'abc';
         $expectedResult = '900150983cd24fb0';
@@ -33,7 +33,7 @@ class HashUtilsTest extends TestCase
      * Tests the calculateHashOfArray method.
      * @covers ::calculateHashOfArray
      */
-    public function testCalculateHashOfArray()
+    public function testCalculateHashOfArray(): void
     {
         $data = ['abc', 'def'];
         $expectedResult = '9e86daa1e1bd94ed';

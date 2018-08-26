@@ -22,7 +22,7 @@ class ContentRegistryTest extends TestCase
      * Tests the set method.
      * @covers ::set
      */
-    public function testSet()
+    public function testSet(): void
     {
         $hash = 'abc';
         $content = 'def';
@@ -44,7 +44,7 @@ class ContentRegistryTest extends TestCase
      * Tests the get method.
      * @covers ::get
      */
-    public function testGet()
+    public function testGet(): void
     {
         $hash = 'abc';
         $content = 'def';
@@ -67,7 +67,7 @@ class ContentRegistryTest extends TestCase
      * Tests the getAllHashes method.
      * @covers ::getAllHashes
      */
-    public function testGetAllHashes()
+    public function testGetAllHashes(): void
     {
         $namespace = 'abc';
         $hashes = ['def', 'ghi'];

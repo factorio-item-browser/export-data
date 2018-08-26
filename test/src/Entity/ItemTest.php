@@ -25,14 +25,14 @@ class ItemTest extends TestCase
      * Tests the constructing.
      * @covers ::__construct
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $item = new Item();
 
         $this->assertSame('', $item->getType());
         $this->assertSame('', $item->getName());
-        $this->assertInstanceOf(LocalisedString::class, $item->getLabels());
-        $this->assertInstanceOf(LocalisedString::class, $item->getDescriptions());
+        $this->assertEquals(new LocalisedString(), $item->getLabels());
+        $this->assertEquals(new LocalisedString(), $item->getDescriptions());
         $this->assertFalse($item->getProvidesRecipeLocalisation());
         $this->assertFalse($item->getProvidesMachineLocalisation());
         $this->assertSame('', $item->getIconHash());
@@ -42,7 +42,7 @@ class ItemTest extends TestCase
      * Tests the cloning.
      * @covers ::__clone
      */
-    public function testClone()
+    public function testClone(): void
     {
         $item = new Item();
         $item->setType('foo')
@@ -73,7 +73,7 @@ class ItemTest extends TestCase
      * @covers ::setType
      * @covers ::getType
      */
-    public function testSetAndGetType()
+    public function testSetAndGetType(): void
     {
         $item = new Item();
         $this->assertSame($item, $item->setType('foo'));
@@ -85,7 +85,7 @@ class ItemTest extends TestCase
      * @covers ::setName
      * @covers ::getName
      */
-    public function testSetAndGetName()
+    public function testSetAndGetName(): void
     {
         $item = new Item();
         $this->assertSame($item, $item->setName('foo'));
@@ -97,7 +97,7 @@ class ItemTest extends TestCase
      * @covers ::setLabels
      * @covers ::getLabels
      */
-    public function testSetAndGetLabels()
+    public function testSetAndGetLabels(): void
     {
         $labels = new LocalisedString();
         $labels->setTranslation('en', 'foo');
@@ -112,7 +112,7 @@ class ItemTest extends TestCase
      * @covers ::setDescriptions
      * @covers ::getDescriptions
      */
-    public function testSetAndGetDescriptions()
+    public function testSetAndGetDescriptions(): void
     {
         $descriptions = new LocalisedString();
         $descriptions->setTranslation('en', 'foo');
@@ -127,7 +127,7 @@ class ItemTest extends TestCase
      * @covers ::setProvidesRecipeLocalisation
      * @covers ::getProvidesRecipeLocalisation
      */
-    public function testSetAndGetProvidesRecipeLocalisation()
+    public function testSetAndGetProvidesRecipeLocalisation(): void
     {
         $item = new Item();
         $this->assertSame($item, $item->setProvidesRecipeLocalisation(true));
@@ -139,7 +139,7 @@ class ItemTest extends TestCase
      * @covers ::setProvidesMachineLocalisation
      * @covers ::getProvidesMachineLocalisation
      */
-    public function testSetAndGetProvidesMachineLocalisation()
+    public function testSetAndGetProvidesMachineLocalisation(): void
     {
         $item = new Item();
         $this->assertSame($item, $item->setProvidesMachineLocalisation(true));
@@ -151,7 +151,7 @@ class ItemTest extends TestCase
      * @covers ::setIconHash
      * @covers ::getIconHash
      */
-    public function testSetAndGetIconHash()
+    public function testSetAndGetIconHash(): void
     {
         $item = new Item();
         $this->assertSame($item, $item->setIconHash('foo'));
@@ -201,7 +201,7 @@ class ItemTest extends TestCase
      * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
-    public function testWriteAndReadData(Item $item, array $expectedData)
+    public function testWriteAndReadData(Item $item, array $expectedData): void
     {
         $data = $item->writeData();
         $this->assertEquals($expectedData, $data);
@@ -215,7 +215,7 @@ class ItemTest extends TestCase
      * Tests the calculateHash method.
      * @covers ::calculateHash
      */
-    public function testCalculateHash()
+    public function testCalculateHash(): void
     {
         /* @var LocalisedString|MockObject $labels */
         $labels = $this->getMockBuilder(LocalisedString::class)

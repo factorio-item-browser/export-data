@@ -33,7 +33,7 @@ class EntityRegistryTest extends TestCase
      * @covers ::__construct
      * @throws ReflectionException
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         /* @var AdapterInterface $adapter */
         $adapter = $this->createMock(AdapterInterface::class);
@@ -79,7 +79,7 @@ class EntityRegistryTest extends TestCase
      * @covers ::getNamespace
      * @dataProvider provideGetNamespace
      */
-    public function testGetNamespace(string $entityClassName, string $expectedResult)
+    public function testGetNamespace(string $entityClassName, string $expectedResult): void
     {
         /* @var EntityRegistry $registry */
         $registry = $this->createMock(EntityRegistry::class);
@@ -92,7 +92,7 @@ class EntityRegistryTest extends TestCase
      * Tests the set method.
      * @covers ::set
      */
-    public function testSet()
+    public function testSet(): void
     {
         $entityData = ['abc' => 'def'];
         $encodedContent = 'ghi';
@@ -156,7 +156,7 @@ class EntityRegistryTest extends TestCase
         bool $expectCreate,
         ?EntityInterface $resultCreate,
         ?EntityInterface $expectedResult
-    ) {
+    ): void {
         $hash = 'foo';
 
         /* @var EntityRegistry|MockObject $registry */
@@ -182,7 +182,7 @@ class EntityRegistryTest extends TestCase
      * @throws ReflectionException
      * @covers ::getAllHashes
      */
-    public function testGetAllHashes()
+    public function testGetAllHashes(): void
     {
         $namespace = 'abc';
         $hashes = ['def', 'ghi'];
@@ -214,7 +214,7 @@ class EntityRegistryTest extends TestCase
      * @throws ReflectionException
      * @covers ::createEntityFromContent
      */
-    public function testCreateEntityFromContent()
+    public function testCreateEntityFromContent(): void
     {
         $content = 'abc';
         $decodedContent = ['abc' => 'def'];
@@ -250,7 +250,7 @@ class EntityRegistryTest extends TestCase
      * @throws ReflectionException
      * @covers ::createEntity
      */
-    public function testCreateEntity()
+    public function testCreateEntity(): void
     {
         $entityClassName = Item::class;
         /* @var AdapterInterface $adapter */

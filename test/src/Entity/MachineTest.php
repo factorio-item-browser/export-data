@@ -24,13 +24,13 @@ class MachineTest extends TestCase
      * Tests the constructing.
      * @covers ::__construct
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $machine = new Machine();
 
         $this->assertSame('', $machine->getName());
-        $this->assertInstanceOf(LocalisedString::class, $machine->getLabels());
-        $this->assertInstanceOf(LocalisedString::class, $machine->getDescriptions());
+        $this->assertEquals(new LocalisedString(), $machine->getLabels());
+        $this->assertEquals(new LocalisedString(), $machine->getDescriptions());
         $this->assertSame([], $machine->getCraftingCategories());
         $this->assertSame(1., $machine->getCraftingSpeed());
         $this->assertSame(0, $machine->getNumberOfItemSlots());
@@ -44,7 +44,7 @@ class MachineTest extends TestCase
      * Tests the cloning.
      * @covers ::__clone
      */
-    public function testClone()
+    public function testClone(): void
     {
         $machine = new Machine();
         $machine->setName('abc')
@@ -91,7 +91,7 @@ class MachineTest extends TestCase
      * @covers ::setName
      * @covers ::getName
      */
-    public function testSetAndGetName()
+    public function testSetAndGetName(): void
     {
         $machine = new Machine();
         $this->assertSame($machine, $machine->setName('foo'));
@@ -103,7 +103,7 @@ class MachineTest extends TestCase
      * @covers ::setLabels
      * @covers ::getLabels
      */
-    public function testSetAndGetLabels()
+    public function testSetAndGetLabels(): void
     {
         $labels = new LocalisedString();
         $labels->setTranslation('en', 'foo');
@@ -118,7 +118,7 @@ class MachineTest extends TestCase
      * @covers ::setDescriptions
      * @covers ::getDescriptions
      */
-    public function testSetAndGetDescriptions()
+    public function testSetAndGetDescriptions(): void
     {
         $descriptions = new LocalisedString();
         $descriptions->setTranslation('en', 'foo');
@@ -134,7 +134,7 @@ class MachineTest extends TestCase
      * @covers ::getCraftingCategories
      * @covers ::addCraftingCategory
      */
-    public function testSetAddAndGetCraftingCategorys()
+    public function testSetAddAndGetCraftingCategories(): void
     {
         $machine = new Machine();
         $this->assertSame($machine, $machine->setCraftingCategories(['abc', 'def']));
@@ -149,7 +149,7 @@ class MachineTest extends TestCase
      * @covers ::setCraftingSpeed
      * @covers ::getCraftingSpeed
      */
-    public function testSetAndGetCraftingSpeed()
+    public function testSetAndGetCraftingSpeed(): void
     {
         $machine = new Machine();
         $this->assertSame($machine, $machine->setCraftingSpeed(13.37));
@@ -161,7 +161,7 @@ class MachineTest extends TestCase
      * @covers ::setNumberOfItemSlots
      * @covers ::getNumberOfItemSlots
      */
-    public function testSetAndGetNumberOfItemSlots()
+    public function testSetAndGetNumberOfItemSlots(): void
     {
         $machine = new Machine();
         $this->assertSame($machine, $machine->setNumberOfItemSlots(42));
@@ -173,7 +173,7 @@ class MachineTest extends TestCase
      * @covers ::setNumberOfFluidInputSlots
      * @covers ::getNumberOfFluidInputSlots
      */
-    public function testSetAndGetNumberOfFluidInputSlots()
+    public function testSetAndGetNumberOfFluidInputSlots(): void
     {
         $machine = new Machine();
         $this->assertSame($machine, $machine->setNumberOfFluidInputSlots(42));
@@ -185,7 +185,7 @@ class MachineTest extends TestCase
      * @covers ::setNumberOfFluidOutputSlots
      * @covers ::getNumberOfFluidOutputSlots
      */
-    public function testSetAndGetNumberOfFluidOutputSlots()
+    public function testSetAndGetNumberOfFluidOutputSlots(): void
     {
         $machine = new Machine();
         $this->assertSame($machine, $machine->setNumberOfFluidOutputSlots(42));
@@ -197,7 +197,7 @@ class MachineTest extends TestCase
      * @covers ::setNumberOfModuleSlots
      * @covers ::getNumberOfModuleSlots
      */
-    public function testSetAndGetNumberOfModuleSlots()
+    public function testSetAndGetNumberOfModuleSlots(): void
     {
         $machine = new Machine();
         $this->assertSame($machine, $machine->setNumberOfModuleSlots(42));
@@ -209,7 +209,7 @@ class MachineTest extends TestCase
      * @covers ::setEnergyUsage
      * @covers ::getEnergyUsage
      */
-    public function testSetAndGetEnergyUsage()
+    public function testSetAndGetEnergyUsage(): void
     {
         $machine = new Machine();
         $this->assertSame($machine, $machine->setEnergyUsage(13.37));
@@ -221,7 +221,7 @@ class MachineTest extends TestCase
      * @covers ::setEnergyUsageUnit
      * @covers ::getEnergyUsageUnit
      */
-    public function testSetAndGetEnergyUsageUnit()
+    public function testSetAndGetEnergyUsageUnit(): void
     {
         $machine = new Machine();
         $this->assertSame($machine, $machine->setEnergyUsageUnit('abc'));
@@ -233,7 +233,7 @@ class MachineTest extends TestCase
      * @covers ::setIconHash
      * @covers ::getIconHash
      */
-    public function testSetAndGetIconHash()
+    public function testSetAndGetIconHash(): void
     {
         $machine = new Machine();
         $this->assertSame($machine, $machine->setIconHash('foo'));
@@ -294,7 +294,7 @@ class MachineTest extends TestCase
      * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
-    public function testWriteAndReadData(Machine $machine, array $expectedData)
+    public function testWriteAndReadData(Machine $machine, array $expectedData): void
     {
         $data = $machine->writeData();
         $this->assertEquals($expectedData, $data);
@@ -308,7 +308,7 @@ class MachineTest extends TestCase
      * Tests the calculateHash method.
      * @covers ::calculateHash
      */
-    public function testCalculateHash()
+    public function testCalculateHash(): void
     {
         /* @var LocalisedString|MockObject $labels */
         $labels = $this->getMockBuilder(LocalisedString::class)
