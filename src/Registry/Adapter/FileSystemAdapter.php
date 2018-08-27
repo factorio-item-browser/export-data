@@ -46,7 +46,7 @@ class FileSystemAdapter implements AdapterInterface
         $this->ensureDirectory(dirname($fileName));
 
         $success = false;
-        if (!file_exists($fileName) || is_readable($fileName)) {
+        if (!file_exists($fileName) || is_writable($fileName)) {
             $success = file_put_contents($fileName, $content);
         }
         if ($success === false) {
