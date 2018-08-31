@@ -17,7 +17,6 @@ interface AdapterInterface
      * @param string $namespace
      * @param string $hash
      * @param string $content
-     * @return void
      */
     public function save(string $namespace, string $hash, string $content): void;
 
@@ -28,6 +27,13 @@ interface AdapterInterface
      * @return string|null
      */
     public function load(string $namespace, string $hash): ?string;
+
+    /**
+     * Deletes the content under the specified hash.
+     * @param string $namespace
+     * @param string $hash
+     */
+    public function delete(string $namespace, string $hash): void;
 
     /**
      * Returns all hashes currently known to the adapter.

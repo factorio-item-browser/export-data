@@ -47,13 +47,12 @@ abstract class AbstractRegistry
      * Saves the specified content into the registry.
      * @param string $hash
      * @param string $content
-     * @return $this
      */
-    protected function saveContent(string $hash, string $content)
+    protected function saveContent(string $hash, string $content): void
     {
         $this->adapter->save($this->namespace, $hash, $content);
         $this->cache[$hash] = $content;
-        return $this;
+        return;
     }
 
     /**
@@ -68,6 +67,17 @@ abstract class AbstractRegistry
             $this->cache[$hash] = is_string($content) ? $content : null;
         }
         return $this->cache[$hash];
+    }
+
+    /**
+     * Deletes the content with the specified hash from the registry.
+     * @param string $hash
+     */
+    protected function deleteContent(string $hash): void
+    {
+        $this->adapter->delete($this->namespace, $hash);
+        unset($this->cache[$hash]);
+        return;
     }
 
     /**

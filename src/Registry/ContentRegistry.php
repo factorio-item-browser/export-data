@@ -16,12 +16,11 @@ class ContentRegistry extends AbstractRegistry
      * Sets content into the registry.
      * @param string $hash
      * @param string $content
-     * @return $this
      */
-    public function set(string $hash, string $content)
+    public function set(string $hash, string $content): void
     {
         $this->saveContent($hash, $content);
-        return $this;
+        return;
     }
 
     /**
@@ -32,6 +31,16 @@ class ContentRegistry extends AbstractRegistry
     public function get(string $hash): ?string
     {
         return $this->loadContent($hash);
+    }
+
+    /**
+     * Removes content from the registry.
+     * @param string $hash
+     */
+    public function remove(string $hash): void
+    {
+        $this->deleteContent($hash);
+        return;
     }
 
     /**

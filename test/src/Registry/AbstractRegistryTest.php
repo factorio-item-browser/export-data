@@ -69,8 +69,7 @@ class AbstractRegistryTest extends TestCase
                          ->getMockForAbstractClass();
         $this->injectProperty($registry, 'cache', $cache);
 
-        $result = $this->invokeMethod($registry, 'saveContent', $hash, $content);
-        $this->assertSame($registry, $result);
+        $this->invokeMethod($registry, 'saveContent', $hash, $content);
         $this->assertEquals($expectedCache, $this->extractProperty($registry, 'cache'));
     }
 
@@ -155,6 +154,41 @@ class AbstractRegistryTest extends TestCase
 
         $result = $this->invokeMethod($registry, 'loadContent', $hash);
         $this->assertSame($expectedResult, $result);
+        $this->assertSame($expectedCache, $this->extractProperty($registry, 'cache'));
+    }
+
+    /**
+     * Tests the deleteContent method.
+     * @throws ReflectionException
+     * @covers ::deleteContent
+     */
+    public function testDeleteContent(): void
+    {
+        $cache = [
+            'abc' => 'def',
+            'ghi' => 'jkl',
+        ];
+        $expectedCache = [
+            'abc' => 'def',
+        ];
+        $namespace = 'mno';
+        $hash = 'ghi';
+
+        /* @var AdapterInterface|MockObject $adapter */
+        $adapter = $this->getMockBuilder(AdapterInterface::class)
+                        ->setMethods(['delete'])
+                        ->getMockForAbstractClass();
+        $adapter->expects($this->once())
+                ->method('delete')
+                ->with($namespace, $hash);
+
+        /* @var AbstractRegistry|MockObject $registry */
+        $registry = $this->getMockBuilder(AbstractRegistry::class)
+                         ->setConstructorArgs([$adapter, $namespace])
+                         ->getMockForAbstractClass();
+        $this->injectProperty($registry, 'cache', $cache);
+
+        $this->invokeMethod($registry, 'deleteContent', $hash);
         $this->assertSame($expectedCache, $this->extractProperty($registry, 'cache'));
     }
 

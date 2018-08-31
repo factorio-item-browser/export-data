@@ -36,8 +36,7 @@ class ContentRegistryTest extends TestCase
                  ->method('saveContent')
                  ->with($hash, $content);
 
-        $result = $registry->set($hash, $content);
-        $this->assertSame($registry, $result);
+        $registry->set($hash, $content);
     }
 
     /**
@@ -63,6 +62,26 @@ class ContentRegistryTest extends TestCase
         $this->assertSame($content, $result);
     }
 
+    /**
+     * Tests the remove method.
+     * @covers ::remove
+     */
+    public function testRemove(): void
+    {
+        $hash = 'abc';
+
+        /* @var ContentRegistry|MockObject $registry */
+        $registry = $this->getMockBuilder(ContentRegistry::class)
+                         ->setMethods(['deleteContent'])
+                         ->disableOriginalConstructor()
+                         ->getMock();
+        $registry->expects($this->once())
+                 ->method('deleteContent')
+                 ->with($hash);
+
+        $registry->remove($hash);
+    }
+    
     /**
      * Tests the getAllHashes method.
      * @covers ::getAllHashes

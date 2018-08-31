@@ -70,7 +70,6 @@ class EntityRegistryTest extends TestCase
         ];
     }
 
-
     /**
      * Tests the getNamespace method.
      * @param string $entityClassName
@@ -175,6 +174,26 @@ class EntityRegistryTest extends TestCase
 
         $result = $registry->get($hash);
         $this->assertSame($expectedResult, $result);
+    }
+
+    /**
+     * Tests the remove method.
+     * @covers ::remove
+     */
+    public function testRemove(): void
+    {
+        $hash = 'foo';
+
+        /* @var EntityRegistry|MockObject $registry */
+        $registry = $this->getMockBuilder(EntityRegistry::class)
+                         ->setMethods(['deleteContent'])
+                         ->disableOriginalConstructor()
+                         ->getMock();
+        $registry->expects($this->once())
+                 ->method('deleteContent')
+                 ->with($hash);
+
+        $registry->remove($hash);
     }
 
     /**

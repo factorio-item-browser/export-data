@@ -72,6 +72,20 @@ class FileSystemAdapter implements AdapterInterface
     }
 
     /**
+     * Deletes the content under the specified hash.
+     * @param string $namespace
+     * @param string $hash
+     */
+    public function delete(string $namespace, string $hash): void
+    {
+        $fileName = $this->getFileName($namespace, $hash);
+        if (file_exists($fileName)) {
+            unlink($fileName);
+        }
+        return;
+    }
+
+    /**
      * Returns the filename to use to save the content with the specified namespace and hash.
      * @param string $namespace
      * @param string $hash
@@ -91,10 +105,9 @@ class FileSystemAdapter implements AdapterInterface
     /**
      * Ensures that the specified directory is available and writable.
      * @param string $directory
-     * @return $this
      * @throws ExportDataException
      */
-    protected function ensureDirectory(string $directory)
+    protected function ensureDirectory(string $directory): void
     {
         if (!is_dir($directory)) {
             $success = mkdir($directory, 0775, true);
@@ -106,8 +119,7 @@ class FileSystemAdapter implements AdapterInterface
         if (!is_writable($directory)) {
             throw new ExportDataException('Directory ' . $directory . ' is not writable.');
         }
-
-        return $this;
+        return;
     }
 
     /**

@@ -36,6 +36,16 @@ class VoidAdapter implements AdapterInterface
     }
 
     /**
+     * Deletes the content under the specified hash.
+     * @param string $namespace
+     * @param string $hash
+     */
+    public function delete(string $namespace, string $hash): void
+    {
+        return;
+    }
+
+    /**
      * Returns all hashes currently known to the adapter.
      * @param string $namespace
      * @return array|string[]

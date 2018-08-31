@@ -50,28 +50,13 @@ class ModRegistry extends AbstractRegistry
     /**
      * Sets a mod into the registry.
      * @param Mod $mod
-     * @return $this
      */
-    public function set(Mod $mod)
+    public function set(Mod $mod): void
     {
         $this->loadMods();
         $this->mods[$mod->getName()] = $mod;
         $this->saveMods();
-        return $this;
-    }
-
-    /**
-     * Saves the currently known mod to the adapter.
-     * @return $this
-     */
-    protected function saveMods()
-    {
-        $mods = [];
-        foreach ($this->mods as $mod) {
-            $mods[] = $mod->writeData();
-        }
-        $this->saveContent(self::HASH_FILE_MODS, $this->encodeContent($mods));
-        return $this;
+        return;
     }
 
     /**
@@ -86,10 +71,34 @@ class ModRegistry extends AbstractRegistry
     }
 
     /**
-     * Loads the mods from the file.
-     * @return $this
+     * Removes the mod with the specified name.
+     * @param string $modName
      */
-    protected function loadMods()
+    public function remove(string $modName): void
+    {
+        $this->loadMods();
+        unset($this->mods[$modName]);
+        $this->saveMods();
+        return;
+    }
+
+    /**
+     * Saves the currently known mod to the adapter.
+     */
+    protected function saveMods(): void
+    {
+        $mods = [];
+        foreach ($this->mods as $mod) {
+            $mods[] = $mod->writeData();
+        }
+        $this->saveContent(self::HASH_FILE_MODS, $this->encodeContent($mods));
+        return;
+    }
+
+    /**
+     * Loads the mods from the file.
+     */
+    protected function loadMods(): void
     {
         if (!$this->isLoaded) {
             $this->mods = [];
@@ -102,7 +111,7 @@ class ModRegistry extends AbstractRegistry
             }
             $this->isLoaded = true;
         }
-        return $this;
+        return;
     }
 
     /**
@@ -112,7 +121,6 @@ class ModRegistry extends AbstractRegistry
     public function getAllNames(): array
     {
         $this->loadMods();
-
         return array_keys($this->mods);
     }
 }

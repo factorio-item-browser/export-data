@@ -66,42 +66,8 @@ class ModRegistryTest extends TestCase
                  ->method('saveMods');
         $this->injectProperty($registry, 'mods', $mods);
 
-        $result = $registry->set($mod2);
-        $this->assertSame($registry, $result);
+        $registry->set($mod2);
         $this->assertEquals($expectedMods, $this->extractProperty($registry, 'mods'));
-    }
-
-    /**
-     * Tests the saveMods method.
-     * @throws ReflectionException
-     * @covers ::saveMods
-     */
-    public function testSaveMods(): void
-    {
-        $mod1 = new Mod();
-        $mod1->setName('abc');
-        $mod2 = new Mod();
-        $mod2->setName('def');
-        $mods = ['abc' => $mod1, 'def' => $mod2];
-        $expectedMods = [['n' => 'abc'], ['n' => 'def']];
-        $encodedContent = 'ghi';
-
-        /* @var ModRegistry|MockObject $registry */
-        $registry = $this->getMockBuilder(ModRegistry::class)
-                         ->setMethods(['encodeContent', 'saveContent'])
-                         ->disableOriginalConstructor()
-                         ->getMock();
-        $registry->expects($this->once())
-                 ->method('encodeContent')
-                 ->with($expectedMods)
-                 ->willReturn($encodedContent);
-        $registry->expects($this->once())
-                 ->method('saveContent')
-                 ->with('0000000000000000', $encodedContent);
-        $this->injectProperty($registry, 'mods', $mods);
-
-        $result = $this->invokeMethod($registry, 'saveMods');
-        $this->assertSame($registry, $result);
     }
 
     /**
@@ -121,7 +87,6 @@ class ModRegistryTest extends TestCase
             [$mods, 'ghi', null],
         ];
     }
-
 
     /**
      * Tests the get method.
@@ -144,6 +109,69 @@ class ModRegistryTest extends TestCase
 
         $result = $registry->get($modName);
         $this->assertSame($expectedResult, $result);
+    }
+
+    /**
+     * Tests the remove method.
+     * @throws ReflectionException
+     * @covers ::remove
+     */
+    public function testRemove(): void
+    {
+        $mod1 = new Mod();
+        $mod1->setName('abc');
+        $mod2 = new Mod();
+        $mod2->setName('def');
+
+        $hash = 'abc';
+        $mods = ['abc' => $mod1, 'def' => $mod2];
+        $expectedMods = ['def' => $mod2];
+
+        /* @var ModRegistry|MockObject $registry */
+        $registry = $this->getMockBuilder(ModRegistry::class)
+                         ->setMethods(['loadMods', 'saveMods'])
+                         ->disableOriginalConstructor()
+                         ->getMock();
+        $registry->expects($this->once())
+                 ->method('loadMods');
+        $registry->expects($this->once())
+                 ->method('saveMods');
+        $this->injectProperty($registry, 'mods', $mods);
+
+        $registry->remove($hash);
+        $this->assertEquals($expectedMods, $this->extractProperty($registry, 'mods'));
+    }
+
+    /**
+     * Tests the saveMods method.
+     * @throws ReflectionException
+     * @covers ::saveMods
+     */
+    public function testSaveMods(): void
+    {
+        $mod1 = new Mod();
+        $mod1->setName('abc');
+        $mod2 = new Mod();
+        $mod2->setName('def');
+        $mods = ['abc' => $mod1, 'def' => $mod2];
+        $expectedMods = [['n' => 'abc'], ['n' => 'def']];
+        $encodedContent = 'ghi';
+
+        /* @var ModRegistry|MockObject $registry */
+        $registry = $this->getMockBuilder(ModRegistry::class)
+            ->setMethods(['encodeContent', 'saveContent'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $registry->expects($this->once())
+            ->method('encodeContent')
+            ->with($expectedMods)
+            ->willReturn($encodedContent);
+        $registry->expects($this->once())
+            ->method('saveContent')
+            ->with('0000000000000000', $encodedContent);
+        $this->injectProperty($registry, 'mods', $mods);
+
+        $this->invokeMethod($registry, 'saveMods');
     }
 
     /**
@@ -216,8 +244,7 @@ class ModRegistryTest extends TestCase
         $this->injectProperty($registry, 'isLoaded', $isLoaded);
         $this->injectProperty($registry, 'mods', $mods);
 
-        $result = $this->invokeMethod($registry, 'loadMods');
-        $this->assertSame($registry, $result);
+        $this->invokeMethod($registry, 'loadMods');
         $this->assertTrue($this->extractProperty($registry, 'isLoaded'));
         $this->assertEquals($expectedMods, $this->extractProperty($registry, 'mods'));
     }

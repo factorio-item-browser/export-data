@@ -17,9 +17,10 @@ use PHPUnit\Framework\TestCase;
 class VoidAdapterTest extends TestCase
 {
     /**
-     * Tests the save and load method.
+     * Tests the save, load and delete method.
      * @covers ::save
      * @covers ::load
+     * @covers ::delete
      */
     public function testSaveAndLoad(): void
     {
@@ -31,6 +32,8 @@ class VoidAdapterTest extends TestCase
 
         $result = $adapter->load($namespace, $hash);
         $this->assertNull($result);
+
+        $adapter->delete($namespace, $hash);
     }
     
     /**

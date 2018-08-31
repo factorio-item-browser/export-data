@@ -23,12 +23,6 @@ class EntityRegistry extends AbstractRegistry
     protected $entityClassName;
 
     /**
-     * The internal cache of the registry.
-     * @var array|EntityInterface[]|null[]
-     */
-    protected $cache = [];
-
-    /**
      * Initializes the registry.
      * @param AdapterInterface $adapter
      * @param string $entityClassName
@@ -75,6 +69,16 @@ class EntityRegistry extends AbstractRegistry
             $result = $this->createEntityFromContent($content);
         }
         return $result;
+    }
+
+    /**
+     * Removes the entity with the specified hash.
+     * @param string $hash
+     */
+    public function remove(string $hash): void
+    {
+        $this->deleteContent($hash);
+        return;
     }
 
     /**

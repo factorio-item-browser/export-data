@@ -143,6 +143,50 @@ class FileSystemAdapterTest extends TestCase
     }
 
     /**
+     * Provides the data for the delete test.
+     * @return array
+     */
+    public function provideDelete(): array
+    {
+        return [
+            [true],
+            [false],
+        ];
+    }
+
+    /**
+     * Tests the delete method.
+     * @param bool $withFile
+     * @covers ::delete
+     * @dataProvider provideDelete
+     */
+    public function testDelete(bool $withFile): void
+    {
+        $directory = vfsStream::setup('root');
+        if ($withFile) {
+            $directory->addChild(vfsStream::newFile('foo'));
+        }
+
+        $namespace = 'abc';
+        $hash = 'def';
+        $fileName = vfsStream::url('root/foo');
+
+        /* @var FileSystemAdapter|MockObject $adapter */
+        $adapter = $this->getMockBuilder(FileSystemAdapter::class)
+                        ->setMethods(['getFileName'])
+                        ->disableOriginalConstructor()
+                        ->getMock();
+        $adapter->expects($this->once())
+                ->method('getFileName')
+                ->with($namespace, $hash)
+                ->willReturn($fileName);
+
+        $this->assertSame($withFile, $directory->hasChild('foo'));
+        $adapter->delete($namespace, $hash);
+        $this->assertFalse($directory->hasChild('foo'));
+    }
+
+    /**
      * Tests the getFileName method.
      * @covers ::getFileName
      * @throws ReflectionException
@@ -200,8 +244,7 @@ class FileSystemAdapterTest extends TestCase
         }
 
         $adapter = new FileSystemAdapter('foo');
-        $result = $this->invokeMethod($adapter, 'ensureDirectory', $directory);
-        $this->assertSame($adapter, $result);
+        $this->invokeMethod($adapter, 'ensureDirectory', $directory);
         $this->assertSame($expectDirectory, $vfs->hasChild('abc'));
     }
 
