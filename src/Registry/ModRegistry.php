@@ -55,7 +55,6 @@ class ModRegistry extends AbstractRegistry
     {
         $this->loadMods();
         $this->mods[$mod->getName()] = $mod;
-        $this->saveMods();
         return;
     }
 
@@ -78,14 +77,13 @@ class ModRegistry extends AbstractRegistry
     {
         $this->loadMods();
         unset($this->mods[$modName]);
-        $this->saveMods();
         return;
     }
 
     /**
      * Saves the currently known mod to the adapter.
      */
-    protected function saveMods(): void
+    public function saveMods(): void
     {
         $mods = [];
         foreach ($this->mods as $mod) {

@@ -57,13 +57,11 @@ class ModRegistryTest extends TestCase
 
         /* @var ModRegistry|MockObject $registry */
         $registry = $this->getMockBuilder(ModRegistry::class)
-                         ->setMethods(['loadMods', 'saveMods'])
+                         ->setMethods(['loadMods'])
                          ->disableOriginalConstructor()
                          ->getMock();
         $registry->expects($this->once())
                  ->method('loadMods');
-        $registry->expects($this->once())
-                 ->method('saveMods');
         $this->injectProperty($registry, 'mods', $mods);
 
         $registry->set($mod2);
@@ -129,13 +127,11 @@ class ModRegistryTest extends TestCase
 
         /* @var ModRegistry|MockObject $registry */
         $registry = $this->getMockBuilder(ModRegistry::class)
-                         ->setMethods(['loadMods', 'saveMods'])
+                         ->setMethods(['loadMods'])
                          ->disableOriginalConstructor()
                          ->getMock();
         $registry->expects($this->once())
                  ->method('loadMods');
-        $registry->expects($this->once())
-                 ->method('saveMods');
         $this->injectProperty($registry, 'mods', $mods);
 
         $registry->remove($hash);
