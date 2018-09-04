@@ -9,13 +9,17 @@ This persistence step is required because the export is executed on a local mach
 not able to directly access the database. The files created by this library can be easily uploaded to the server and
 loaded by the importing script.
 
+The data is organized in registries and referenced by hashes. If e.g. two mods define the same recipe (same ingredients,
+recipes etc.) then the recipe data is saved only once and referenced from both mods. All registries are accessible 
+through the `ExportDataService` instance.
+
 ## Usage
 
-To save or load any data, the ExportDataService is used. It will handle the directory structure itself, the only 
-requirement is a writable directory already available.
+To save or load any data, the `ExportDataService` is used. Upon creation an adapter must be specified to actually 
+persist the data.
 
-There are different kinds of data which can be persisted:
+The following adapter are available:
 
-* **Mod data:** Holds the meta data of a mod. All mods are saved to a single file.
-* **Combination data:** Holds the data of exactly one exported combination of mods with its items, recipes etc.
-* **Icon data:** The binary icons (as PNG files).
+- **FileSystemAdapter**: This adapter stores the data in a directory on the server. The writable base directory must be
+  specified in the constructor, and the adapter will manage the directory structure on its own.
+- **VoidAdapter**: This adapter voids any data and will actually not persist it.
