@@ -20,7 +20,6 @@ class ContentRegistry extends AbstractRegistry
     public function set(string $hash, string $content): void
     {
         $this->saveContent($hash, $content);
-        return;
     }
 
     /**
@@ -40,7 +39,6 @@ class ContentRegistry extends AbstractRegistry
     public function remove(string $hash): void
     {
         $this->deleteContent($hash);
-        return;
     }
 
     /**

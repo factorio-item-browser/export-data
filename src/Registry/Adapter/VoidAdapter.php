@@ -21,7 +21,6 @@ class VoidAdapter implements AdapterInterface
      */
     public function save(string $namespace, string $hash, string $content): void
     {
-        return;
     }
 
     /**
@@ -42,7 +41,6 @@ class VoidAdapter implements AdapterInterface
      */
     public function delete(string $namespace, string $hash): void
     {
-        return;
     }
 
     /**

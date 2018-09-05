@@ -55,7 +55,6 @@ class ModRegistry extends AbstractRegistry
     {
         $this->loadMods();
         $this->mods[$mod->getName()] = $mod;
-        return;
     }
 
     /**
@@ -77,7 +76,6 @@ class ModRegistry extends AbstractRegistry
     {
         $this->loadMods();
         unset($this->mods[$modName]);
-        return;
     }
 
     /**
@@ -90,7 +88,6 @@ class ModRegistry extends AbstractRegistry
             $mods[] = $mod->writeData();
         }
         $this->saveContent(self::HASH_FILE_MODS, $this->encodeContent($mods));
-        return;
     }
 
     /**
@@ -109,7 +106,6 @@ class ModRegistry extends AbstractRegistry
             }
             $this->isLoaded = true;
         }
-        return;
     }
 
     /**

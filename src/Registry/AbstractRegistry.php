@@ -52,7 +52,6 @@ abstract class AbstractRegistry
     {
         $this->adapter->save($this->namespace, $hash, $content);
         $this->cache[$hash] = $content;
-        return;
     }
 
     /**
@@ -77,7 +76,6 @@ abstract class AbstractRegistry
     {
         $this->adapter->delete($this->namespace, $hash);
         unset($this->cache[$hash]);
-        return;
     }
 
     /**

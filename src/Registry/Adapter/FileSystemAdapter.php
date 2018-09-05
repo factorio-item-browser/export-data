@@ -52,7 +52,6 @@ class FileSystemAdapter implements AdapterInterface
         if ($success === false) {
             throw new ExportDataException('Unable to write file ' . $fileName);
         }
-        return;
     }
 
     /**
@@ -82,7 +81,6 @@ class FileSystemAdapter implements AdapterInterface
         if (file_exists($fileName)) {
             unlink($fileName);
         }
-        return;
     }
 
     /**
@@ -119,7 +117,6 @@ class FileSystemAdapter implements AdapterInterface
         if (!is_writable($directory)) {
             throw new ExportDataException('Directory ' . $directory . ' is not writable.');
         }
-        return;
     }
 
     /**

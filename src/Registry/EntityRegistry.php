@@ -78,7 +78,6 @@ class EntityRegistry extends AbstractRegistry
     public function remove(string $hash): void
     {
         $this->deleteContent($hash);
-        return;
     }
 
     /**
