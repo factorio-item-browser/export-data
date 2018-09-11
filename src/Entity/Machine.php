@@ -367,7 +367,7 @@ class Machine implements EntityInterface
         $dataBuilder->setString('n', $this->name, '')
                     ->setArray('l', $this->labels->writeData(), null, [])
                     ->setArray('d', $this->descriptions->writeData(), null, [])
-                    ->setArray('c', $this->craftingCategories, 'strval', [])
+                    ->setArray('c', array_unique($this->craftingCategories), 'strval', [])
                     ->setFloat('s', $this->craftingSpeed, 1.)
                     ->setInteger('i', $this->numberOfItemSlots, 0)
                     ->setInteger('f', $this->numberOfFluidInputSlots, 0)

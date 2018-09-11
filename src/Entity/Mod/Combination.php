@@ -300,12 +300,12 @@ class Combination implements EntityInterface
         $dataBuilder = new DataBuilder();
         $dataBuilder->setString('n', $this->name, '')
                     ->setString('m', $this->mainModName, '')
-                    ->setArray('l', $this->loadedModNames, 'strval', [])
-                    ->setArray('o', $this->loadedOptionalModNames, 'strval', [])
-                    ->setArray('i', $this->itemHashes, 'strval', [])
-                    ->setArray('r', $this->recipeHashes, 'strval', [])
-                    ->setArray('a', $this->machineHashes, 'strval', [])
-                    ->setArray('c', $this->iconHashes, 'strval', []);
+                    ->setArray('l', array_unique($this->loadedModNames), 'strval', [])
+                    ->setArray('o', array_unique($this->loadedOptionalModNames), 'strval', [])
+                    ->setArray('i', array_unique($this->itemHashes), 'strval', [])
+                    ->setArray('r', array_unique($this->recipeHashes), 'strval', [])
+                    ->setArray('a', array_unique($this->machineHashes), 'strval', [])
+                    ->setArray('c', array_unique($this->iconHashes), 'strval', []);
         return $dataBuilder->getData();
     }
 
