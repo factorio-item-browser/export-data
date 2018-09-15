@@ -367,7 +367,7 @@ class Mod implements EntityInterface, EntityIdentifierInterface
                     }, [])
                     ->setString('s', $this->checksum, '')
                     ->setInteger('o', $this->order, 0)
-                    ->setArray('c', array_unique($this->combinationHashes), 'strval', []);
+                    ->setArray('c', array_values(array_unique($this->combinationHashes)), 'strval', []);
         return $dataBuilder->getData();
     }
 
