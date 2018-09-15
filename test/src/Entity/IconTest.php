@@ -7,7 +7,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon;
 use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -165,7 +165,7 @@ class IconTest extends TestCase
              ->addLayer($layer1)
              ->addLayer($layer2);
 
-        $expectedResult = HashUtils::calculateHashOfArray([
+        $expectedResult = EntityUtils::calculateHashOfArray([
             64,
             ['abc', 'def'],
         ]);

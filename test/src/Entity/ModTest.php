@@ -8,7 +8,7 @@ use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
 use FactorioItemBrowser\ExportData\Entity\Mod;
 use FactorioItemBrowser\ExportData\Entity\Mod\Dependency;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -372,7 +372,7 @@ class ModTest extends TestCase
             ->addCombinationHash('yza')
             ->setOrder(42);
 
-        $expectedResult = HashUtils::calculateHashOfArray([
+        $expectedResult = EntityUtils::calculateHashOfArray([
             'abc',
             'hij',
             'klm',
@@ -387,5 +387,18 @@ class ModTest extends TestCase
 
         $result = $mod->calculateHash();
         $this->assertSame($expectedResult, $result);
+    }
+    
+    /**
+     * Tests the getIdentifier method.
+     * @covers ::getIdentifier
+     */
+    public function testGetIdentifier(): void
+    {
+        $mod = new Mod();
+        $mod->setName('abc');
+
+        $result = $mod->getIdentifier();
+        $this->assertSame('abc', $result);
     }
 }

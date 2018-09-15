@@ -9,7 +9,7 @@ use FactorioItemBrowser\ExportData\Entity\LocalisedString;
 use FactorioItemBrowser\ExportData\Entity\Recipe;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -368,7 +368,7 @@ class RecipeTest extends TestCase
                ->setDescriptions($descriptions)
                ->setIconHash('jkl');
 
-        $expectedResult = HashUtils::calculateHashOfArray([
+        $expectedResult = EntityUtils::calculateHashOfArray([
             'abc',
             'def',
             ['mno', 'pqr'],
@@ -382,5 +382,19 @@ class RecipeTest extends TestCase
 
         $result = $recipe->calculateHash();
         $this->assertSame($expectedResult, $result);
+    }
+    
+    /**
+     * Tests the getIdentifier method.
+     * @covers ::getIdentifier
+     */
+    public function testGetIdentifier(): void
+    {
+        $recipe = new Recipe();
+        $recipe->setName('abc')
+               ->setMode('def');
+
+        $result = $recipe->getIdentifier();
+        $this->assertSame('abc|def', $result);
     }
 }

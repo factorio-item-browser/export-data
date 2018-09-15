@@ -6,7 +6,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity\Icon;
 
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon\Color;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -159,7 +159,7 @@ class ColorTest extends TestCase
               ->setBlue(0.6)
               ->setAlpha(0.8);
 
-        $expectedResult = HashUtils::calculateHashOfArray([
+        $expectedResult = EntityUtils::calculateHashOfArray([
             0.2,
             0.4,
             0.6,

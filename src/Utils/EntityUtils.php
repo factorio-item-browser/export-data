@@ -5,13 +5,23 @@ declare(strict_types=1);
 namespace FactorioItemBrowser\ExportData\Utils;
 
 /**
- * The utils class calculating hashes.
+ * The utils class helping with entities.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class HashUtils
+class EntityUtils
 {
+    /**
+     * Builds and returns the identifier from the keys.
+     * @param array $keys
+     * @return string
+     */
+    public static function buildIdentifier(array $keys): string
+    {
+        return implode('|', $keys);
+    }
+
     /**
      * Calculates the hash of the specified content.
      * @param string $content

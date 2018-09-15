@@ -7,7 +7,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
 use FactorioItemBrowser\ExportData\Entity\Machine;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -340,7 +340,7 @@ class MachineTest extends TestCase
                 ->setEnergyUsageUnit('jkl')
                 ->setIconHash('mno');
 
-        $expectedResult = HashUtils::calculateHashOfArray([
+        $expectedResult = EntityUtils::calculateHashOfArray([
             'abc',
             'pqr',
             'stu',
@@ -357,5 +357,18 @@ class MachineTest extends TestCase
 
         $result = $machine->calculateHash();
         $this->assertSame($expectedResult, $result);
+    }
+    
+    /**
+     * Tests the getIdentifier method.
+     * @covers ::getIdentifier
+     */
+    public function testGetIdentifier(): void
+    {
+        $machine = new Machine();
+        $machine->setName('abc');
+
+        $result = $machine->getIdentifier();
+        $this->assertSame('abc', $result);
     }
 }

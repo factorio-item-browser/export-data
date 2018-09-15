@@ -7,7 +7,7 @@ namespace FactorioItemBrowser\ExportData\Entity\Mod;
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\EntityInterface;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
  * The class representing a mod dependency.
@@ -127,7 +127,7 @@ class Dependency implements EntityInterface
      */
     public function calculateHash(): string
     {
-        return HashUtils::calculateHashOfArray([
+        return EntityUtils::calculateHashOfArray([
             $this->requiredModName,
             $this->requiredVersion,
             $this->isMandatory,

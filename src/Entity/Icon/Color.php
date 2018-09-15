@@ -7,7 +7,7 @@ namespace FactorioItemBrowser\ExportData\Entity\Icon;
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\EntityInterface;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
  * A class holding information about a color.
@@ -185,7 +185,7 @@ class Color implements EntityInterface
      */
     public function calculateHash(): string
     {
-        return HashUtils::calculateHashOfArray([
+        return EntityUtils::calculateHashOfArray([
             $this->red,
             $this->green,
             $this->blue,

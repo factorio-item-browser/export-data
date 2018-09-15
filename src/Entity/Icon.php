@@ -7,7 +7,7 @@ namespace FactorioItemBrowser\ExportData\Entity;
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
  * The class representing an icon of an item or recipe.
@@ -131,7 +131,7 @@ class Icon implements EntityInterface
      */
     public function calculateHash(): string
     {
-        return HashUtils::calculateHashOfArray([
+        return EntityUtils::calculateHashOfArray([
             $this->size,
             array_map(function (Layer $layer): string {
                 return $layer->calculateHash();

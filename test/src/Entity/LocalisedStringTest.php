@@ -6,7 +6,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -114,7 +114,7 @@ class LocalisedStringTest extends TestCase
         $localisedString->setTranslation('en', 'abc')
                         ->setTranslation('de', 'def');
 
-        $expectedResult = HashUtils::calculateHashOfArray([
+        $expectedResult = EntityUtils::calculateHashOfArray([
             'en' => 'abc',
             'de' => 'def',
         ]);

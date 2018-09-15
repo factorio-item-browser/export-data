@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FactorioItemBrowser\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataContainer;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
  * The entity representing the translations of a localised string.
@@ -82,6 +82,6 @@ class LocalisedString implements EntityInterface
      */
     public function calculateHash(): string
     {
-        return HashUtils::calculateHashOfArray($this->translations);
+        return EntityUtils::calculateHashOfArray($this->translations);
     }
 }

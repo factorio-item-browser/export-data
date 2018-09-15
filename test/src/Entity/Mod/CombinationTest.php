@@ -7,7 +7,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity\Mod;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\Mod\Combination;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -295,7 +295,7 @@ class CombinationTest extends TestCase
                     ->addIconHash('klm')
                     ->addIconHash('opq');
 
-        $expectedResult = HashUtils::calculateHashOfArray([
+        $expectedResult = EntityUtils::calculateHashOfArray([
             'abc',
             'def',
             ['ghi', 'jkl'],
@@ -304,5 +304,18 @@ class CombinationTest extends TestCase
 
         $result = $combination->calculateHash();
         $this->assertSame($expectedResult, $result);
+    }
+
+    /**
+     * Tests the getIdentifier method.
+     * @covers ::getIdentifier
+     */
+    public function testGetIdentifier(): void
+    {
+        $combination = new Combination();
+        $combination->setName('abc');
+
+        $result = $combination->getIdentifier();
+        $this->assertSame('abc', $result);
     }
 }

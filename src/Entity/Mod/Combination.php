@@ -6,8 +6,9 @@ namespace FactorioItemBrowser\ExportData\Entity\Mod;
 
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
+use FactorioItemBrowser\ExportData\Entity\EntityIdentifierInterface;
 use FactorioItemBrowser\ExportData\Entity\EntityInterface;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
  * The class representing an actual mod combination of an export.
@@ -15,7 +16,7 @@ use FactorioItemBrowser\ExportData\Utils\HashUtils;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Combination implements EntityInterface
+class Combination implements EntityInterface, EntityIdentifierInterface
 {
     /**
      * The name of the combination.
@@ -333,11 +334,20 @@ class Combination implements EntityInterface
      */
     public function calculateHash(): string
     {
-        return HashUtils::calculateHashOfArray([
+        return EntityUtils::calculateHashOfArray([
             $this->name,
             $this->mainModName,
             $this->loadedModNames,
             $this->loadedOptionalModNames,
         ]);
+    }
+
+    /**
+     * Returns the identifier of the entity.
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return EntityUtils::buildIdentifier([$this->name]);
     }
 }

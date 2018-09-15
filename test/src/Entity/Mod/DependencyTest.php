@@ -6,7 +6,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity\Mod;
 
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Mod\Dependency;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -140,7 +140,7 @@ class DependencyTest extends TestCase
                    ->setRequiredVersion('4.2.0')
                    ->setIsMandatory(true);
 
-        $expectedResult = HashUtils::calculateHashOfArray([
+        $expectedResult = EntityUtils::calculateHashOfArray([
             'abc',
             '4.2.0',
             true,

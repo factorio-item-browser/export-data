@@ -7,7 +7,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -242,7 +242,7 @@ class ItemTest extends TestCase
              ->setLabels($labels)
              ->setDescriptions($descriptions);
 
-        $expectedResult = HashUtils::calculateHashOfArray([
+        $expectedResult = EntityUtils::calculateHashOfArray([
             'abc',
             'def',
             'jkl',
@@ -254,5 +254,19 @@ class ItemTest extends TestCase
 
         $result = $item->calculateHash();
         $this->assertSame($expectedResult, $result);
+    }
+
+    /**
+     * Tests the getIdentifier method.
+     * @covers ::getIdentifier
+     */
+    public function testGetIdentifier(): void
+    {
+        $item = new Item();
+        $item->setType('abc')
+             ->setName('def');
+
+        $result = $item->getIdentifier();
+        $this->assertSame('abc|def', $result);
     }
 }

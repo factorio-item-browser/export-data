@@ -6,7 +6,7 @@ namespace FactorioItemBrowser\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
  * The class representing a (crafting) machine from the export.
@@ -14,7 +14,7 @@ use FactorioItemBrowser\ExportData\Utils\HashUtils;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Machine implements EntityInterface
+class Machine implements EntityInterface, EntityIdentifierInterface
 {
     /**
      * The name of the machine.
@@ -407,7 +407,7 @@ class Machine implements EntityInterface
      */
     public function calculateHash(): string
     {
-        return HashUtils::calculateHashOfArray([
+        return EntityUtils::calculateHashOfArray([
             $this->name,
             $this->labels->calculateHash(),
             $this->descriptions->calculateHash(),
@@ -421,5 +421,14 @@ class Machine implements EntityInterface
             $this->energyUsageUnit,
             $this->iconHash,
         ]);
+    }
+
+    /**
+     * Returns the identifier of the entity.
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return EntityUtils::buildIdentifier([$this->name]);
     }
 }

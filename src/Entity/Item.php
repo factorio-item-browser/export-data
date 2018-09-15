@@ -6,7 +6,7 @@ namespace FactorioItemBrowser\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
-use FactorioItemBrowser\ExportData\Utils\HashUtils;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
  * The class representing an item from the export.
@@ -14,7 +14,7 @@ use FactorioItemBrowser\ExportData\Utils\HashUtils;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Item implements EntityInterface
+class Item implements EntityInterface, EntityIdentifierInterface
 {
     /**
      * The type of the item.
@@ -256,7 +256,7 @@ class Item implements EntityInterface
      */
     public function calculateHash(): string
     {
-        return HashUtils::calculateHashOfArray([
+        return EntityUtils::calculateHashOfArray([
             $this->type,
             $this->name,
             $this->labels->calculateHash(),
@@ -265,5 +265,14 @@ class Item implements EntityInterface
             $this->providesMachineLocalisation,
             $this->iconHash,
         ]);
+    }
+
+    /**
+     * Returns the identifier of the entity.
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return EntityUtils::buildIdentifier([$this->type, $this->name]);
     }
 }
