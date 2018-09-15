@@ -6,7 +6,7 @@ namespace FactorioItemBrowser\ExportData\Entity\Mod;
 
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
-use FactorioItemBrowser\ExportData\Entity\EntityIdentifierInterface;
+use FactorioItemBrowser\ExportData\Entity\EntityWithIdentifierInterface;
 use FactorioItemBrowser\ExportData\Entity\EntityInterface;
 use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
@@ -16,7 +16,7 @@ use FactorioItemBrowser\ExportData\Utils\EntityUtils;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Combination implements EntityInterface, EntityIdentifierInterface
+class Combination implements EntityInterface, EntityWithIdentifierInterface
 {
     /**
      * The name of the combination.

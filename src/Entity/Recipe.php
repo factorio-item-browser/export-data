@@ -16,7 +16,7 @@ use FactorioItemBrowser\ExportData\Utils\EntityUtils;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Recipe implements EntityInterface, EntityIdentifierInterface
+class Recipe implements EntityInterface, EntityWithIdentifierInterface
 {
     /**
      * The name of the recipe.

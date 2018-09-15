@@ -15,7 +15,7 @@ use FactorioItemBrowser\ExportData\Utils\EntityUtils;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Mod implements EntityInterface, EntityIdentifierInterface
+class Mod implements EntityInterface, EntityWithIdentifierInterface
 {
     /**
      * The name of the mod.
