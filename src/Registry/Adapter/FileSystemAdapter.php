@@ -108,8 +108,8 @@ class FileSystemAdapter implements AdapterInterface
     protected function ensureDirectory(string $directory): void
     {
         if (!is_dir($directory)) {
-            $success = mkdir($directory, 0775, true);
-            if (!$success) {
+            $success = @mkdir($directory, 0775, true);
+            if (!$success && !is_dir($directory)) {
                 throw new ExportDataException('Unable to create directory ' . $directory . '.');
             }
         }
