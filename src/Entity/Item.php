@@ -59,6 +59,12 @@ class Item implements EntityInterface, EntityWithIdentifierInterface
     protected $iconHash = '';
 
     /**
+     * Whether the item is newly introduced in the combination or was already there before.
+     * @var bool
+     */
+    protected $isNew = true;
+
+    /**
      * Initializes the entity.
      */
     public function __construct()
@@ -217,19 +223,40 @@ class Item implements EntityInterface, EntityWithIdentifierInterface
     }
 
     /**
+     * Sets whether the item is newly introduced in the combination or was already there before.
+     * @param bool $isNew
+     * @return $this
+     */
+    public function setIsNew(bool $isNew)
+    {
+        $this->isNew = $isNew;
+        return $this;
+    }
+
+    /**
+     * Returns whether the item is newly introduced in the combination or was already there before.
+     * @return bool
+     */
+    public function getIsNew(): bool
+    {
+        return $this->isNew;
+    }
+
+    /**
      * Writes the entity data to an array.
      * @return array
      */
     public function writeData(): array
     {
         $dataBuilder = new DataBuilder();
-        $dataBuilder->setString('t', $this->getType(), '')
-                    ->setString('n', $this->getName(), '')
+        $dataBuilder->setString('t', $this->type, '')
+                    ->setString('n', $this->name, '')
                     ->setArray('l', $this->labels->writeData(), null, [])
                     ->setArray('d', $this->descriptions->writeData(), null, [])
-                    ->setInteger('r', $this->getProvidesRecipeLocalisation() ? 1 : 0, 0)
-                    ->setInteger('m', $this->getProvidesMachineLocalisation() ? 1 : 0, 0)
-                    ->setString('i', $this->iconHash, '');
+                    ->setInteger('r', $this->providesRecipeLocalisation ? 1 : 0, 0)
+                    ->setInteger('m', $this->providesMachineLocalisation ? 1 : 0, 0)
+                    ->setString('i', $this->iconHash, '')
+                    ->setInteger('e', $this->isNew ? 1 : 0, 1);
         return $dataBuilder->getData();
     }
 
@@ -247,6 +274,7 @@ class Item implements EntityInterface, EntityWithIdentifierInterface
         $this->providesRecipeLocalisation = $data->getInteger('r', 0) === 1;
         $this->providesMachineLocalisation = $data->getInteger('m', 0) === 1;
         $this->iconHash = $data->getString('i');
+        $this->isNew = $data->getInteger('e', 1) === 1;
         return $this;
     }
 
@@ -264,6 +292,7 @@ class Item implements EntityInterface, EntityWithIdentifierInterface
             $this->providesRecipeLocalisation,
             $this->providesMachineLocalisation,
             $this->iconHash,
+            $this->isNew,
         ]);
     }
 

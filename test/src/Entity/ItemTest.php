@@ -36,6 +36,7 @@ class ItemTest extends TestCase
         $this->assertFalse($item->getProvidesRecipeLocalisation());
         $this->assertFalse($item->getProvidesMachineLocalisation());
         $this->assertSame('', $item->getIconHash());
+        $this->assertTrue($item->getIsNew());
     }
 
     /**
@@ -48,7 +49,9 @@ class ItemTest extends TestCase
         $item->setType('foo')
              ->setName('bar')
              ->setProvidesRecipeLocalisation(true)
-             ->setIconHash('baz');
+             ->setProvidesMachineLocalisation(true)
+             ->setIconHash('baz')
+             ->setIsNew(false);
         $item->getLabels()->setTranslation('en', 'abc');
         $item->getDescriptions()->setTranslation('en', 'def');
 
@@ -56,16 +59,20 @@ class ItemTest extends TestCase
         $item->setType('oof')
              ->setName('rab')
              ->setProvidesRecipeLocalisation(false)
-             ->setIconHash('zab');
+             ->setProvidesMachineLocalisation(false)
+             ->setIconHash('zab')
+             ->setIsNew(true);
         $item->getLabels()->setTranslation('en', 'cba');
         $item->getDescriptions()->setTranslation('en', 'fde');
 
         $this->assertSame('foo', $clonedItem->getType());
         $this->assertSame('bar', $clonedItem->getName());
         $this->assertTrue($clonedItem->getProvidesRecipeLocalisation());
+        $this->assertTrue($clonedItem->getProvidesMachineLocalisation());
         $this->assertSame('baz', $clonedItem->getIconHash());
         $this->assertSame('abc', $clonedItem->getLabels()->getTranslation('en'));
         $this->assertSame('def', $clonedItem->getDescriptions()->getTranslation('en'));
+        $this->assertFalse($clonedItem->getIsNew());
     }
 
     /**
@@ -159,6 +166,18 @@ class ItemTest extends TestCase
     }
 
     /**
+     * Tests setting and getting the is new flag.
+     * @covers ::setIsNew
+     * @covers ::getIsNew
+     */
+    public function testSetAndGetIsNew(): void
+    {
+        $item = new Item();
+        $this->assertSame($item, $item->setIsNew(false));
+        $this->assertFalse($item->getIsNew());
+    }
+
+    /**
      * Provides the data for the writeAndReadData test.
      * @return array
      */
@@ -169,7 +188,8 @@ class ItemTest extends TestCase
              ->setName('def')
              ->setProvidesRecipeLocalisation(true)
              ->setProvidesMachineLocalisation(true)
-             ->setIconHash('ghi');
+             ->setIconHash('ghi')
+             ->setIsNew(false);
         $item->getLabels()->setTranslation('en', 'jkl');
         $item->getDescriptions()->setTranslation('de', 'mno');
 
@@ -184,7 +204,8 @@ class ItemTest extends TestCase
             ],
             'r' => 1,
             'm' => 1,
-            'i' => 'ghi'
+            'i' => 'ghi',
+            'e' => 0,
         ];
 
         return [
@@ -240,7 +261,8 @@ class ItemTest extends TestCase
              ->setProvidesMachineLocalisation(true)
              ->setIconHash('ghi')
              ->setLabels($labels)
-             ->setDescriptions($descriptions);
+             ->setDescriptions($descriptions)
+             ->setIsNew(false);
 
         $expectedResult = EntityUtils::calculateHashOfArray([
             'abc',
@@ -250,6 +272,7 @@ class ItemTest extends TestCase
             true,
             true,
             'ghi',
+            false,
         ]);
 
         $result = $item->calculateHash();
