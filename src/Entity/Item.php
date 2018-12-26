@@ -6,6 +6,7 @@ namespace FactorioItemBrowser\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
  * The class representing an item from the export.
@@ -13,7 +14,7 @@ use BluePsyduck\Common\Data\DataContainer;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Item implements EntityInterface
+class Item implements EntityInterface, EntityWithIdentifierInterface
 {
     /**
      * The type of the item.
@@ -56,6 +57,12 @@ class Item implements EntityInterface
      * @var string
      */
     protected $iconHash = '';
+
+    /**
+     * Whether the item is newly introduced in the combination or was already there before.
+     * @var bool
+     */
+    protected $isNew = true;
 
     /**
      * Initializes the entity.
@@ -216,19 +223,40 @@ class Item implements EntityInterface
     }
 
     /**
+     * Sets whether the item is newly introduced in the combination or was already there before.
+     * @param bool $isNew
+     * @return $this
+     */
+    public function setIsNew(bool $isNew)
+    {
+        $this->isNew = $isNew;
+        return $this;
+    }
+
+    /**
+     * Returns whether the item is newly introduced in the combination or was already there before.
+     * @return bool
+     */
+    public function getIsNew(): bool
+    {
+        return $this->isNew;
+    }
+
+    /**
      * Writes the entity data to an array.
      * @return array
      */
     public function writeData(): array
     {
         $dataBuilder = new DataBuilder();
-        $dataBuilder->setString('t', $this->getType(), '')
-                    ->setString('n', $this->getName(), '')
+        $dataBuilder->setString('t', $this->type, '')
+                    ->setString('n', $this->name, '')
                     ->setArray('l', $this->labels->writeData(), null, [])
                     ->setArray('d', $this->descriptions->writeData(), null, [])
-                    ->setInteger('r', $this->getProvidesRecipeLocalisation() ? 1 : 0, 0)
-                    ->setInteger('m', $this->getProvidesMachineLocalisation() ? 1 : 0, 0)
-                    ->setString('i', $this->iconHash, '');
+                    ->setInteger('r', $this->providesRecipeLocalisation ? 1 : 0, 0)
+                    ->setInteger('m', $this->providesMachineLocalisation ? 1 : 0, 0)
+                    ->setString('i', $this->iconHash, '')
+                    ->setInteger('e', $this->isNew ? 1 : 0, 1);
         return $dataBuilder->getData();
     }
 
@@ -246,6 +274,34 @@ class Item implements EntityInterface
         $this->providesRecipeLocalisation = $data->getInteger('r', 0) === 1;
         $this->providesMachineLocalisation = $data->getInteger('m', 0) === 1;
         $this->iconHash = $data->getString('i');
+        $this->isNew = $data->getInteger('e', 1) === 1;
         return $this;
+    }
+
+    /**
+     * Calculates a hash value representing the entity.
+     * @return string
+     */
+    public function calculateHash(): string
+    {
+        return EntityUtils::calculateHashOfArray([
+            $this->type,
+            $this->name,
+            $this->labels->calculateHash(),
+            $this->descriptions->calculateHash(),
+            $this->providesRecipeLocalisation,
+            $this->providesMachineLocalisation,
+            $this->iconHash,
+            $this->isNew,
+        ]);
+    }
+
+    /**
+     * Returns the identifier of the entity.
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return EntityUtils::buildIdentifier([$this->type, $this->name]);
     }
 }

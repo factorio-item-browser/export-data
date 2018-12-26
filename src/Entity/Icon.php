@@ -7,6 +7,7 @@ namespace FactorioItemBrowser\ExportData\Entity;
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
  * The class representing an icon of an item or recipe.
@@ -20,12 +21,6 @@ class Icon implements EntityInterface
      * The default size of the icons.
      */
     public const DEFAULT_SIZE = 32;
-
-    /**
-     * The hash of the icon.
-     * @var string
-     */
-    protected $hash = '';
 
     /**
      * The original size of the icon.
@@ -47,26 +42,6 @@ class Icon implements EntityInterface
         $this->layers = array_map(function (Layer $layer): Layer {
             return clone($layer);
         }, $this->layers);
-    }
-
-    /**
-     * Sets the hash of the icon.
-     * @param string $hash
-     * @return $this Implementing fluent interface.
-     */
-    public function setHash(string $hash)
-    {
-        $this->hash = $hash;
-        return $this;
-    }
-
-    /**
-     * Returns the hash of the icon.
-     * @return string
-     */
-    public function getHash(): string
-    {
-        return $this->hash;
     }
 
     /**
@@ -129,8 +104,7 @@ class Icon implements EntityInterface
     public function writeData(): array
     {
         $dataBuilder = new DataBuilder();
-        $dataBuilder->setString('h', $this->getHash(), '')
-                    ->setInteger('s', $this->getSize(), self::DEFAULT_SIZE)
+        $dataBuilder->setInteger('s', $this->getSize(), self::DEFAULT_SIZE)
                     ->setArray('l', $this->getLayers(), function (Layer $layer): array {
                         return $layer->writeData();
                     }, []);
@@ -144,11 +118,24 @@ class Icon implements EntityInterface
      */
     public function readData(DataContainer $data)
     {
-        $this->hash = $data->getString('h', '');
         $this->size = $data->getInteger('s', self::DEFAULT_SIZE);
         $this->layers = array_map(function (DataContainer $data): Layer {
             return (new Layer())->readData($data);
         }, $data->getObjectArray('l'));
         return $this;
+    }
+
+    /**
+     * Calculates a hash value representing the entity.
+     * @return string
+     */
+    public function calculateHash(): string
+    {
+        return EntityUtils::calculateHashOfArray([
+            $this->size,
+            array_map(function (Layer $layer): string {
+                return $layer->calculateHash();
+            }, $this->layers)
+        ]);
     }
 }

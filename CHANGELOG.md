@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.0 - 2018-12-26
+
+### Changed
+
+- **Backward compatibility break:** Refactored the whole library and the data format of the files: Entities are now saved separately and no longer in a 
+  huge file for each combination. 
+
 ## 1.2.0 - 2018-07-21
 
 ### Added

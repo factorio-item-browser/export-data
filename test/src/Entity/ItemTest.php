@@ -7,6 +7,8 @@ namespace FactorioItemBrowserTest\ExportData\Entity;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,30 +25,33 @@ class ItemTest extends TestCase
      * Tests the constructing.
      * @covers ::__construct
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $item = new Item();
 
         $this->assertSame('', $item->getType());
         $this->assertSame('', $item->getName());
-        $this->assertInstanceOf(LocalisedString::class, $item->getLabels());
-        $this->assertInstanceOf(LocalisedString::class, $item->getDescriptions());
+        $this->assertEquals(new LocalisedString(), $item->getLabels());
+        $this->assertEquals(new LocalisedString(), $item->getDescriptions());
         $this->assertFalse($item->getProvidesRecipeLocalisation());
         $this->assertFalse($item->getProvidesMachineLocalisation());
         $this->assertSame('', $item->getIconHash());
+        $this->assertTrue($item->getIsNew());
     }
 
     /**
      * Tests the cloning.
      * @covers ::__clone
      */
-    public function testClone()
+    public function testClone(): void
     {
         $item = new Item();
         $item->setType('foo')
              ->setName('bar')
              ->setProvidesRecipeLocalisation(true)
-             ->setIconHash('baz');
+             ->setProvidesMachineLocalisation(true)
+             ->setIconHash('baz')
+             ->setIsNew(false);
         $item->getLabels()->setTranslation('en', 'abc');
         $item->getDescriptions()->setTranslation('en', 'def');
 
@@ -54,16 +59,20 @@ class ItemTest extends TestCase
         $item->setType('oof')
              ->setName('rab')
              ->setProvidesRecipeLocalisation(false)
-             ->setIconHash('zab');
+             ->setProvidesMachineLocalisation(false)
+             ->setIconHash('zab')
+             ->setIsNew(true);
         $item->getLabels()->setTranslation('en', 'cba');
         $item->getDescriptions()->setTranslation('en', 'fde');
 
         $this->assertSame('foo', $clonedItem->getType());
         $this->assertSame('bar', $clonedItem->getName());
         $this->assertTrue($clonedItem->getProvidesRecipeLocalisation());
+        $this->assertTrue($clonedItem->getProvidesMachineLocalisation());
         $this->assertSame('baz', $clonedItem->getIconHash());
         $this->assertSame('abc', $clonedItem->getLabels()->getTranslation('en'));
         $this->assertSame('def', $clonedItem->getDescriptions()->getTranslation('en'));
+        $this->assertFalse($clonedItem->getIsNew());
     }
 
     /**
@@ -71,7 +80,7 @@ class ItemTest extends TestCase
      * @covers ::setType
      * @covers ::getType
      */
-    public function testSetAndGetType()
+    public function testSetAndGetType(): void
     {
         $item = new Item();
         $this->assertSame($item, $item->setType('foo'));
@@ -83,7 +92,7 @@ class ItemTest extends TestCase
      * @covers ::setName
      * @covers ::getName
      */
-    public function testSetAndGetName()
+    public function testSetAndGetName(): void
     {
         $item = new Item();
         $this->assertSame($item, $item->setName('foo'));
@@ -95,7 +104,7 @@ class ItemTest extends TestCase
      * @covers ::setLabels
      * @covers ::getLabels
      */
-    public function testSetAndGetLabels()
+    public function testSetAndGetLabels(): void
     {
         $labels = new LocalisedString();
         $labels->setTranslation('en', 'foo');
@@ -110,7 +119,7 @@ class ItemTest extends TestCase
      * @covers ::setDescriptions
      * @covers ::getDescriptions
      */
-    public function testSetAndGetDescriptions()
+    public function testSetAndGetDescriptions(): void
     {
         $descriptions = new LocalisedString();
         $descriptions->setTranslation('en', 'foo');
@@ -125,7 +134,7 @@ class ItemTest extends TestCase
      * @covers ::setProvidesRecipeLocalisation
      * @covers ::getProvidesRecipeLocalisation
      */
-    public function testSetAndGetProvidesRecipeLocalisation()
+    public function testSetAndGetProvidesRecipeLocalisation(): void
     {
         $item = new Item();
         $this->assertSame($item, $item->setProvidesRecipeLocalisation(true));
@@ -137,7 +146,7 @@ class ItemTest extends TestCase
      * @covers ::setProvidesMachineLocalisation
      * @covers ::getProvidesMachineLocalisation
      */
-    public function testSetAndGetProvidesMachineLocalisation()
+    public function testSetAndGetProvidesMachineLocalisation(): void
     {
         $item = new Item();
         $this->assertSame($item, $item->setProvidesMachineLocalisation(true));
@@ -149,11 +158,23 @@ class ItemTest extends TestCase
      * @covers ::setIconHash
      * @covers ::getIconHash
      */
-    public function testSetAndGetIconHash()
+    public function testSetAndGetIconHash(): void
     {
         $item = new Item();
         $this->assertSame($item, $item->setIconHash('foo'));
         $this->assertSame('foo', $item->getIconHash());
+    }
+
+    /**
+     * Tests setting and getting the is new flag.
+     * @covers ::setIsNew
+     * @covers ::getIsNew
+     */
+    public function testSetAndGetIsNew(): void
+    {
+        $item = new Item();
+        $this->assertSame($item, $item->setIsNew(false));
+        $this->assertFalse($item->getIsNew());
     }
 
     /**
@@ -167,7 +188,8 @@ class ItemTest extends TestCase
              ->setName('def')
              ->setProvidesRecipeLocalisation(true)
              ->setProvidesMachineLocalisation(true)
-             ->setIconHash('ghi');
+             ->setIconHash('ghi')
+             ->setIsNew(false);
         $item->getLabels()->setTranslation('en', 'jkl');
         $item->getDescriptions()->setTranslation('de', 'mno');
 
@@ -182,7 +204,8 @@ class ItemTest extends TestCase
             ],
             'r' => 1,
             'm' => 1,
-            'i' => 'ghi'
+            'i' => 'ghi',
+            'e' => 0,
         ];
 
         return [
@@ -199,7 +222,7 @@ class ItemTest extends TestCase
      * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
-    public function testWriteAndReadData(Item $item, array $expectedData)
+    public function testWriteAndReadData(Item $item, array $expectedData): void
     {
         $data = $item->writeData();
         $this->assertEquals($expectedData, $data);
@@ -207,5 +230,66 @@ class ItemTest extends TestCase
         $newItem = new Item();
         $this->assertSame($newItem, $newItem->readData(new DataContainer($data)));
         $this->assertEquals($newItem, $item);
+    }
+
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash(): void
+    {
+        /* @var LocalisedString|MockObject $labels */
+        $labels = $this->getMockBuilder(LocalisedString::class)
+                       ->setMethods(['calculateHash'])
+                       ->getMock();
+        $labels->expects($this->once())
+               ->method('calculateHash')
+               ->willReturn('jkl');
+
+        /* @var LocalisedString|MockObject $descriptions */
+        $descriptions = $this->getMockBuilder(LocalisedString::class)
+                             ->setMethods(['calculateHash'])
+                             ->getMock();
+        $descriptions->expects($this->once())
+                     ->method('calculateHash')
+                     ->willReturn('mno');
+
+        $item = new Item();
+        $item->setType('abc')
+             ->setName('def')
+             ->setProvidesRecipeLocalisation(true)
+             ->setProvidesMachineLocalisation(true)
+             ->setIconHash('ghi')
+             ->setLabels($labels)
+             ->setDescriptions($descriptions)
+             ->setIsNew(false);
+
+        $expectedResult = EntityUtils::calculateHashOfArray([
+            'abc',
+            'def',
+            'jkl',
+            'mno',
+            true,
+            true,
+            'ghi',
+            false,
+        ]);
+
+        $result = $item->calculateHash();
+        $this->assertSame($expectedResult, $result);
+    }
+
+    /**
+     * Tests the getIdentifier method.
+     * @covers ::getIdentifier
+     */
+    public function testGetIdentifier(): void
+    {
+        $item = new Item();
+        $item->setType('abc')
+             ->setName('def');
+
+        $result = $item->getIdentifier();
+        $this->assertSame('abc|def', $result);
     }
 }

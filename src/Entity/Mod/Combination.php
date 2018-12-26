@@ -6,7 +6,9 @@ namespace FactorioItemBrowser\ExportData\Entity\Mod;
 
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
+use FactorioItemBrowser\ExportData\Entity\EntityWithIdentifierInterface;
 use FactorioItemBrowser\ExportData\Entity\EntityInterface;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
  * The class representing an actual mod combination of an export.
@@ -14,7 +16,7 @@ use FactorioItemBrowser\ExportData\Entity\EntityInterface;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Combination implements EntityInterface
+class Combination implements EntityInterface, EntityWithIdentifierInterface
 {
     /**
      * The name of the combination.
@@ -41,33 +43,29 @@ class Combination implements EntityInterface
     protected $loadedOptionalModNames = [];
 
     /**
-     * The data of the combination.
-     * @var CombinationData
+     * The item hashes of the combination.
+     * @var array|string[]
      */
-    protected $data;
+    protected $itemHashes = [];
 
     /**
-     * Whether the data of the combination has been loaded.
-     * @var bool
+     * The recipe hashes of the combination.
+     * @var array|string[]
      */
-    protected $isDataLoaded = false;
+    protected $recipeHashes = [];
 
     /**
-     * Initializes the entity.
+     * The machine hashes of the combination.
+     * @var array|string[]
      */
-    public function __construct()
-    {
-        $this->data = new CombinationData();
-    }
+    protected $machineHashes = [];
 
     /**
-     * Clones the entity.
+     * The icon hashes of the combination.
+     * @var array|string[]
      */
-    public function __clone()
-    {
-        $this->data = clone($this->data);
-    }
-
+    protected $iconHashes = [];
+    
     /**
      * Sets the name of the combination.
      * @param string $name
@@ -171,45 +169,129 @@ class Combination implements EntityInterface
     }
 
     /**
-     * Sets the data of the combination.
-     * @param CombinationData $data
+     * Sets the item hashes of the combination.
+     * @param array|string[] $itemHashes
      * @return $this
      */
-    public function setData(CombinationData $data)
+    public function setItemHashes(array $itemHashes)
     {
-        $this->data = $data;
+        $this->itemHashes = $itemHashes;
         return $this;
     }
 
     /**
-     * Returns the data of the combination.
-     * @return CombinationData
-     */
-    public function getData(): CombinationData
-    {
-        return $this->data;
-    }
-
-    /**
-     * Sets whether the data of the combination has been loaded.
-     * @param bool $isDataLoaded
+     * Adds a item hash to the combination.
+     * @param string $itemHash
      * @return $this
      */
-    public function setIsDataLoaded(bool $isDataLoaded)
+    public function addItemHash(string $itemHash)
     {
-        $this->isDataLoaded = $isDataLoaded;
+        $this->itemHashes[] = $itemHash;
         return $this;
     }
 
     /**
-     * Returns whether the data of the combination has been loaded.
-     * @return bool
+     * Returns the item hashes of the combination.
+     * @return array|string[]
      */
-    public function getIsDataLoaded(): bool
+    public function getItemHashes(): array
     {
-        return $this->isDataLoaded;
+        return $this->itemHashes;
     }
 
+    /**
+     * Sets the recipe hashes of the combination.
+     * @param array|string[] $recipeHashes
+     * @return $this
+     */
+    public function setRecipeHashes(array $recipeHashes)
+    {
+        $this->recipeHashes = $recipeHashes;
+        return $this;
+    }
+
+    /**
+     * Adds a recipe hash to the combination.
+     * @param string $recipeHash
+     * @return $this
+     */
+    public function addRecipeHash(string $recipeHash)
+    {
+        $this->recipeHashes[] = $recipeHash;
+        return $this;
+    }
+
+    /**
+     * Returns the recipe hashes of the combination.
+     * @return array|string[]
+     */
+    public function getRecipeHashes(): array
+    {
+        return $this->recipeHashes;
+    }
+
+    /**
+     * Sets the machine hashes of the combination.
+     * @param array|string[] $machineHashes
+     * @return $this
+     */
+    public function setMachineHashes(array $machineHashes)
+    {
+        $this->machineHashes = $machineHashes;
+        return $this;
+    }
+
+    /**
+     * Adds a machine hash to the combination.
+     * @param string $machineHash
+     * @return $this
+     */
+    public function addMachineHash(string $machineHash)
+    {
+        $this->machineHashes[] = $machineHash;
+        return $this;
+    }
+
+    /**
+     * Returns the machine hashes of the combination.
+     * @return array|string[]
+     */
+    public function getMachineHashes(): array
+    {
+        return $this->machineHashes;
+    }
+
+    /**
+     * Sets the icon hashes of the combination.
+     * @param array|string[] $iconHashes
+     * @return $this
+     */
+    public function setIconHashes(array $iconHashes)
+    {
+        $this->iconHashes = $iconHashes;
+        return $this;
+    }
+
+    /**
+     * Adds a icon hash to the combination.
+     * @param string $iconHash
+     * @return $this
+     */
+    public function addIconHash(string $iconHash)
+    {
+        $this->iconHashes[] = $iconHash;
+        return $this;
+    }
+
+    /**
+     * Returns the icon hashes of the combination.
+     * @return array|string[]
+     */
+    public function getIconHashes(): array
+    {
+        return $this->iconHashes;
+    }
+    
     /**
      * Writes the entity data to an array.
      * @return array
@@ -219,8 +301,12 @@ class Combination implements EntityInterface
         $dataBuilder = new DataBuilder();
         $dataBuilder->setString('n', $this->name, '')
                     ->setString('m', $this->mainModName, '')
-                    ->setArray('l', $this->loadedModNames, 'strval', [])
-                    ->setArray('o', $this->loadedOptionalModNames, 'strval', []);
+                    ->setArray('l', array_values(array_unique($this->loadedModNames)), 'strval', [])
+                    ->setArray('o', array_values(array_unique($this->loadedOptionalModNames)), 'strval', [])
+                    ->setArray('i', array_values(array_unique($this->itemHashes)), 'strval', [])
+                    ->setArray('r', array_values(array_unique($this->recipeHashes)), 'strval', [])
+                    ->setArray('a', array_values(array_unique($this->machineHashes)), 'strval', [])
+                    ->setArray('c', array_values(array_unique($this->iconHashes)), 'strval', []);
         return $dataBuilder->getData();
     }
 
@@ -235,6 +321,33 @@ class Combination implements EntityInterface
         $this->mainModName = $data->getString('m', '');
         $this->loadedModNames = array_map('strval', $data->getArray('l'));
         $this->loadedOptionalModNames = array_map('strval', $data->getArray('o'));
+        $this->itemHashes = array_map('strval', $data->getArray('i'));
+        $this->recipeHashes = array_map('strval', $data->getArray('r'));
+        $this->machineHashes = array_map('strval', $data->getArray('a'));
+        $this->iconHashes = array_map('strval', $data->getArray('c'));
         return $this;
+    }
+
+    /**
+     * Calculates a hash value representing the entity.
+     * @return string
+     */
+    public function calculateHash(): string
+    {
+        return EntityUtils::calculateHashOfArray([
+            $this->name,
+            $this->mainModName,
+            $this->loadedModNames,
+            $this->loadedOptionalModNames,
+        ]);
+    }
+
+    /**
+     * Returns the identifier of the entity.
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return EntityUtils::buildIdentifier([$this->name]);
     }
 }

@@ -6,6 +6,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity\Recipe;
 
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,7 +23,7 @@ class IngredientTest extends TestCase
      * Tests the constructing.
      * @coversNothing
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $ingredient = new Ingredient();
 
@@ -36,7 +37,7 @@ class IngredientTest extends TestCase
      * Tests the cloning.
      * @coversNothing
      */
-    public function testClone()
+    public function testClone(): void
     {
         $ingredient = new Ingredient();
         $ingredient->setType('abc')
@@ -61,7 +62,7 @@ class IngredientTest extends TestCase
      * @covers ::setType
      * @covers ::getType
      */
-    public function testSetAndGetType()
+    public function testSetAndGetType(): void
     {
         $ingredient = new Ingredient();
         $this->assertSame($ingredient, $ingredient->setType('foo'));
@@ -73,7 +74,7 @@ class IngredientTest extends TestCase
      * @covers ::setName
      * @covers ::getName
      */
-    public function testSetAndGetName()
+    public function testSetAndGetName(): void
     {
         $ingredient = new Ingredient();
         $this->assertSame($ingredient, $ingredient->setName('foo'));
@@ -85,7 +86,7 @@ class IngredientTest extends TestCase
      * @covers ::setAmount
      * @covers ::getAmount
      */
-    public function testSetAndGetAmount()
+    public function testSetAndGetAmount(): void
     {
         $ingredient = new Ingredient();
         $this->assertSame($ingredient, $ingredient->setAmount(13.37));
@@ -97,7 +98,7 @@ class IngredientTest extends TestCase
      * @covers ::setOrder
      * @covers ::getOrder
      */
-    public function testSetAndGetOrder()
+    public function testSetAndGetOrder(): void
     {
         $ingredient = new Ingredient();
         $this->assertSame($ingredient, $ingredient->setOrder(42));
@@ -137,7 +138,7 @@ class IngredientTest extends TestCase
      * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
-    public function testWriteAndReadData(Ingredient $ingredient, array $expectedData)
+    public function testWriteAndReadData(Ingredient $ingredient, array $expectedData): void
     {
         $data = $ingredient->writeData();
         $this->assertEquals($expectedData, $data);
@@ -145,5 +146,28 @@ class IngredientTest extends TestCase
         $newIngredient = new Ingredient();
         $this->assertSame($newIngredient, $newIngredient->readData(new DataContainer($data)));
         $this->assertEquals($newIngredient, $ingredient);
+    }
+
+        /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash(): void
+    {
+        $ingredient = new Ingredient();
+        $ingredient->setType('abc')
+                   ->setName('def')
+                   ->setAmount(13.37)
+                   ->setOrder(42);
+
+        $expectedResult = EntityUtils::calculateHashOfArray([
+            'abc',
+            'def',
+            13.37,
+            42,
+        ]);
+
+        $result = $ingredient->calculateHash();
+        $this->assertSame($expectedResult, $result);
     }
 }

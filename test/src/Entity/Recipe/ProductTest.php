@@ -6,6 +6,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity\Recipe;
 
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,7 +23,7 @@ class ProductTest extends TestCase
      * Tests the constructing.
      * @coversNothing
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $product = new Product();
 
@@ -38,7 +39,7 @@ class ProductTest extends TestCase
      * Tests the cloning.
      * @coversNothing
      */
-    public function testClone()
+    public function testClone(): void
     {
         $product = new Product();
         $product->setType('abc')
@@ -69,7 +70,7 @@ class ProductTest extends TestCase
      * @covers ::setType
      * @covers ::getType
      */
-    public function testSetAndGetType()
+    public function testSetAndGetType(): void
     {
         $product = new Product();
         $this->assertSame($product, $product->setType('foo'));
@@ -81,7 +82,7 @@ class ProductTest extends TestCase
      * @covers ::setName
      * @covers ::getName
      */
-    public function testSetAndGetName()
+    public function testSetAndGetName(): void
     {
         $product = new Product();
         $this->assertSame($product, $product->setName('foo'));
@@ -93,7 +94,7 @@ class ProductTest extends TestCase
      * @covers ::setAmountMin
      * @covers ::getAmountMin
      */
-    public function testSetAndGetAmountMin()
+    public function testSetAndGetAmountMin(): void
     {
         $product = new Product();
         $this->assertSame($product, $product->setAmountMin(13.37));
@@ -105,7 +106,7 @@ class ProductTest extends TestCase
      * @covers ::setAmountMax
      * @covers ::getAmountMax
      */
-    public function testSetAndGetAmountMax()
+    public function testSetAndGetAmountMax(): void
     {
         $product = new Product();
         $this->assertSame($product, $product->setAmountMax(13.37));
@@ -117,7 +118,7 @@ class ProductTest extends TestCase
      * @covers ::setProbability
      * @covers ::getProbability
      */
-    public function testSetAndGetProbability()
+    public function testSetAndGetProbability(): void
     {
         $product = new Product();
         $this->assertSame($product, $product->setProbability(13.37));
@@ -129,7 +130,7 @@ class ProductTest extends TestCase
      * @covers ::setOrder
      * @covers ::getOrder
      */
-    public function testSetAndGetOrder()
+    public function testSetAndGetOrder(): void
     {
         $product = new Product();
         $this->assertSame($product, $product->setOrder(42));
@@ -173,7 +174,7 @@ class ProductTest extends TestCase
      * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
-    public function testWriteAndReadData(Product $product, array $expectedData)
+    public function testWriteAndReadData(Product $product, array $expectedData): void
     {
         $data = $product->writeData();
         $this->assertEquals($expectedData, $data);
@@ -181,5 +182,32 @@ class ProductTest extends TestCase
         $newProduct = new Product();
         $this->assertSame($newProduct, $newProduct->readData(new DataContainer($data)));
         $this->assertEquals($newProduct, $product);
+    }
+
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash(): void
+    {
+        $product = new Product();
+        $product->setType('abc')
+                   ->setName('def')
+                   ->setAmountMin(13.37)
+                   ->setAmountMax(73.31)
+                   ->setProbability(4.2)
+                   ->setOrder(42);
+
+        $expectedResult = EntityUtils::calculateHashOfArray([
+            'abc',
+            'def',
+            13.37,
+            73.31,
+            4.2,
+            42,
+        ]);
+
+        $result = $product->calculateHash();
+        $this->assertSame($expectedResult, $result);
     }
 }

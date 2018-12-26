@@ -8,6 +8,7 @@ use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
  * The class representing a recipe.
@@ -15,7 +16,7 @@ use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Recipe implements EntityInterface
+class Recipe implements EntityInterface, EntityWithIdentifierInterface
 {
     /**
      * The name of the recipe.
@@ -346,5 +347,37 @@ class Recipe implements EntityInterface
         $this->descriptions->readData($data->getObject('d'));
         $this->iconHash = $data->getString('h', '');
         return $this;
+    }
+
+    /**
+     * Calculates a hash value representing the entity.
+     * @return string
+     */
+    public function calculateHash(): string
+    {
+        return EntityUtils::calculateHashOfArray([
+            $this->name,
+            $this->mode,
+            array_map(function (Ingredient $ingredient): string {
+                return $ingredient->calculateHash();
+            }, $this->ingredients),
+            array_map(function (Product $product): string {
+                return $product->calculateHash();
+            }, $this->products),
+            $this->craftingTime,
+            $this->craftingCategory,
+            $this->labels->calculateHash(),
+            $this->descriptions->calculateHash(),
+            $this->iconHash,
+        ]);
+    }
+
+    /**
+     * Returns the identifier of the entity.
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return EntityUtils::buildIdentifier([$this->name, $this->mode]);
     }
 }

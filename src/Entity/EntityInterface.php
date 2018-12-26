@@ -26,4 +26,10 @@ interface EntityInterface
      * @return $this
      */
     public function readData(DataContainer $data);
+
+    /**
+     * Calculates a hash value representing the entity.
+     * @return string
+     */
+    public function calculateHash(): string;
 }

@@ -6,6 +6,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity;
 
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,7 +23,7 @@ class LocalisedStringTest extends TestCase
      * Tests the constructing.
      * @coversNothing
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $localisedString = new LocalisedString();
         $this->assertSame([], $localisedString->getTranslations());
@@ -32,7 +33,7 @@ class LocalisedStringTest extends TestCase
      * Tests the cloning.
      * @coversNothing
      */
-    public function testClone()
+    public function testClone(): void
     {
         $localisedString = new LocalisedString();
         $localisedString->setTranslation('en', 'foo');
@@ -50,7 +51,7 @@ class LocalisedStringTest extends TestCase
      * @covers ::setTranslation
      * @covers ::getTranslation
      */
-    public function testSetAndGetTranslations()
+    public function testSetAndGetTranslations(): void
     {
         $localisedString = new LocalisedString();
         $this->assertSame($localisedString, $localisedString->setTranslation('en', 'foo'));
@@ -93,7 +94,7 @@ class LocalisedStringTest extends TestCase
      * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
-    public function testWriteAndReadData(LocalisedString $localisedString, array $expectedData)
+    public function testWriteAndReadData(LocalisedString $localisedString, array $expectedData): void
     {
         $data = $localisedString->writeData();
         $this->assertEquals($expectedData, $data);
@@ -101,5 +102,24 @@ class LocalisedStringTest extends TestCase
         $newLocalisedString = new LocalisedString();
         $this->assertSame($newLocalisedString, $newLocalisedString->readData(new DataContainer($data)));
         $this->assertEquals($newLocalisedString, $localisedString);
+    }
+
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash(): void
+    {
+        $localisedString = new LocalisedString();
+        $localisedString->setTranslation('en', 'abc')
+                        ->setTranslation('de', 'def');
+
+        $expectedResult = EntityUtils::calculateHashOfArray([
+            'en' => 'abc',
+            'de' => 'def',
+        ]);
+
+        $result = $localisedString->calculateHash();
+        $this->assertSame($expectedResult, $result);
     }
 }

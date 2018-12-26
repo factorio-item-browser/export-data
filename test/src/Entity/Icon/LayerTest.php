@@ -7,6 +7,8 @@ namespace FactorioItemBrowserTest\ExportData\Entity\Icon;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon\Color;
 use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,11 +25,11 @@ class LayerTest extends TestCase
      * Tests the constructing.
      * @covers ::__construct
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $layer = new Layer();
         $this->assertSame('', $layer->getFileName());
-        $this->assertInstanceOf(Color::class, $layer->getTintColor());
+        $this->assertEquals(new Color(), $layer->getTintColor());
         $this->assertSame(0, $layer->getOffsetX());
         $this->assertSame(0, $layer->getOffsetY());
         $this->assertSame(1., $layer->getScale());
@@ -37,7 +39,7 @@ class LayerTest extends TestCase
      * Tests the cloning.
      * @covers ::__clone
      */
-    public function testClone()
+    public function testClone(): void
     {
         $layer = new Layer();
         $layer->setFileName('foo')
@@ -65,7 +67,7 @@ class LayerTest extends TestCase
      * @covers ::setFileName
      * @covers ::getFileName
      */
-    public function testSetAndGetFileName()
+    public function testSetAndGetFileName(): void
     {
         $layer = new layer();
         $this->assertSame($layer, $layer->setFileName('foo'));
@@ -77,7 +79,7 @@ class LayerTest extends TestCase
      * @covers ::setTintColor
      * @covers ::getTintColor
      */
-    public function testSetAndGetTintColor()
+    public function testSetAndGetTintColor(): void
     {
         $color = new Color();
         $color->setAlpha(0.42);
@@ -92,7 +94,7 @@ class LayerTest extends TestCase
      * @covers ::setOffsetX
      * @covers ::getOffsetX
      */
-    public function testSetAndGetOffsetX()
+    public function testSetAndGetOffsetX(): void
     {
         $layer = new layer();
         $this->assertSame($layer, $layer->setOffsetX(42));
@@ -104,7 +106,7 @@ class LayerTest extends TestCase
      * @covers ::setOffsetY
      * @covers ::getOffsetY
      */
-    public function testSetAndGetOffsetY()
+    public function testSetAndGetOffsetY(): void
     {
         $layer = new layer();
         $this->assertSame($layer, $layer->setOffsetY(42));
@@ -116,7 +118,7 @@ class LayerTest extends TestCase
      * @covers ::setScale
      * @covers ::getScale
      */
-    public function testSetAndGetScale()
+    public function testSetAndGetScale(): void
     {
         $layer = new layer();
         $this->assertSame($layer, $layer->setScale(4.2));
@@ -160,7 +162,7 @@ class LayerTest extends TestCase
      * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
-    public function testWriteAndReadData(Layer $layer, array $expectedData)
+    public function testWriteAndReadData(Layer $layer, array $expectedData): void
     {
         $data = $layer->writeData();
         $this->assertEquals($expectedData, $data);
@@ -168,5 +170,38 @@ class LayerTest extends TestCase
         $newLayer = new Layer();
         $this->assertSame($newLayer, $newLayer->readData(new DataContainer($data)));
         $this->assertEquals($newLayer, $layer);
+    }
+
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash(): void
+    {
+        /* @var Color|MockObject $tintColor */
+        $tintColor = $this->getMockBuilder(Color::class)
+                          ->setMethods(['calculateHash'])
+                          ->getMock();
+        $tintColor->expects($this->once())
+                  ->method('calculateHash')
+                  ->willReturn('def');
+
+        $layer = new Layer();
+        $layer->setFileName('abc')
+              ->setTintColor($tintColor)
+              ->setOffsetX(42)
+              ->setOffsetY(21)
+              ->setScale(13.37);
+
+        $expectedResult = EntityUtils::calculateHashOfArray([
+            'abc',
+            'def',
+            42,
+            21,
+            13.37
+        ]);
+
+        $result = $layer->calculateHash();
+        $this->assertSame($expectedResult, $result);
     }
 }

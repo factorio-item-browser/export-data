@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Service;
 
-use BluePsyduck\Common\Data\DataContainer;
-use FactorioItemBrowser\ExportData\Constant\Path;
-use FactorioItemBrowser\ExportData\Entity\Mod;
+use FactorioItemBrowser\ExportData\Entity\Icon;
+use FactorioItemBrowser\ExportData\Entity\Item;
+use FactorioItemBrowser\ExportData\Entity\Machine;
 use FactorioItemBrowser\ExportData\Entity\Mod\Combination;
-use FactorioItemBrowser\ExportData\Exception\ExportDataException;
+use FactorioItemBrowser\ExportData\Entity\Recipe;
+use FactorioItemBrowser\ExportData\Registry\Adapter\AdapterInterface;
+use FactorioItemBrowser\ExportData\Registry\ContentRegistry;
+use FactorioItemBrowser\ExportData\Registry\EntityRegistry;
+use FactorioItemBrowser\ExportData\Registry\ModRegistry;
 
 /**
  * The main service class of the export data.
@@ -19,241 +23,127 @@ use FactorioItemBrowser\ExportData\Exception\ExportDataException;
 class ExportDataService
 {
     /**
-     * The directory to save the export files to.
-     * @var string
+     * The namespace to use for the rendered icons.
      */
-    protected $exportDirectory;
+    protected const NAMESPACE_RENDERED_ICONS = 'renderedIcon';
 
     /**
-     * The mods of the export directory.
-     * @var array|Mod[]
+     * The registry of the combinations.
+     * @var EntityRegistry
      */
-    protected $mods = [];
+    protected $combinationRegistry;
 
     /**
-     * Initializes the export data service.
-     * @param string $exportDirectory
+     * The registry of the icons.
+     * @var EntityRegistry
      */
-    public function __construct(string $exportDirectory)
+    protected $iconRegistry;
+
+    /**
+     * The registry of the items.
+     * @var EntityRegistry
+     */
+    protected $itemRegistry;
+
+    /**
+     * The registry of the machines.
+     * @var EntityRegistry
+     */
+    protected $machineRegistry;
+
+    /**
+     * The registry of the mods.
+     * @var ModRegistry
+     */
+    protected $modRegistry;
+
+    /**
+     * The registry of the recipes.
+     * @var EntityRegistry
+     */
+    protected $recipeRegistry;
+
+    /**
+     * The registry of the rendered icons.
+     * @var ContentRegistry
+     */
+    protected $renderedIconRegistry;
+
+    /**
+     * Initializes the service.
+     * @param AdapterInterface $adapter
+     */
+    public function __construct(AdapterInterface $adapter)
     {
-        $this->exportDirectory = $exportDirectory;
+        $this->combinationRegistry = new EntityRegistry($adapter, Combination::class);
+        $this->iconRegistry = new EntityRegistry($adapter, Icon::class);
+        $this->itemRegistry = new EntityRegistry($adapter, Item::class);
+        $this->machineRegistry = new EntityRegistry($adapter, Machine::class);
+        $this->modRegistry = new ModRegistry($adapter);
+        $this->recipeRegistry = new EntityRegistry($adapter, Recipe::class);
+        $this->renderedIconRegistry = new ContentRegistry($adapter, self::NAMESPACE_RENDERED_ICONS);
     }
 
     /**
-     * Loads the mods from the export directory.
-     * @return $this
+     * Returns the registry of the combinations.
+     * @return EntityRegistry
      */
-    public function loadMods()
+    public function getCombinationRegistry(): EntityRegistry
     {
-        $this->mods = [];
-        $content = $this->readFile(Path::FILE_MODS_LIST, true);
-        if (!empty($content)) {
-            $data = new DataContainer(json_decode($content, true));
-            foreach ($data->getObjectArray([]) as $modData) {
-                $mod = new Mod();
-                $mod->readData($modData);
-                $this->mods[$mod->getName()] = $mod;
-            }
-            $this->sortMods();
-        }
-        return $this;
+        return $this->combinationRegistry;
     }
 
     /**
-     * Sorts the mods after their order values.
-     * @return $this
+     * Returns the registry of the icons.
+     * @return EntityRegistry
      */
-    protected function sortMods()
+    public function getIconRegistry(): EntityRegistry
     {
-        uasort($this->mods, function (Mod $left, Mod $right): int {
-            return $left->getOrder() <=> $right->getOrder();
-        });
-        return $this;
+        return $this->iconRegistry;
     }
 
     /**
-     * Returns all loaded mods.
-     * @return array|Mod[]
+     * Returns the registry of the machines.
+     * @return EntityRegistry
      */
-    public function getMods(): array
+    public function getMachineRegistry(): EntityRegistry
     {
-        return $this->mods;
+        return $this->machineRegistry;
     }
 
     /**
-     * Returns the loaded mod with the specified name.
-     * @param string $modName
-     * @return Mod|null
+     * Returns the registry of the items.
+     * @return EntityRegistry
      */
-    public function getMod(string $modName): ?Mod
+    public function getItemRegistry(): EntityRegistry
     {
-        return $this->mods[$modName] ?? null;
+        return $this->itemRegistry;
     }
 
     /**
-     * Sets the mod to be saved.
-     * @param Mod $mod
-     * @return $this
+     * Returns the registry of the mods.
+     * @return ModRegistry
      */
-    public function setMod(Mod $mod)
+    public function getModRegistry(): ModRegistry
     {
-        $this->mods[$mod->getName()] = $mod;
-        return $this;
+        return $this->modRegistry;
     }
 
     /**
-     * Removes the mods from the list of mods.
-     * @param string $modName
-     * @return $this
+     * Returns the registry of the recipes.
+     * @return EntityRegistry
      */
-    public function removeMod(string $modName)
+    public function getRecipeRegistry(): EntityRegistry
     {
-        unset($this->mods[$modName]);
-        return $this;
+        return $this->recipeRegistry;
     }
 
     /**
-     * Saves the mods to the export directory.
-     * @return $this
+     * Returns the registry of the rendered icons.
+     * @return ContentRegistry
      */
-    public function saveMods()
+    public function getRenderedIconRegistry(): ContentRegistry
     {
-        $this->sortMods();
-        $data = array_values(array_map(function (Mod $mod): array {
-            return $mod->writeData();
-        }, $this->mods));
-        $this->writeFile(
-            Path::FILE_MODS_LIST,
-            (string) json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
-        );
-        return $this;
-    }
-
-    /**
-     * Saves the data of the combination into the export directory.
-     * @param Combination $combination
-     * @return $this
-     * @throws ExportDataException
-     */
-    public function saveCombinationData(Combination $combination)
-    {
-        $path = $this->getCombinationDataPath($combination);
-        $data = $combination->getData()->writeData();
-        $this->writeFile($path, (string) json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-        return $this;
-    }
-
-    /**
-     * Loads the data into the specified combination.
-     * @param Combination $combination
-     * @return $this
-     * @throws ExportDataException
-     */
-    public function loadCombinationData(Combination $combination)
-    {
-        $path = $this->getCombinationDataPath($combination);
-        $content = $this->readFile($path);
-        $combination->getData()->readData(new DataContainer(json_decode($content, true)));
-        $combination->setIsDataLoaded(true);
-        return $this;
-    }
-
-    /**
-     * Returns the path of the specified combination data.
-     * @param Combination $combination
-     * @return string
-     */
-    protected function getCombinationDataPath(Combination $combination): string
-    {
-        return implode(DIRECTORY_SEPARATOR, [
-            Path::DIRECTORY_MODS,
-            $combination->getMainModName(),
-            $combination->getName() . '.json'
-        ]);
-    }
-
-    /**
-     * Saves the specified icon to the export directory.
-     * @param string $iconHash
-     * @param string $content
-     * @return $this
-     * @throws ExportDataException
-     */
-    public function saveIcon(string $iconHash, string $content)
-    {
-        $this->writeFile($this->getIconPath($iconHash), $content);
-        return $this;
-    }
-
-    /**
-     * Loads the icon with the specified hash from the export directory.
-     * @param string $iconHash
-     * @return string
-     * @throws ExportDataException
-     */
-    public function loadIcon(string $iconHash): string
-    {
-        return $this->readFile($this->getIconPath($iconHash));
-    }
-
-    /**
-     * Returns the path to the icon file with the specified hash.
-     * @param string $iconHash
-     * @return string
-     */
-    protected function getIconPath(string $iconHash): string
-    {
-        return implode(DIRECTORY_SEPARATOR, [
-            Path::DIRECTORY_ICONS,
-            substr($iconHash, 0, 2),
-            $iconHash . '.png'
-        ]);
-    }
-
-    /**
-     * Reads the specified file.
-     * @param string $fileName
-     * @param bool $ignoreError
-     * @return string
-     * @throws ExportDataException
-     */
-    protected function readFile(string $fileName, bool $ignoreError = false): string
-    {
-        $fullPath = $this->exportDirectory . DIRECTORY_SEPARATOR . $fileName;
-        $result = false;
-        if (file_exists($fullPath)) {
-            $result = file_get_contents($fullPath);
-        }
-        if ($result === false && !$ignoreError) {
-            throw new ExportDataException('Unable to read file ' . $fileName);
-        }
-        return (string) $result;
-    }
-
-    /**
-     * Writes the specified file.
-     * @param string $fileName
-     * @param string $content
-     * @return $this
-     * @throws ExportDataException
-     */
-    protected function writeFile(string $fileName, string $content)
-    {
-        $fullPath = $this->exportDirectory . DIRECTORY_SEPARATOR . $fileName;
-        $directory = dirname($fullPath);
-        if (!is_dir($directory)) {
-            $result = mkdir($directory, 0775, true);
-            if (!$result) {
-                throw new ExportDataException('Unable to create directory ' . $directory);
-            }
-        }
-        $result = false;
-        if (is_writable($directory)) {
-            $result = file_put_contents($fullPath, $content);
-        }
-        if ($result === false) {
-            throw new ExportDataException('Unable to write file ' . $fileName);
-        }
-        return $this;
+        return $this->renderedIconRegistry;
     }
 }

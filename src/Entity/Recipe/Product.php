@@ -7,6 +7,7 @@ namespace FactorioItemBrowser\ExportData\Entity\Recipe;
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\EntityInterface;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
  * The class representing a product of a recipe.
@@ -202,5 +203,21 @@ class Product implements EntityInterface
         $this->probability = $data->getFloat('p', 1.);
         $this->order = $data->getInteger('o', 0);
         return $this;
+    }
+
+        /**
+     * Calculates a hash value representing the entity.
+     * @return string
+     */
+    public function calculateHash(): string
+    {
+        return EntityUtils::calculateHashOfArray([
+            $this->type,
+            $this->name,
+            $this->amountMin,
+            $this->amountMax,
+            $this->probability,
+            $this->order,
+        ]);
     }
 }

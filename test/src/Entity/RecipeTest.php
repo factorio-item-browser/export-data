@@ -9,6 +9,8 @@ use FactorioItemBrowser\ExportData\Entity\LocalisedString;
 use FactorioItemBrowser\ExportData\Entity\Recipe;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,7 +27,7 @@ class RecipeTest extends TestCase
      * Tests the constructing.
      * @covers ::__construct
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $recipe = new Recipe();
 
@@ -35,8 +37,8 @@ class RecipeTest extends TestCase
         $this->assertSame([], $recipe->getProducts());
         $this->assertSame(0., $recipe->getCraftingTime());
         $this->assertSame('', $recipe->getCraftingCategory());
-        $this->assertInstanceOf(LocalisedString::class, $recipe->getLabels());
-        $this->assertInstanceOf(LocalisedString::class, $recipe->getDescriptions());
+        $this->assertEquals(new LocalisedString(), $recipe->getLabels());
+        $this->assertEquals(new LocalisedString(), $recipe->getDescriptions());
         $this->assertSame('', $recipe->getIconHash());
     }
 
@@ -44,7 +46,7 @@ class RecipeTest extends TestCase
      * Tests the cloning.
      * @covers ::__clone
      */
-    public function testClone()
+    public function testClone(): void
     {
         $ingredient = new Ingredient();
         $ingredient->setType('ghi');
@@ -94,7 +96,7 @@ class RecipeTest extends TestCase
      * @covers ::setName
      * @covers ::getName
      */
-    public function testSetAndGetName()
+    public function testSetAndGetName(): void
     {
         $recipe = new Recipe();
         $this->assertSame($recipe, $recipe->setName('foo'));
@@ -106,7 +108,7 @@ class RecipeTest extends TestCase
      * @covers ::setMode
      * @covers ::getMode
      */
-    public function testSetAndGetMode()
+    public function testSetAndGetMode(): void
     {
         $recipe = new Recipe();
         $this->assertSame($recipe, $recipe->setMode('foo'));
@@ -119,7 +121,7 @@ class RecipeTest extends TestCase
      * @covers ::getIngredients
      * @covers ::addIngredient
      */
-    public function testSetAddAndGetIngredients()
+    public function testSetAddAndGetIngredients(): void
     {
         $ingredient1 = new Ingredient();
         $ingredient1->setType('abc');
@@ -142,7 +144,7 @@ class RecipeTest extends TestCase
      * @covers ::getProducts
      * @covers ::addProduct
      */
-    public function testSetAddAndGetProducts()
+    public function testSetAddAndGetProducts(): void
     {
         $product1 = new Product();
         $product1->setType('abc');
@@ -164,7 +166,7 @@ class RecipeTest extends TestCase
      * @covers ::setCraftingTime
      * @covers ::getCraftingTime
      */
-    public function testSetAndGetCraftingTime()
+    public function testSetAndGetCraftingTime(): void
     {
         $recipe = new Recipe();
         $this->assertSame($recipe, $recipe->setCraftingTime(13.37));
@@ -176,7 +178,7 @@ class RecipeTest extends TestCase
      * @covers ::setCraftingCategory
      * @covers ::getCraftingCategory
      */
-    public function testSetAndGetCraftingCategory()
+    public function testSetAndGetCraftingCategory(): void
     {
         $recipe = new Recipe();
         $this->assertSame($recipe, $recipe->setCraftingCategory('abc'));
@@ -188,7 +190,7 @@ class RecipeTest extends TestCase
      * @covers ::setLabels
      * @covers ::getLabels
      */
-    public function testSetAndGetLabels()
+    public function testSetAndGetLabels(): void
     {
         $labels = new LocalisedString();
         $labels->setTranslation('en', 'foo');
@@ -203,7 +205,7 @@ class RecipeTest extends TestCase
      * @covers ::setDescriptions
      * @covers ::getDescriptions
      */
-    public function testSetAndGetDescriptions()
+    public function testSetAndGetDescriptions(): void
     {
         $descriptions = new LocalisedString();
         $descriptions->setTranslation('en', 'foo');
@@ -218,7 +220,7 @@ class RecipeTest extends TestCase
      * @covers ::setIconHash
      * @covers ::getIconHash
      */
-    public function testSetAndGetIconHash()
+    public function testSetAndGetIconHash(): void
     {
         $item = new Recipe();
         $this->assertSame($item, $item->setIconHash('foo'));
@@ -238,7 +240,7 @@ class RecipeTest extends TestCase
         $product1 = new Product();
         $product1->setType('vwx');
         $product2 = new Product();
-        $product2->setType('yz');
+        $product2->setType('yza');
 
         $recipe = new Recipe();
         $recipe->setName('abc')
@@ -248,6 +250,7 @@ class RecipeTest extends TestCase
                ->addProduct($product1)
                ->addProduct($product2)
                ->setCraftingTime(13.37)
+               ->setCraftingCategory('bcd')
                ->setIconHash('ghi');
         $recipe->getLabels()->setTranslation('en', 'jkl');
         $recipe->getDescriptions()->setTranslation('de', 'mno');
@@ -261,9 +264,10 @@ class RecipeTest extends TestCase
             ],
             'p' => [
                 ['t' => 'vwx'],
-                ['t' => 'yz']
+                ['t' => 'yza']
             ],
             'c' => 13.37,
+            'a' => 'bcd',
             'l' => [
                 'en' => 'jkl'
             ],
@@ -287,7 +291,7 @@ class RecipeTest extends TestCase
      * @covers ::readData
      * @dataProvider provideTestWriteAndReadData
      */
-    public function testWriteAndReadData(Recipe $recipe, array $expectedData)
+    public function testWriteAndReadData(Recipe $recipe, array $expectedData): void
     {
         $data = $recipe->writeData();
         $this->assertEquals($expectedData, $data);
@@ -295,5 +299,102 @@ class RecipeTest extends TestCase
         $newRecipe = new Recipe();
         $this->assertSame($newRecipe, $newRecipe->readData(new DataContainer($data)));
         $this->assertEquals($newRecipe, $recipe);
+    }
+
+    /**
+     * Tests the calculateHash method.
+     * @covers ::calculateHash
+     */
+    public function testCalculateHash(): void
+    {
+        /* @var Ingredient|MockObject $ingredient1 */
+        $ingredient1 = $this->getMockBuilder(Ingredient::class)
+                            ->setMethods(['calculateHash'])
+                            ->getMock();
+        $ingredient1->expects($this->once())
+                    ->method('calculateHash')
+                    ->willReturn('mno');
+        
+        /* @var Ingredient|MockObject $ingredient2 */
+        $ingredient2 = $this->getMockBuilder(Ingredient::class)
+                            ->setMethods(['calculateHash'])
+                            ->getMock();
+        $ingredient2->expects($this->once())
+                    ->method('calculateHash')
+                    ->willReturn('pqr');
+        
+        /* @var Product|MockObject $product1 */
+        $product1 = $this->getMockBuilder(Product::class)
+                         ->setMethods(['calculateHash'])
+                         ->getMock();
+        $product1->expects($this->once())
+                 ->method('calculateHash')
+                 ->willReturn('stu');
+        
+        /* @var Product|MockObject $product2 */
+        $product2 = $this->getMockBuilder(Product::class)
+                         ->setMethods(['calculateHash'])
+                         ->getMock();
+        $product2->expects($this->once())
+                 ->method('calculateHash')
+                 ->willReturn('vwx');
+        
+        /* @var LocalisedString|MockObject $labels */
+        $labels = $this->getMockBuilder(LocalisedString::class)
+                       ->setMethods(['calculateHash'])
+                       ->getMock();
+        $labels->expects($this->once())
+               ->method('calculateHash')
+               ->willReturn('yza');
+
+        /* @var LocalisedString|MockObject $descriptions */
+        $descriptions = $this->getMockBuilder(LocalisedString::class)
+                             ->setMethods(['calculateHash'])
+                             ->getMock();
+        $descriptions->expects($this->once())
+                     ->method('calculateHash')
+                     ->willReturn('bcd');
+        
+        $recipe = new Recipe();
+        $recipe->setName('abc')
+               ->setMode('def')
+               ->addIngredient($ingredient1)
+               ->addIngredient($ingredient2)
+               ->addProduct($product1)
+               ->addProduct($product2)
+               ->setCraftingTime(13.37)
+               ->setCraftingCategory('ghi')
+               ->setLabels($labels)
+               ->setDescriptions($descriptions)
+               ->setIconHash('jkl');
+
+        $expectedResult = EntityUtils::calculateHashOfArray([
+            'abc',
+            'def',
+            ['mno', 'pqr'],
+            ['stu', 'vwx'],
+            13.37,
+            'ghi',
+            'yza',
+            'bcd',
+            'jkl',
+        ]);
+
+        $result = $recipe->calculateHash();
+        $this->assertSame($expectedResult, $result);
+    }
+    
+    /**
+     * Tests the getIdentifier method.
+     * @covers ::getIdentifier
+     */
+    public function testGetIdentifier(): void
+    {
+        $recipe = new Recipe();
+        $recipe->setName('abc')
+               ->setMode('def');
+
+        $result = $recipe->getIdentifier();
+        $this->assertSame('abc|def', $result);
     }
 }

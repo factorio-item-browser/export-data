@@ -7,6 +7,7 @@ namespace FactorioItemBrowser\ExportData\Entity\Icon;
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\EntityInterface;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
  * The entity representing one layer of an icon.
@@ -190,5 +191,20 @@ class Layer implements EntityInterface
         $this->offsetY = $data->getInteger('y', 0);
         $this->scale = $data->getFloat('s', 1.);
         return $this;
+    }
+
+    /**
+     * Calculates a hash value representing the entity.
+     * @return string
+     */
+    public function calculateHash(): string
+    {
+        return EntityUtils::calculateHashOfArray([
+            $this->fileName,
+            $this->tintColor->calculateHash(),
+            $this->offsetX,
+            $this->offsetY,
+            $this->scale,
+        ]);
     }
 }

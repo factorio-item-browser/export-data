@@ -7,6 +7,7 @@ namespace FactorioItemBrowser\ExportData\Entity\Icon;
 use BluePsyduck\Common\Data\DataBuilder;
 use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\EntityInterface;
+use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
  * A class holding information about a color.
@@ -176,5 +177,19 @@ class Color implements EntityInterface
         $this->blue = $data->getFloat('b', 1.);
         $this->alpha = $data->getFloat('a', 1.);
         return $this;
+    }
+
+    /**
+     * Calculates a hash value representing the entity.
+     * @return string
+     */
+    public function calculateHash(): string
+    {
+        return EntityUtils::calculateHashOfArray([
+            $this->red,
+            $this->green,
+            $this->blue,
+            $this->alpha,
+        ]);
     }
 }
