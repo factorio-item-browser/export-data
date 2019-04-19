@@ -4,7 +4,8 @@
 
 ### Added
 
-- Property `thumbnailHash` to the `Mod` entity. 
+- Property `thumbnailHash` to the `Mod` entity.
+- Property `renderedSize` to the `Icon` entity. 
 
 ## 2.0.0 - 2018-12-26
 

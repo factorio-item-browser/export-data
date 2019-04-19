@@ -29,6 +29,12 @@ class Icon implements EntityInterface
     protected $size = self::DEFAULT_SIZE;
 
     /**
+     * The rendered size of the icon.
+     * @var int
+     */
+    protected $renderedSize = self::DEFAULT_SIZE;
+
+    /**
      * The layers of the icon.
      * @var array|Layer[]
      */
@@ -62,6 +68,26 @@ class Icon implements EntityInterface
     public function getSize(): int
     {
         return $this->size;
+    }
+
+    /**
+     * Sets the rendered size of the icon.
+     * @param int $renderedSize
+     * @return $this
+     */
+    public function setRenderedSize(int $renderedSize)
+    {
+        $this->renderedSize = $renderedSize;
+        return $this;
+    }
+
+    /**
+     * Returns the rendered size of the icon.
+     * @return int
+     */
+    public function getRenderedSize(): int
+    {
+        return $this->renderedSize;
     }
 
     /**
@@ -104,8 +130,9 @@ class Icon implements EntityInterface
     public function writeData(): array
     {
         $dataBuilder = new DataBuilder();
-        $dataBuilder->setInteger('s', $this->getSize(), self::DEFAULT_SIZE)
-                    ->setArray('l', $this->getLayers(), function (Layer $layer): array {
+        $dataBuilder->setInteger('s', $this->size, self::DEFAULT_SIZE)
+                    ->setInteger('r', $this->renderedSize, self::DEFAULT_SIZE)
+                    ->setArray('l', $this->layers, function (Layer $layer): array {
                         return $layer->writeData();
                     }, []);
         return $dataBuilder->getData();
@@ -119,6 +146,7 @@ class Icon implements EntityInterface
     public function readData(DataContainer $data)
     {
         $this->size = $data->getInteger('s', self::DEFAULT_SIZE);
+        $this->renderedSize = $data->getInteger('r', self::DEFAULT_SIZE);
         $this->layers = array_map(function (DataContainer $data): Layer {
             return (new Layer())->readData($data);
         }, $data->getObjectArray('l'));
@@ -133,6 +161,7 @@ class Icon implements EntityInterface
     {
         return EntityUtils::calculateHashOfArray([
             $this->size,
+            $this->renderedSize,
             array_map(function (Layer $layer): string {
                 return $layer->calculateHash();
             }, $this->layers)
