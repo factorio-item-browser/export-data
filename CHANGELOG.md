@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Property `thumbnailHash` to the `Mod` entity. 
+
 ## 2.0.0 - 2018-12-26
 
 ### Changed
