@@ -121,13 +121,13 @@ class IconTest extends TestCase
         $layer2->setFileName('def');
 
         $icon = new Icon();
-        $icon->setSize(64)
+        $icon->setSize(32)
              ->setRenderedSize(128)
              ->addLayer($layer1)
              ->addLayer($layer2);
 
         $data = [
-            's' => 64,
+            's' => 32,
             'r' => 128,
             'l' => [
                 ['f' => 'abc'],
@@ -182,13 +182,13 @@ class IconTest extends TestCase
                ->willReturn('def');
 
         $icon = new Icon();
-        $icon->setSize(64)
+        $icon->setSize(32)
              ->setRenderedSize(128)
              ->addLayer($layer1)
              ->addLayer($layer2);
 
         $expectedResult = EntityUtils::calculateHashOfArray([
-            64,
+            32,
             128,
             ['abc', 'def'],
         ]);
