@@ -20,7 +20,7 @@ class Icon implements EntityInterface
     /**
      * The default size of the icons.
      */
-    public const DEFAULT_SIZE = 32;
+    public const DEFAULT_SIZE = 64;
 
     /**
      * The original size of the icon.

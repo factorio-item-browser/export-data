@@ -5,7 +5,8 @@
 ### Added
 
 - Property `thumbnailHash` to the `Mod` entity.
-- Property `renderedSize` to the `Icon` entity. 
+- Property `renderedSize` to the `Icon` entity.
+- `DEFAULT_SIZE` of `Icon` from 32 to 64, as it will become the new default value in the game as well. 
 
 ## 2.0.0 - 2018-12-26
 
