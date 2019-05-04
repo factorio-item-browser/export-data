@@ -1,7 +1,0 @@
-version: "3"
-services:
-  php:
-    container_name: fib-ed-php
-    image: bluepsyduck/php-fpm
-    volumes:
-      - ".:/project"

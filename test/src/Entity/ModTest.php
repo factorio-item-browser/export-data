@@ -40,6 +40,7 @@ class ModTest extends TestCase
         $this->assertSame('', $mod->getChecksum());
         $this->assertSame(0, $mod->getOrder());
         $this->assertSame([], $mod->getCombinationHashes());
+        $this->assertSame('', $mod->getThumbnailHash());
     }
 
     /**
@@ -58,6 +59,7 @@ class ModTest extends TestCase
             ->setFileName('ghi')
             ->setDirectoryName('jkl')
             ->addDependency($dependency)
+            ->setThumbnailHash('yza')
             ->setChecksum('mno')
             ->setOrder(42)
             ->setCombinationHashes(['vwx']);
@@ -70,6 +72,7 @@ class ModTest extends TestCase
             ->setVersion('0.2.4')
             ->setFileName('ihg')
             ->setDirectoryName('lkj')
+            ->setThumbnailHash('azy')
             ->setChecksum('onm')
             ->setOrder(24)
             ->setCombinationHashes(['xwv']);
@@ -85,6 +88,7 @@ class ModTest extends TestCase
         $this->assertSame('mno', $clonedMod->getChecksum());
         $this->assertSame(42, $clonedMod->getOrder());
         $this->assertSame(['vwx'], $clonedMod->getCombinationHashes());
+        $this->assertSame('yza', $clonedMod->getThumbnailHash());
         $this->assertSame('pqr', $clonedMod->getTitles()->getTranslation('en'));
         $this->assertSame('stu', $clonedMod->getDescriptions()->getTranslation('en'));
         $dependencies = $clonedMod->getDependencies();
@@ -203,6 +207,20 @@ class ModTest extends TestCase
 
         $this->assertSame($mod, $mod->addDependency($dependency3));
         $this->assertSame([$dependency1, $dependency2, $dependency3], $mod->getDependencies());
+    }
+
+    /**
+     * Tests the setting and getting the thumbnail hash.
+     * @covers ::getThumbnailHash
+     * @covers ::setThumbnailHash
+     */
+    public function testSetAndGetThumbnailHash(): void
+    {
+        $thumbnailHash = 'abc';
+        $mod = new Mod();
+
+        $this->assertSame($mod, $mod->setThumbnailHash($thumbnailHash));
+        $this->assertSame($thumbnailHash, $mod->getThumbnailHash());
     }
 
     /**
@@ -367,6 +385,7 @@ class ModTest extends TestCase
             ->setDirectoryName('jkl')
             ->addDependency($dependency1)
             ->addDependency($dependency2)
+            ->setThumbnailHash('bcd')
             ->setChecksum('mno')
             ->addCombinationHash('vwx')
             ->addCombinationHash('yza')
@@ -381,6 +400,7 @@ class ModTest extends TestCase
             'ghi',
             'jkl',
             ['bcd', 'efg'],
+            'bcd',
             'mno',
             42,
         ]);

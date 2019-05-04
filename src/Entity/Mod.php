@@ -66,6 +66,12 @@ class Mod implements EntityInterface, EntityWithIdentifierInterface
     protected $dependencies = [];
 
     /**
+     * The hash of the mod thumbnail.
+     * @var string
+     */
+    protected $thumbnailHash = '';
+
+    /**
      * The checksum of the mod file.
      * @var string
      */
@@ -278,6 +284,26 @@ class Mod implements EntityInterface, EntityWithIdentifierInterface
     }
 
     /**
+     * Sets the hash of the mod thumbnail.
+     * @param string $thumbnailHash
+     * @return $this
+     */
+    public function setThumbnailHash(string $thumbnailHash)
+    {
+        $this->thumbnailHash = $thumbnailHash;
+        return $this;
+    }
+
+    /**
+     * Returns the hash of the mod thumbnail.
+     * @return string
+     */
+    public function getThumbnailHash(): string
+    {
+        return $this->thumbnailHash;
+    }
+
+    /**
      * Sets the checksum of the mod file.
      * @param string $checksum
      * @return $this Implementing fluent interface.
@@ -348,6 +374,8 @@ class Mod implements EntityInterface, EntityWithIdentifierInterface
         return $this->combinationHashes;
     }
 
+
+
     /**
      * Writes the entity data to an array.
      * @return array
@@ -365,6 +393,7 @@ class Mod implements EntityInterface, EntityWithIdentifierInterface
                     ->setArray('e', $this->dependencies, function (Dependency $dependency): array {
                         return $dependency->writeData();
                     }, [])
+                    ->setString('h', $this->thumbnailHash, '')
                     ->setString('s', $this->checksum, '')
                     ->setInteger('o', $this->order, 0)
                     ->setArray('c', array_values(array_unique($this->combinationHashes)), 'strval', []);
@@ -388,6 +417,7 @@ class Mod implements EntityInterface, EntityWithIdentifierInterface
         $this->dependencies = array_map(function (DataContainer $data): Dependency {
             return (new Dependency())->readData($data);
         }, $data->getObjectArray('e'));
+        $this->thumbnailHash = $data->getString('h', '');
         $this->checksum = $data->getString('s', '');
         $this->order = $data->getInteger('o', 0);
         $this->combinationHashes = array_map('strval', $data->getArray('c'));
@@ -411,6 +441,7 @@ class Mod implements EntityInterface, EntityWithIdentifierInterface
             array_map(function (Dependency $dependency): string {
                 return $dependency->calculateHash();
             }, $this->dependencies),
+            $this->thumbnailHash,
             $this->checksum,
             $this->order,
         ]);

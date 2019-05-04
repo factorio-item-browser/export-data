@@ -29,6 +29,7 @@ class IconTest extends TestCase
     {
         $icon = new Icon();
         $this->assertSame(Icon::DEFAULT_SIZE, $icon->getSize());
+        $this->assertSame(Icon::DEFAULT_SIZE, $icon->getRenderedSize());
         $this->assertSame([], $icon->getLayers());
     }
 
@@ -43,13 +44,17 @@ class IconTest extends TestCase
 
         $icon = new Icon();
         $icon->setSize(64)
+             ->setRenderedSize(128)
              ->addLayer($layer);
 
         $clonedIcon = clone($icon);
-        $icon->setSize(46);
+        $icon->setSize(46)
+             ->setRenderedSize(821);
         $layer->setFileName('oof');
 
         $this->assertSame(64, $clonedIcon->getSize());
+        $this->assertSame(128, $clonedIcon->getRenderedSize());
+
         $layers = $clonedIcon->getLayers();
         $this->assertCount(1, $layers);
         $this->assertSame('foo', $layers[0]->getFileName());
@@ -65,6 +70,20 @@ class IconTest extends TestCase
         $icon = new Icon();
         $this->assertSame($icon, $icon->setSize(64));
         $this->assertSame(64, $icon->getSize());
+    }
+
+    /**
+     * Tests the setting and getting the rendered size.
+     * @covers ::getRenderedSize
+     * @covers ::setRenderedSize
+     */
+    public function testSetAndGetRenderedSize(): void
+    {
+        $renderedSize = 64;
+        $icon = new Icon();
+
+        $this->assertSame($icon, $icon->setRenderedSize($renderedSize));
+        $this->assertSame($renderedSize, $icon->getRenderedSize());
     }
     
     /**
@@ -102,12 +121,14 @@ class IconTest extends TestCase
         $layer2->setFileName('def');
 
         $icon = new Icon();
-        $icon->setSize(64)
+        $icon->setSize(32)
+             ->setRenderedSize(128)
              ->addLayer($layer1)
              ->addLayer($layer2);
 
         $data = [
-            's' => 64,
+            's' => 32,
+            'r' => 128,
             'l' => [
                 ['f' => 'abc'],
                 ['f' => 'def'],
@@ -161,12 +182,14 @@ class IconTest extends TestCase
                ->willReturn('def');
 
         $icon = new Icon();
-        $icon->setSize(64)
+        $icon->setSize(32)
+             ->setRenderedSize(128)
              ->addLayer($layer1)
              ->addLayer($layer2);
 
         $expectedResult = EntityUtils::calculateHashOfArray([
-            64,
+            32,
+            128,
             ['abc', 'def'],
         ]);
 
