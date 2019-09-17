@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTest\ExportData\Registry\Adapter;
 
-use BluePsyduck\Common\Test\ReflectionTrait;
+use BluePsyduck\TestHelper\ReflectionTrait;
 use FactorioItemBrowser\ExportData\Exception\ExportDataException;
 use FactorioItemBrowser\ExportData\Registry\Adapter\FileSystemAdapter;
 use org\bovigo\vfs\vfsStream;

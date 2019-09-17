@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTest\ExportData\Registry;
 
-use BluePsyduck\Common\Test\ReflectionTrait;
+use BluePsyduck\TestHelper\ReflectionTrait;
 use FactorioItemBrowser\ExportData\Registry\AbstractRegistry;
 use FactorioItemBrowser\ExportData\Registry\Adapter\AdapterInterface;
 use PHPUnit\Framework\MockObject\MockObject;
