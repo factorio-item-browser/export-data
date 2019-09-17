@@ -1,0 +1,6 @@
+FactorioItemBorwser\ExportData\Entity\LocalisedString:
+  access_type: public_method
+  exclusion_policy: all
+  properties:
+    translations:
+      type: array<string, string>

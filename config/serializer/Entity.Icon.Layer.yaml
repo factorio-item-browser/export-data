@@ -1,0 +1,14 @@
+FactorioItemBorwser\ExportData\Entity\Layer:
+  access_type: public_method
+  exclusion_policy: all
+  properties:
+    fileName:
+      type: string
+    tintColor:
+      type: FactorioItemBorwser\ExportData\Entity\Icon\Color
+    offsetX:
+      type: integer
+    offsetY:
+      type: integer
+    scale:
+      type: float

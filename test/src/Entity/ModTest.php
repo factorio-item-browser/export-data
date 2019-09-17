@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTest\ExportData\Entity;
 
-use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
 use FactorioItemBrowser\ExportData\Entity\Mod;
-use FactorioItemBrowser\ExportData\Entity\Mod\Dependency;
-use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -29,83 +26,29 @@ class ModTest extends TestCase
     public function testConstruct(): void
     {
         $mod = new Mod();
+
         $this->assertSame('', $mod->getName());
-        $this->assertEquals(new LocalisedString(), $mod->getTitles());
-        $this->assertEquals(new LocalisedString(), $mod->getDescriptions());
         $this->assertSame('', $mod->getAuthor());
         $this->assertSame('', $mod->getVersion());
-        $this->assertSame('', $mod->getFileName());
-        $this->assertSame('', $mod->getDirectoryName());
-        $this->assertSame([], $mod->getDependencies());
-        $this->assertSame('', $mod->getChecksum());
-        $this->assertSame(0, $mod->getOrder());
-        $this->assertSame([], $mod->getCombinationHashes());
         $this->assertSame('', $mod->getThumbnailHash());
+
+        // Asserted through type-hints
+        $mod->getTitles();
+        $mod->getDescriptions();
     }
 
     /**
-     * Tests the cloning.
-     * @covers ::__clone
-     */
-    public function testClone(): void
-    {
-        $dependency = new Dependency();
-        $dependency->setRequiredModName('foo');
-
-        $mod = new Mod();
-        $mod->setName('abc')
-            ->setAuthor('def')
-            ->setVersion('4.2.0')
-            ->setFileName('ghi')
-            ->setDirectoryName('jkl')
-            ->addDependency($dependency)
-            ->setThumbnailHash('yza')
-            ->setChecksum('mno')
-            ->setOrder(42)
-            ->setCombinationHashes(['vwx']);
-        $mod->getTitles()->setTranslation('en', 'pqr');
-        $mod->getDescriptions()->setTranslation('en', 'stu');
-
-        $clonedMod = clone($mod);
-        $mod->setName('cba')
-            ->setAuthor('fed')
-            ->setVersion('0.2.4')
-            ->setFileName('ihg')
-            ->setDirectoryName('lkj')
-            ->setThumbnailHash('azy')
-            ->setChecksum('onm')
-            ->setOrder(24)
-            ->setCombinationHashes(['xwv']);
-        $mod->getTitles()->setTranslation('en', 'rqp');
-        $mod->getDescriptions()->setTranslation('en', 'uts');
-        $dependency->setRequiredModName('oof');
-
-        $this->assertSame('abc', $clonedMod->getName());
-        $this->assertSame('def', $clonedMod->getAuthor());
-        $this->assertSame('4.2.0', $clonedMod->getVersion());
-        $this->assertSame('ghi', $clonedMod->getFileName());
-        $this->assertSame('jkl', $clonedMod->getDirectoryName());
-        $this->assertSame('mno', $clonedMod->getChecksum());
-        $this->assertSame(42, $clonedMod->getOrder());
-        $this->assertSame(['vwx'], $clonedMod->getCombinationHashes());
-        $this->assertSame('yza', $clonedMod->getThumbnailHash());
-        $this->assertSame('pqr', $clonedMod->getTitles()->getTranslation('en'));
-        $this->assertSame('stu', $clonedMod->getDescriptions()->getTranslation('en'));
-        $dependencies = $clonedMod->getDependencies();
-        $this->assertCount(1, $dependencies);
-        $this->assertSame('foo', $dependencies[0]->getRequiredModName());
-    }
-
-    /**
-     * Tests setting and getting the name.
-     * @covers ::setName
+     * Tests the setting and getting the name.
      * @covers ::getName
+     * @covers ::setName
      */
     public function testSetAndGetName(): void
     {
+        $name = 'abc';
         $mod = new Mod();
-        $this->assertSame($mod, $mod->setName('foo'));
-        $this->assertSame('foo', $mod->getName());
+
+        $this->assertSame($mod, $mod->setName($name));
+        $this->assertSame($name, $mod->getName());
     }
 
     /**
@@ -115,10 +58,10 @@ class ModTest extends TestCase
      */
     public function testSetAndGetTitles(): void
     {
-        $titles = new LocalisedString();
-        $titles->setTranslation('en', 'foo');
-        
+        /* @var LocalisedString&MockObject $titles */
+        $titles = $this->createMock(LocalisedString::class);
         $mod = new Mod();
+
         $this->assertSame($mod, $mod->setTitles($titles));
         $this->assertSame($titles, $mod->getTitles());
     }
@@ -130,83 +73,40 @@ class ModTest extends TestCase
      */
     public function testSetAndGetDescriptions(): void
     {
-        $descriptions = new LocalisedString();
-        $descriptions->setTranslation('en', 'foo');
-
+        /* @var LocalisedString&MockObject $descriptions */
+        $descriptions = $this->createMock(LocalisedString::class);
         $mod = new Mod();
+
         $this->assertSame($mod, $mod->setDescriptions($descriptions));
         $this->assertSame($descriptions, $mod->getDescriptions());
     }
 
     /**
-     * Tests setting and getting the author.
-     * @covers ::setAuthor
+     * Tests the setting and getting the author.
      * @covers ::getAuthor
+     * @covers ::setAuthor
      */
     public function testSetAndGetAuthor(): void
     {
+        $author = 'abc';
         $mod = new Mod();
-        $this->assertSame($mod, $mod->setAuthor('foo'));
-        $this->assertSame('foo', $mod->getAuthor());
+
+        $this->assertSame($mod, $mod->setAuthor($author));
+        $this->assertSame($author, $mod->getAuthor());
     }
 
     /**
-     * Tests setting and getting the version.
-     * @covers ::setVersion
+     * Tests the setting and getting the version.
      * @covers ::getVersion
+     * @covers ::setVersion
      */
     public function testSetAndGetVersion(): void
     {
+        $version = 'abc';
         $mod = new Mod();
-        $this->assertSame($mod, $mod->setVersion('4.2.0'));
-        $this->assertSame('4.2.0', $mod->getVersion());
-    }
 
-    /**
-     * Tests setting and getting the fileName.
-     * @covers ::setFileName
-     * @covers ::getFileName
-     */
-    public function testSetAndGetFileName(): void
-    {
-        $mod = new Mod();
-        $this->assertSame($mod, $mod->setFileName('foo'));
-        $this->assertSame('foo', $mod->getFileName());
-    }
-
-    /**
-     * Tests setting and getting the directoryName.
-     * @covers ::setDirectoryName
-     * @covers ::getDirectoryName
-     */
-    public function testSetAndGetDirectoryName(): void
-    {
-        $mod = new Mod();
-        $this->assertSame($mod, $mod->setDirectoryName('foo'));
-        $this->assertSame('foo', $mod->getDirectoryName());
-    }
-
-    /**
-     * Tests setting, adding and getting the dependencies.
-     * @covers ::setDependencies
-     * @covers ::getDependencies
-     * @covers ::addDependency
-     */
-    public function testSetAddAndGetDependencies(): void
-    {
-        $dependency1 = new Dependency();
-        $dependency1->setRequiredModName('abc');
-        $dependency2 = new Dependency();
-        $dependency2->setRequiredModName('def');
-        $dependency3 = new Dependency();
-        $dependency3->setRequiredModName('ghi');
-
-        $mod = new Mod();
-        $this->assertSame($mod, $mod->setDependencies([$dependency1, $dependency2]));
-        $this->assertSame([$dependency1, $dependency2], $mod->getDependencies());
-
-        $this->assertSame($mod, $mod->addDependency($dependency3));
-        $this->assertSame([$dependency1, $dependency2, $dependency3], $mod->getDependencies());
+        $this->assertSame($mod, $mod->setVersion($version));
+        $this->assertSame($version, $mod->getVersion());
     }
 
     /**
@@ -221,204 +121,5 @@ class ModTest extends TestCase
 
         $this->assertSame($mod, $mod->setThumbnailHash($thumbnailHash));
         $this->assertSame($thumbnailHash, $mod->getThumbnailHash());
-    }
-
-    /**
-     * Tests setting and getting the checksum.
-     * @covers ::setChecksum
-     * @covers ::getChecksum
-     */
-    public function testSetAndGetChecksum(): void
-    {
-        $mod = new Mod();
-        $this->assertSame($mod, $mod->setChecksum('foo'));
-        $this->assertSame('foo', $mod->getChecksum());
-    }
-
-    /**
-     * Tests setting and getting the order.
-     * @covers ::setOrder
-     * @covers ::getOrder
-     */
-    public function testSetAndGetOrder(): void
-    {
-        $mod = new Mod();
-        $this->assertSame($mod, $mod->setOrder(42));
-        $this->assertSame(42, $mod->getOrder());
-    }
-
-    /**
-     * Tests setting, adding and getting the combination hashes.
-     * @covers ::setCombinationHashes
-     * @covers ::getCombinationHashes
-     * @covers ::addCombinationHash
-     */
-    public function testSetAddAndGetCombinationHashes(): void
-    {
-        $mod = new Mod();
-        $this->assertSame($mod, $mod->setCombinationHashes(['abc', 'def']));
-        $this->assertSame(['abc', 'def'], $mod->getCombinationHashes());
-
-        $this->assertSame($mod, $mod->addCombinationHash('ghi'));
-        $this->assertSame(['abc', 'def', 'ghi'], $mod->getCombinationHashes());
-    }
-
-    /**
-     * Provides the data for the writeAndReadData test.
-     * @return array
-     */
-    public function provideTestWriteAndReadData(): array
-    {
-        $dependency1 = new Dependency();
-        $dependency1->setRequiredModName('foo');
-        $dependency2 = new Dependency();
-        $dependency2->setRequiredModName('bar');
-
-        $mod = new Mod();
-        $mod->setName('abc')
-            ->setAuthor('def')
-            ->setVersion('4.2.0')
-            ->setFileName('ghi')
-            ->setDirectoryName('jkl')
-            ->addDependency($dependency1)
-            ->addDependency($dependency2)
-            ->setChecksum('mno')
-            ->addCombinationHash('vwx')
-            ->addCombinationHash('yza')
-            ->setOrder(42);
-        $mod->getTitles()->setTranslation('en', 'pqr');
-        $mod->getDescriptions()->setTranslation('de', 'stu');
-
-        $data = [
-            'n' => 'abc',
-            't' => [
-                'en' => 'pqr',
-            ],
-            'd' => [
-                'de' => 'stu',
-            ],
-            'a' => 'def',
-            'v' => '4.2.0',
-            'f' => 'ghi',
-            'i' => 'jkl',
-            'e' => [
-                ['m' => 'foo'],
-                ['m' => 'bar'],
-            ],
-            's' => 'mno',
-            'c' => [
-                'vwx',
-                'yza',
-            ],
-            'o' => 42,
-        ];
-
-        return [
-            [$mod, $data],
-            [new Mod(), []]
-        ];
-    }
-
-    /**
-     * Tests the writing and reading of the data.
-     * @param Mod $mod
-     * @param array $expectedData
-     * @covers ::writeData
-     * @covers ::readData
-     * @dataProvider provideTestWriteAndReadData
-     */
-    public function testWriteAndReadData(Mod $mod, array $expectedData): void
-    {
-        $data = $mod->writeData();
-        $this->assertEquals($expectedData, $data);
-
-        $newMod = new Mod();
-        $this->assertSame($newMod, $newMod->readData(new DataContainer($data)));
-        $this->assertEquals($newMod, $mod);
-    }
-    
-    /**
-     * Tests the calculateHash method.
-     * @covers ::calculateHash
-     */
-    public function testCalculateHash(): void
-    {
-        /* @var Dependency|MockObject $dependency1 */
-        $dependency1 = $this->getMockBuilder(Dependency::class)
-                            ->setMethods(['calculateHash'])
-                            ->getMock();
-        $dependency1->expects($this->once())
-                    ->method('calculateHash')
-                    ->willReturn('bcd');
-        
-        /* @var Dependency|MockObject $dependency2 */
-        $dependency2 = $this->getMockBuilder(Dependency::class)
-                            ->setMethods(['calculateHash'])
-                            ->getMock();
-        $dependency2->expects($this->once())
-                    ->method('calculateHash')
-                    ->willReturn('efg');
-        
-        /* @var LocalisedString|MockObject $titles */
-        $titles = $this->getMockBuilder(LocalisedString::class)
-                       ->setMethods(['calculateHash'])
-                       ->getMock();
-        $titles->expects($this->once())
-               ->method('calculateHash')
-               ->willReturn('hij');
-
-        /* @var LocalisedString|MockObject $descriptions */
-        $descriptions = $this->getMockBuilder(LocalisedString::class)
-                             ->setMethods(['calculateHash'])
-                             ->getMock();
-        $descriptions->expects($this->once())
-                     ->method('calculateHash')
-                     ->willReturn('klm');
-
-        $mod = new Mod();
-        $mod->setName('abc')
-            ->setTitles($titles)
-            ->setDescriptions($descriptions)
-            ->setAuthor('def')
-            ->setVersion('4.2.0')
-            ->setFileName('ghi')
-            ->setDirectoryName('jkl')
-            ->addDependency($dependency1)
-            ->addDependency($dependency2)
-            ->setThumbnailHash('bcd')
-            ->setChecksum('mno')
-            ->addCombinationHash('vwx')
-            ->addCombinationHash('yza')
-            ->setOrder(42);
-
-        $expectedResult = EntityUtils::calculateHashOfArray([
-            'abc',
-            'hij',
-            'klm',
-            'def',
-            '4.2.0',
-            'ghi',
-            'jkl',
-            ['bcd', 'efg'],
-            'bcd',
-            'mno',
-            42,
-        ]);
-
-        $result = $mod->calculateHash();
-        $this->assertSame($expectedResult, $result);
-    }
-    
-    /**
-     * Tests the getIdentifier method.
-     * @covers ::getIdentifier
-     */
-    public function testGetIdentifier(): void
-    {
-        $mod = new Mod();
-        $mod->setName('abc');
-
-        $result = $mod->getIdentifier();
-        $this->assertSame('abc', $result);
     }
 }

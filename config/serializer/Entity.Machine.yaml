@@ -1,0 +1,28 @@
+FactorioItemBorwser\ExportData\Entity\Machine:
+  access_type: public_method
+  exclusion_policy: all
+  properties:
+    name:
+      type: string
+    labels:
+      type: FactorioItemBorwser\ExportData\Entity\LocalisedString
+    descriptions:
+      type: FactorioItemBorwser\ExportData\Entity\LocalisedString
+    craftingCategories:
+      type: array<string>
+    craftingSpeed:
+      type: float
+    numberOfItemSlots:
+      type: integer
+    numberOfFluidInputSlots:
+      type: integer
+    numberOfFluidOutputSlots:
+      type: integer
+    numberOfModuleSlots:
+      type: integer
+    energyUsage:
+      type: float
+    energyUsageUnit:
+      type: string
+    iconHash:
+      type: string

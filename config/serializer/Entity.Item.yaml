@@ -1,0 +1,14 @@
+FactorioItemBorwser\ExportData\Entity\Item:
+  access_type: public_method
+  exclusion_policy: all
+  properties:
+    type:
+      type: string
+    name:
+      type: string
+    labels:
+      type: FactorioItemBorwser\ExportData\Entity\LocalisedString
+    descriptions:
+      type: FactorioItemBorwser\ExportData\Entity\LocalisedString
+    iconHash:
+      type: string

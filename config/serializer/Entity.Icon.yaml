@@ -1,0 +1,12 @@
+FactorioItemBorwser\ExportData\Entity\Icon:
+  access_type: public_method
+  exclusion_policy: all
+  properties:
+    hash:
+      type: string
+    size:
+      type: integer
+    renderedSize:
+      type: integer
+    layers:
+      type: array<FactorioItemBorwser\ExportData\Entity\Icon\Layer>

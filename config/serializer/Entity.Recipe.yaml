@@ -1,0 +1,22 @@
+FactorioItemBorwser\ExportData\Entity\Recipe:
+  access_type: public_method
+  exclusion_policy: all
+  properties:
+    name:
+      type: string
+    mode:
+      type: string
+    ingredients:
+      type: array<FactorioItemBorwser\ExportData\Entity\Recipe\Ingredient>
+    products:
+      type: array<FactorioItemBorwser\ExportData\Entity\Recipe\Product>
+    craftingTime:
+      type: float
+    craftingCategory:
+      type: string
+    labels:
+      type: FactorioItemBorwser\ExportData\Entity\LocalisedString
+    descriptions:
+      type: FactorioItemBorwser\ExportData\Entity\LocalisedString
+    iconHash:
+      type: string

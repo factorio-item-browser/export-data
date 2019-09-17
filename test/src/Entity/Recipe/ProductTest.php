@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTest\ExportData\Entity\Recipe;
 
-use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
-use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -32,182 +30,75 @@ class ProductTest extends TestCase
         $this->assertSame(1., $product->getAmountMin());
         $this->assertSame(1., $product->getAmountMax());
         $this->assertSame(1., $product->getProbability());
-        $this->assertSame(0, $product->getOrder());
     }
 
     /**
-     * Tests the cloning.
-     * @coversNothing
-     */
-    public function testClone(): void
-    {
-        $product = new Product();
-        $product->setType('abc')
-                ->setName('def')
-                ->setAmountMin(13.37)
-                ->setAmountMax(4.2)
-                ->setProbability(2.1)
-                ->setOrder(42);
-
-        $clonedProduct = clone($product);
-        $product->setType('cba')
-            ->setName('fed')
-            ->setAmountMin(73.31)
-            ->setAmountMax(2.4)
-            ->setProbability(1.2)
-            ->setOrder(24);
-
-        $this->assertSame('abc', $clonedProduct->getType());
-        $this->assertSame('def', $clonedProduct->getName());
-        $this->assertSame(13.37, $clonedProduct->getAmountMin());
-        $this->assertSame(4.2, $clonedProduct->getAmountMax());
-        $this->assertSame(2.1, $clonedProduct->getProbability());
-        $this->assertSame(42, $clonedProduct->getOrder());
-    }
-
-    /**
-     * Tests setting and getting the type.
-     * @covers ::setType
+     * Tests the setting and getting the type.
      * @covers ::getType
+     * @covers ::setType
      */
     public function testSetAndGetType(): void
     {
+        $type = 'abc';
         $product = new Product();
-        $this->assertSame($product, $product->setType('foo'));
-        $this->assertSame('foo', $product->getType());
+
+        $this->assertSame($product, $product->setType($type));
+        $this->assertSame($type, $product->getType());
     }
 
     /**
-     * Tests setting and getting the name.
-     * @covers ::setName
+     * Tests the setting and getting the name.
      * @covers ::getName
+     * @covers ::setName
      */
     public function testSetAndGetName(): void
     {
+        $name = 'abc';
         $product = new Product();
-        $this->assertSame($product, $product->setName('foo'));
-        $this->assertSame('foo', $product->getName());
+
+        $this->assertSame($product, $product->setName($name));
+        $this->assertSame($name, $product->getName());
     }
 
     /**
-     * Tests setting and getting the minimal amount.
-     * @covers ::setAmountMin
+     * Tests the setting and getting the amount min.
      * @covers ::getAmountMin
+     * @covers ::setAmountMin
      */
     public function testSetAndGetAmountMin(): void
     {
+        $amountMin = 13.37;
         $product = new Product();
-        $this->assertSame($product, $product->setAmountMin(13.37));
-        $this->assertSame(13.37, $product->getAmountMin());
+
+        $this->assertSame($product, $product->setAmountMin($amountMin));
+        $this->assertSame($amountMin, $product->getAmountMin());
     }
 
     /**
-     * Tests setting and getting the maximal amount.
-     * @covers ::setAmountMax
+     * Tests the setting and getting the amount max.
      * @covers ::getAmountMax
+     * @covers ::setAmountMax
      */
     public function testSetAndGetAmountMax(): void
     {
+        $amountMax = 13.37;
         $product = new Product();
-        $this->assertSame($product, $product->setAmountMax(13.37));
-        $this->assertSame(13.37, $product->getAmountMax());
+
+        $this->assertSame($product, $product->setAmountMax($amountMax));
+        $this->assertSame($amountMax, $product->getAmountMax());
     }
 
     /**
-     * Tests setting and getting the probability.
-     * @covers ::setProbability
+     * Tests the setting and getting the probability.
      * @covers ::getProbability
+     * @covers ::setProbability
      */
     public function testSetAndGetProbability(): void
     {
+        $probability = 13.37;
         $product = new Product();
-        $this->assertSame($product, $product->setProbability(13.37));
-        $this->assertSame(13.37, $product->getProbability());
-    }
 
-    /**
-     * Tests setting and getting the order.
-     * @covers ::setOrder
-     * @covers ::getOrder
-     */
-    public function testSetAndGetOrder(): void
-    {
-        $product = new Product();
-        $this->assertSame($product, $product->setOrder(42));
-        $this->assertSame(42, $product->getOrder());
-    }
-
-    /**
-     * Provides the data for the writeAndReadData test.
-     * @return array
-     */
-    public function provideTestWriteAndReadData(): array
-    {
-        $product = new Product();
-        $product->setType('abc')
-                   ->setName('def')
-                   ->setAmountMin(13.37)
-                   ->setAmountMax(73.31)
-                   ->setProbability(4.2)
-                   ->setOrder(42);
-
-        $data = [
-            't' => 'abc',
-            'n' => 'def',
-            'i' => 13.37,
-            'a' => 73.31,
-            'p' => 4.2,
-            'o' => 42
-        ];
-
-        return [
-            [$product, $data],
-            [new Product(), []]
-        ];
-    }
-
-    /**
-     * Tests the writing and reading of the data.
-     * @param Product $product
-     * @param array $expectedData
-     * @covers ::writeData
-     * @covers ::readData
-     * @dataProvider provideTestWriteAndReadData
-     */
-    public function testWriteAndReadData(Product $product, array $expectedData): void
-    {
-        $data = $product->writeData();
-        $this->assertEquals($expectedData, $data);
-
-        $newProduct = new Product();
-        $this->assertSame($newProduct, $newProduct->readData(new DataContainer($data)));
-        $this->assertEquals($newProduct, $product);
-    }
-
-    /**
-     * Tests the calculateHash method.
-     * @covers ::calculateHash
-     */
-    public function testCalculateHash(): void
-    {
-        $product = new Product();
-        $product->setType('abc')
-                   ->setName('def')
-                   ->setAmountMin(13.37)
-                   ->setAmountMax(73.31)
-                   ->setProbability(4.2)
-                   ->setOrder(42);
-
-        $expectedResult = EntityUtils::calculateHashOfArray([
-            'abc',
-            'def',
-            13.37,
-            73.31,
-            4.2,
-            42,
-        ]);
-
-        $result = $product->calculateHash();
-        $this->assertSame($expectedResult, $result);
+        $this->assertSame($product, $product->setProbability($probability));
+        $this->assertSame($probability, $product->getProbability());
     }
 }

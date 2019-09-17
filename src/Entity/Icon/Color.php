@@ -4,18 +4,13 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity\Icon;
 
-use BluePsyduck\Common\Data\DataBuilder;
-use BluePsyduck\Common\Data\DataContainer;
-use FactorioItemBrowser\ExportData\Entity\EntityInterface;
-use FactorioItemBrowser\ExportData\Utils\EntityUtils;
-
 /**
- * A class holding information about a color.
+ * The entity representing an icon color.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Color implements EntityInterface
+class Color
 {
     /**
      * The red component of the color.
@@ -47,7 +42,7 @@ class Color implements EntityInterface
      * @param float $scale
      * @return $this
      */
-    public function setRed(float $red, float $scale = 1.)
+    public function setRed(float $red, float $scale = 1.): self
     {
         $this->red = $this->setComponent($red, $scale);
         return $this;
@@ -69,7 +64,7 @@ class Color implements EntityInterface
      * @param float $scale
      * @return $this
      */
-    public function setGreen(float $green, float $scale = 1.)
+    public function setGreen(float $green, float $scale = 1.): self
     {
         $this->green = $this->setComponent($green, $scale);
         return $this;
@@ -91,7 +86,7 @@ class Color implements EntityInterface
      * @param float $scale
      * @return $this
      */
-    public function setBlue(float $blue, float $scale = 1.)
+    public function setBlue(float $blue, float $scale = 1.): self
     {
         $this->blue = $this->setComponent($blue, $scale);
         return $this;
@@ -113,7 +108,7 @@ class Color implements EntityInterface
      * @param float $scale
      * @return $this
      */
-    public function setAlpha(float $alpha, float $scale = 1.)
+    public function setAlpha(float $alpha, float $scale = 1.): self
     {
         $this->alpha = $this->setComponent($alpha, $scale);
         return $this;
@@ -149,47 +144,5 @@ class Color implements EntityInterface
     protected function getComponent(float $value, float $scale): float
     {
         return ($scale < 0) ? ((1 - $value) * -$scale) : ($value * $scale);
-    }
-
-    /**
-     * Writes the entity data to an array.
-     * @return array
-     */
-    public function writeData(): array
-    {
-        $dataBuilder = new DataBuilder();
-        $dataBuilder->setFloat('r', $this->getRed(), 1.)
-                    ->setFloat('g', $this->getGreen(), 1.)
-                    ->setFloat('b', $this->getBlue(), 1.)
-                    ->setFloat('a', $this->getAlpha(), 1.);
-        return $dataBuilder->getData();
-    }
-
-    /**
-     * Reads the entity data.
-     * @param DataContainer $data
-     * @return $this
-     */
-    public function readData(DataContainer $data)
-    {
-        $this->red = $data->getFloat('r', 1.);
-        $this->green = $data->getFloat('g', 1.);
-        $this->blue = $data->getFloat('b', 1.);
-        $this->alpha = $data->getFloat('a', 1.);
-        return $this;
-    }
-
-    /**
-     * Calculates a hash value representing the entity.
-     * @return string
-     */
-    public function calculateHash(): string
-    {
-        return EntityUtils::calculateHashOfArray([
-            $this->red,
-            $this->green,
-            $this->blue,
-            $this->alpha,
-        ]);
     }
 }

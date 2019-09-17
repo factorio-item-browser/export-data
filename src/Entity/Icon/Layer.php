@@ -4,18 +4,13 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity\Icon;
 
-use BluePsyduck\Common\Data\DataBuilder;
-use BluePsyduck\Common\Data\DataContainer;
-use FactorioItemBrowser\ExportData\Entity\EntityInterface;
-use FactorioItemBrowser\ExportData\Utils\EntityUtils;
-
 /**
  * The entity representing one layer of an icon.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Layer implements EntityInterface
+class Layer
 {
     /**
      * The file name of the icon layer.
@@ -56,19 +51,11 @@ class Layer implements EntityInterface
     }
 
     /**
-     * Clones the entity.
-     */
-    public function __clone()
-    {
-        $this->tintColor = clone($this->tintColor);
-    }
-
-    /**
      * Sets the file name of the icon layer.
      * @param string $fileName
-     * @return $this Implementing fluent interface.
+     * @return $this
      */
-    public function setFileName(string $fileName)
+    public function setFileName(string $fileName): self
     {
         $this->fileName = $fileName;
         return $this;
@@ -86,9 +73,9 @@ class Layer implements EntityInterface
     /**
      * Sets the tint color of the layer.
      * @param Color $tintColor
-     * @return $this Implementing fluent interface.
+     * @return $this
      */
-    public function setTintColor(Color $tintColor)
+    public function setTintColor(Color $tintColor): self
     {
         $this->tintColor = $tintColor;
         return $this;
@@ -106,9 +93,9 @@ class Layer implements EntityInterface
     /**
      * Sets the x offset of the layer.
      * @param int $offsetX
-     * @return $this Implementing fluent interface.
+     * @return $this
      */
-    public function setOffsetX(int $offsetX)
+    public function setOffsetX(int $offsetX): self
     {
         $this->offsetX = $offsetX;
         return $this;
@@ -126,9 +113,9 @@ class Layer implements EntityInterface
     /**
      * Sets the y offset of the layer.
      * @param int $offsetY
-     * @return $this Implementing fluent interface.
+     * @return $this
      */
-    public function setOffsetY(int $offsetY)
+    public function setOffsetY(int $offsetY): self
     {
         $this->offsetY = $offsetY;
         return $this;
@@ -146,9 +133,9 @@ class Layer implements EntityInterface
     /**
      * Sets the scale of the layer.
      * @param float $scale
-     * @return $this Implementing fluent interface.
+     * @return $this
      */
-    public function setScale(float $scale)
+    public function setScale(float $scale): self
     {
         $this->scale = $scale;
         return $this;
@@ -161,50 +148,5 @@ class Layer implements EntityInterface
     public function getScale(): float
     {
         return $this->scale;
-    }
-
-    /**
-     * Writes the entity data to an array.
-     * @return array
-     */
-    public function writeData(): array
-    {
-        $dataBuilder = new DataBuilder();
-        $dataBuilder->setString('f', $this->getFileName(), '')
-                    ->setArray('c', $this->tintColor->writeData(), null, [])
-                    ->setInteger('x', $this->getOffsetX(), 0)
-                    ->setInteger('y', $this->getOffsetY(), 0)
-                    ->setFloat('s', $this->getScale(), 1.);
-        return $dataBuilder->getData();
-    }
-
-    /**
-     * Reads the entity data.
-     * @param DataContainer $data
-     * @return $this
-     */
-    public function readData(DataContainer $data)
-    {
-        $this->fileName = $data->getString('f', '');
-        $this->tintColor->readData($data->getObject('c'));
-        $this->offsetX = $data->getInteger('x', 0);
-        $this->offsetY = $data->getInteger('y', 0);
-        $this->scale = $data->getFloat('s', 1.);
-        return $this;
-    }
-
-    /**
-     * Calculates a hash value representing the entity.
-     * @return string
-     */
-    public function calculateHash(): string
-    {
-        return EntityUtils::calculateHashOfArray([
-            $this->fileName,
-            $this->tintColor->calculateHash(),
-            $this->offsetX,
-            $this->offsetY,
-            $this->scale,
-        ]);
     }
 }

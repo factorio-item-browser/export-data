@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTest\ExportData\Entity\Icon;
 
-use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon\Color;
 use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
-use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -29,179 +27,82 @@ class LayerTest extends TestCase
     {
         $layer = new Layer();
         $this->assertSame('', $layer->getFileName());
-        $this->assertEquals(new Color(), $layer->getTintColor());
         $this->assertSame(0, $layer->getOffsetX());
         $this->assertSame(0, $layer->getOffsetY());
         $this->assertSame(1., $layer->getScale());
+
+        // Asserted through type-hints
+        $layer->getTintColor();
     }
 
     /**
-     * Tests the cloning.
-     * @covers ::__clone
-     */
-    public function testClone(): void
-    {
-        $layer = new Layer();
-        $layer->setFileName('foo')
-              ->setOffsetX(42)
-              ->setOffsetY(21)
-              ->setScale(13.37);
-        $layer->getTintColor()->setAlpha(4.2);
-
-        $clonedLayer = clone($layer);
-        $layer->setFileName('oof')
-              ->setOffsetX(24)
-              ->setOffsetY(12)
-              ->setScale(73.31);
-        $layer->getTintColor()->setAlpha(2.4);
-
-        $this->assertSame('foo', $clonedLayer->getFileName());
-        $this->assertSame(42, $clonedLayer->getOffsetX());
-        $this->assertSame(21, $clonedLayer->getOffsetY());
-        $this->assertSame(13.37, $clonedLayer->getScale());
-        $this->assertSame(4.2, $clonedLayer->getTintColor()->getAlpha());
-    }
-
-    /**
-     * Tests setting and getting the file name.
-     * @covers ::setFileName
+     * Tests the setting and getting the file name.
      * @covers ::getFileName
+     * @covers ::setFileName
      */
     public function testSetAndGetFileName(): void
     {
-        $layer = new layer();
-        $this->assertSame($layer, $layer->setFileName('foo'));
-        $this->assertSame('foo', $layer->getFileName());
+        $fileName = 'abc';
+        $layer = new Layer();
+
+        $this->assertSame($layer, $layer->setFileName($fileName));
+        $this->assertSame($fileName, $layer->getFileName());
     }
 
     /**
-     * Tests setting and getting the tint color.
-     * @covers ::setTintColor
+     * Tests the setting and getting the tint color.
      * @covers ::getTintColor
+     * @covers ::setTintColor
      */
     public function testSetAndGetTintColor(): void
     {
-        $color = new Color();
-        $color->setAlpha(0.42);
+        /* @var Color&MockObject $tintColor */
+        $tintColor = $this->createMock(Color::class);
+        $layer = new Layer();
 
-        $layer = new layer();
-        $this->assertSame($layer, $layer->setTintColor($color));
-        $this->assertSame($color, $layer->getTintColor());
+        $this->assertSame($layer, $layer->setTintColor($tintColor));
+        $this->assertSame($tintColor, $layer->getTintColor());
     }
 
     /**
-     * Tests setting and getting the offset X.
-     * @covers ::setOffsetX
+     * Tests the setting and getting the offset x.
      * @covers ::getOffsetX
+     * @covers ::setOffsetX
      */
     public function testSetAndGetOffsetX(): void
     {
-        $layer = new layer();
-        $this->assertSame($layer, $layer->setOffsetX(42));
-        $this->assertSame(42, $layer->getOffsetX());
+        $offsetX = 42;
+        $layer = new Layer();
+
+        $this->assertSame($layer, $layer->setOffsetX($offsetX));
+        $this->assertSame($offsetX, $layer->getOffsetX());
     }
 
     /**
-     * Tests setting and getting the offset Y.
-     * @covers ::setOffsetY
+     * Tests the setting and getting the offset y.
      * @covers ::getOffsetY
+     * @covers ::setOffsetY
      */
     public function testSetAndGetOffsetY(): void
     {
-        $layer = new layer();
-        $this->assertSame($layer, $layer->setOffsetY(42));
-        $this->assertSame(42, $layer->getOffsetY());
+        $offsetY = 42;
+        $layer = new Layer();
+
+        $this->assertSame($layer, $layer->setOffsetY($offsetY));
+        $this->assertSame($offsetY, $layer->getOffsetY());
     }
 
     /**
-     * Tests setting and getting the scale.
-     * @covers ::setScale
+     * Tests the setting and getting the scale.
      * @covers ::getScale
+     * @covers ::setScale
      */
     public function testSetAndGetScale(): void
     {
-        $layer = new layer();
-        $this->assertSame($layer, $layer->setScale(4.2));
-        $this->assertSame(4.2, $layer->getScale());
-    }
-
-    /**
-     * Provides the data for the writeAndReadData test.
-     * @return array
-     */
-    public function provideTestWriteAndReadData(): array
-    {
+        $scale = 13.37;
         $layer = new Layer();
-        $layer->setFileName('abc')
-              ->setOffsetX(42)
-              ->setOffsetY(21)
-              ->setScale(13.37);
-        $layer->getTintColor()->setRed(0.2);
 
-        $data = [
-            'f' => 'abc',
-            'c' => [
-                'r' => 0.2
-            ],
-            'x' => 42,
-            'y' => 21,
-            's' => 13.37
-        ];
-
-        return [
-            [$layer, $data],
-            [new Layer(), []]
-        ];
-    }
-
-    /**
-     * Tests the writing and reading of the data.
-     * @param Layer $layer
-     * @param array $expectedData
-     * @covers ::writeData
-     * @covers ::readData
-     * @dataProvider provideTestWriteAndReadData
-     */
-    public function testWriteAndReadData(Layer $layer, array $expectedData): void
-    {
-        $data = $layer->writeData();
-        $this->assertEquals($expectedData, $data);
-
-        $newLayer = new Layer();
-        $this->assertSame($newLayer, $newLayer->readData(new DataContainer($data)));
-        $this->assertEquals($newLayer, $layer);
-    }
-
-    /**
-     * Tests the calculateHash method.
-     * @covers ::calculateHash
-     */
-    public function testCalculateHash(): void
-    {
-        /* @var Color|MockObject $tintColor */
-        $tintColor = $this->getMockBuilder(Color::class)
-                          ->setMethods(['calculateHash'])
-                          ->getMock();
-        $tintColor->expects($this->once())
-                  ->method('calculateHash')
-                  ->willReturn('def');
-
-        $layer = new Layer();
-        $layer->setFileName('abc')
-              ->setTintColor($tintColor)
-              ->setOffsetX(42)
-              ->setOffsetY(21)
-              ->setScale(13.37);
-
-        $expectedResult = EntityUtils::calculateHashOfArray([
-            'abc',
-            'def',
-            42,
-            21,
-            13.37
-        ]);
-
-        $result = $layer->calculateHash();
-        $this->assertSame($expectedResult, $result);
+        $this->assertSame($layer, $layer->setScale($scale));
+        $this->assertSame($scale, $layer->getScale());
     }
 }
