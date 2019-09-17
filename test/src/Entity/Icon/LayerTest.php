@@ -32,7 +32,7 @@ class LayerTest extends TestCase
         $this->assertSame(1., $layer->getScale());
 
         // Asserted through type-hints
-        $layer->getTintColor();
+        $layer->getTint();
     }
 
     /**
@@ -50,18 +50,18 @@ class LayerTest extends TestCase
     }
 
     /**
-     * Tests the setting and getting the tint color.
-     * @covers ::getTintColor
-     * @covers ::setTintColor
+     * Tests the setting and getting the tint.
+     * @covers ::getTint
+     * @covers ::setTint
      */
-    public function testSetAndGetTintColor(): void
+    public function testSetAndGetTint(): void
     {
-        /* @var Color&MockObject $tintColor */
-        $tintColor = $this->createMock(Color::class);
+        /* @var Color&MockObject $tint */
+        $tint = $this->createMock(Color::class);
         $layer = new Layer();
 
-        $this->assertSame($layer, $layer->setTintColor($tintColor));
-        $this->assertSame($tintColor, $layer->getTintColor());
+        $this->assertSame($layer, $layer->setTint($tint));
+        $this->assertSame($tint, $layer->getTint());
     }
 
     /**

@@ -15,6 +15,12 @@ use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
 class Icon
 {
     /**
+     * The hash of the icon.
+     * @var string
+     */
+    protected $hash = '';
+
+    /**
      * The original size of the icon.
      * @var int
      */
@@ -31,6 +37,26 @@ class Icon
      * @var array|Layer[]
      */
     protected $layers = [];
+
+    /**
+     * Sets the hash of the icon.
+     * @param string $hash
+     * @return $this
+     */
+    public function setHash(string $hash): self
+    {
+        $this->hash = $hash;
+        return $this;
+    }
+
+    /**
+     * Returns the hash of the icon.
+     * @return string
+     */
+    public function getHash(): string
+    {
+        return $this->hash;
+    }
 
     /**
      * Sets the original size of the icon.

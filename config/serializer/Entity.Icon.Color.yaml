@@ -1,4 +1,4 @@
-FactorioItemBorwser\ExportData\Entity\Icon\Color:
+FactorioItemBrowser\ExportData\Entity\Icon\Color:
   access_type: public_method
   exclusion_policy: all
   properties:

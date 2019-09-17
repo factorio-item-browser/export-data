@@ -1,13 +1,13 @@
-FactorioItemBorwser\ExportData\Entity\Mod:
+FactorioItemBrowser\ExportData\Entity\Mod:
   access_type: public_method
   exclusion_policy: all
   properties:
     name:
       type: string
-    titels:
-      type: FactorioItemBorwser\ExportData\Entity\LocalisedString
+    titles:
+      type: FactorioItemBrowser\ExportData\Entity\LocalisedString
     descriptions:
-      type: FactorioItemBorwser\ExportData\Entity\LocalisedString
+      type: FactorioItemBrowser\ExportData\Entity\LocalisedString
     author:
       type: string
     version:

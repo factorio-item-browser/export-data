@@ -1,4 +1,4 @@
-FactorioItemBorwser\ExportData\Entity\Item:
+FactorioItemBrowser\ExportData\Entity\Item:
   access_type: public_method
   exclusion_policy: all
   properties:
@@ -7,8 +7,8 @@ FactorioItemBorwser\ExportData\Entity\Item:
     name:
       type: string
     labels:
-      type: FactorioItemBorwser\ExportData\Entity\LocalisedString
+      type: FactorioItemBrowser\ExportData\Entity\LocalisedString
     descriptions:
-      type: FactorioItemBorwser\ExportData\Entity\LocalisedString
+      type: FactorioItemBrowser\ExportData\Entity\LocalisedString
     iconHash:
       type: string

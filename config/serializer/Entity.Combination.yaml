@@ -1,4 +1,4 @@
-FactorioItemBorwser\ExportData\Entity\Combination:
+FactorioItemBrowser\ExportData\Entity\Combination:
   access_type: public_method
   exclusion_policy: all
   properties:

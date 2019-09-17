@@ -1,4 +1,4 @@
-FactorioItemBorwser\ExportData\Entity\Recipe\Product:
+FactorioItemBrowser\ExportData\Entity\Recipe\Product:
   access_type: public_method
   exclusion_policy: all
   properties:

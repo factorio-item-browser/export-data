@@ -19,10 +19,10 @@ class Layer
     protected $fileName = '';
 
     /**
-     * The tint color of the layer.
+     * The tint of the layer.
      * @var Color
      */
-    protected $tintColor;
+    protected $tint;
 
     /**
      * The x offset of the layer.
@@ -47,7 +47,7 @@ class Layer
      */
     public function __construct()
     {
-        $this->tintColor = new Color();
+        $this->tint = new Color();
     }
 
     /**
@@ -71,23 +71,23 @@ class Layer
     }
 
     /**
-     * Sets the tint color of the layer.
-     * @param Color $tintColor
+     * Sets the tint of the layer.
+     * @param Color $tint
      * @return $this
      */
-    public function setTintColor(Color $tintColor): self
+    public function setTint(Color $tint): self
     {
-        $this->tintColor = $tintColor;
+        $this->tint = $tint;
         return $this;
     }
 
     /**
-     * Returns the tint color of the layer.
+     * Returns the tint of the layer.
      * @return Color
      */
-    public function getTintColor(): Color
+    public function getTint(): Color
     {
-        return $this->tintColor;
+        return $this->tint;
     }
 
     /**

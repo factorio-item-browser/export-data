@@ -1,4 +1,4 @@
-FactorioItemBorwser\ExportData\Entity\Icon:
+FactorioItemBrowser\ExportData\Entity\Icon:
   access_type: public_method
   exclusion_policy: all
   properties:
@@ -9,4 +9,4 @@ FactorioItemBorwser\ExportData\Entity\Icon:
     renderedSize:
       type: integer
     layers:
-      type: array<FactorioItemBorwser\ExportData\Entity\Icon\Layer>
+      type: array<FactorioItemBrowser\ExportData\Entity\Icon\Layer>

@@ -1,11 +1,11 @@
-FactorioItemBorwser\ExportData\Entity\Layer:
+FactorioItemBrowser\ExportData\Entity\Icon\Layer:
   access_type: public_method
   exclusion_policy: all
   properties:
     fileName:
       type: string
-    tintColor:
-      type: FactorioItemBorwser\ExportData\Entity\Icon\Color
+    tint:
+      type: FactorioItemBrowser\ExportData\Entity\Icon\Color
     offsetX:
       type: integer
     offsetY:
