@@ -11,13 +11,23 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData;
 
-use FactorioItemBrowser\ExportData\Constant\ServiceName;
+use BluePsyduck\ZendAutoWireFactory\AutoWireFactory;
+use FactorioItemBrowser\ExportData\Constant\ConfigKey;
+use JMS\Serializer\SerializerInterface;
+use function BluePsyduck\ZendAutoWireFactory\readConfig;
 
 return [
     'dependencies' => [
+        'aliases' => [
+            Storage\StorageFactoryInterface::class => Storage\StorageFactory::class,
+        ],
         'factories'  => [
-            // 3rd party dependencies
-            ServiceName::SERIALIZER => Serializer\SerializerFactory::class,
+            ExportDataService::class => AutoWireFactory::class,
+            Storage\StorageFactory::class => AutoWireFactory::class,
+
+            // Auto-wire helpers
+            SerializerInterface::class . ' $exportDataSerializer' => Serializer\SerializerFactory::class,
+            'string $exportDataWorkingDirectory' => readConfig(ConfigKey::PROJECT, ConfigKey::EXPORT_DATA, ConfigKey::WORKING_DIRECTORY),
         ],
     ],
 ];

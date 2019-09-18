@@ -6,11 +6,11 @@ namespace FactorioItemBrowserTest\ExportData\Serializer;
 
 use BluePsyduck\TestHelper\ReflectionTrait;
 use FactorioItemBrowser\ExportData\Constant\ConfigKey;
-use FactorioItemBrowser\ExportData\Constant\ServiceName;
 use FactorioItemBrowser\ExportData\Serializer\SerializerFactory;
 use Interop\Container\ContainerInterface;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 use JMS\Serializer\SerializerBuilder;
+use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
@@ -53,7 +53,7 @@ class SerializerFactoryTest extends TestCase
                 ->method('addCacheDirectory')
                 ->with($this->identicalTo($container));
 
-        $result = $factory($container, ServiceName::SERIALIZER);
+        $result = $factory($container, SerializerInterface::class);
 
         $this->assertEquals($expectedResult, $result);
     }

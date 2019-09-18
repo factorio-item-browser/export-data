@@ -26,4 +26,9 @@ interface ConfigKey
      * The key holding the cache directory to use.
      */
     public const CACHE_DIR = 'cache-dir';
+
+    /**
+     * The key holding the working directory to use.
+     */
+    public const WORKING_DIRECTORY = 'working-directory';
 }
