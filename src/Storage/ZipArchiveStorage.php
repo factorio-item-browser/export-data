@@ -18,6 +18,11 @@ use ZipArchive;
 class ZipArchiveStorage implements StorageInterface
 {
     /**
+     * The filename used for the serialized data.
+     */
+    protected const DATA_FILENAME = 'data.json';
+
+    /**
      * The serializer.
      * @var SerializerInterface
      */
@@ -98,7 +103,7 @@ class ZipArchiveStorage implements StorageInterface
     public function save(Combination $combination): string
     {
         $serializedData = $this->serializer->serialize($combination, 'json');
-        $this->zipArchive->addFromString('data.json', $serializedData);
+        $this->zipArchive->addFromString(self::DATA_FILENAME, $serializedData);
         return $this->zipArchive->filename;
     }
 
@@ -109,7 +114,7 @@ class ZipArchiveStorage implements StorageInterface
     {
         $result = new Combination();
 
-        $serializedData = (string) $this->zipArchive->getFromName('data.json');
+        $serializedData = (string) $this->zipArchive->getFromName(self::DATA_FILENAME);
         if ($serializedData !== '') {
             try {
                 $result = $this->serializer->deserialize($serializedData, Combination::class, 'json');
