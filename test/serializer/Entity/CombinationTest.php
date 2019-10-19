@@ -54,7 +54,7 @@ class CombinationTest extends SerializerTestCase
         $icon2->setHash('bcd');
 
         $combination = new Combination();
-        $combination->setHash('efg')
+        $combination->setId('efg')
                     ->setMods([$mod1, $mod2])
                     ->setItems([$item1, $item2])
                     ->setMachines([$machine1, $machine2])
@@ -71,7 +71,7 @@ class CombinationTest extends SerializerTestCase
     protected function getData(): array
     {
         return [
-            'hash' => 'efg',
+            'id' => 'efg',
             'mods' => [
                 [
                     'name' => 'abc',

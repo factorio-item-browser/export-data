@@ -38,15 +38,15 @@ class StorageFactory implements StorageFactoryInterface
     }
 
     /**
-     * Creates the storage to use for the specified combination hash.
-     * @param string $combinationHash
+     * Creates the storage to use for the specified combination id.
+     * @param string $combinationId
      * @return StorageInterface
      */
-    public function createForCombination(string $combinationHash): StorageInterface
+    public function createForCombination(string $combinationId): StorageInterface
     {
         return new ZipArchiveStorage(
             $this->serializer,
-            sprintf('%s/%s.zip', $this->workingDirectory, $combinationHash)
+            sprintf('%s/%s.zip', $this->workingDirectory, $combinationId)
         );
     }
 }

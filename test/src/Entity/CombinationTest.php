@@ -30,7 +30,7 @@ class CombinationTest extends TestCase
     {
         $combination = new Combination();
 
-        $this->assertSame('', $combination->getHash());
+        $this->assertSame('', $combination->getId());
         $this->assertSame([], $combination->getMods());
         $this->assertSame([], $combination->getItems());
         $this->assertSame([], $combination->getMachines());
@@ -39,17 +39,17 @@ class CombinationTest extends TestCase
     }
 
     /**
-     * Tests the setting and getting the hash.
-     * @covers ::getHash
-     * @covers ::setHash
+     * Tests the setting and getting the id.
+     * @covers ::getId
+     * @covers ::setId
      */
-    public function testSetAndGetHash(): void
+    public function testSetAndGetId(): void
     {
-        $hash = 'abc';
+        $id = 'abc';
         $combination = new Combination();
 
-        $this->assertSame($combination, $combination->setHash($hash));
-        $this->assertSame($hash, $combination->getHash());
+        $this->assertSame($combination, $combination->setId($id));
+        $this->assertSame($id, $combination->getId());
     }
 
     /**

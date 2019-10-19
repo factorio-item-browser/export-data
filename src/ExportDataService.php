@@ -32,15 +32,15 @@ class ExportDataService
 
     /**
      * Creates a new export data instance for the specified combination.
-     * @param string $combinationHash
+     * @param string $combinationId
      * @return ExportData
      */
-    public function createExport(string $combinationHash): ExportData
+    public function createExport(string $combinationId): ExportData
     {
         $combination = new Combination();
-        $combination->setHash($combinationHash);
+        $combination->setId($combinationId);
 
-        return new ExportData($combination, $this->storageFactory->createForCombination($combinationHash));
+        return new ExportData($combination, $this->storageFactory->createForCombination($combinationId));
     }
 
     /**

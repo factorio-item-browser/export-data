@@ -20,9 +20,9 @@ namespace FactorioItemBrowser\ExportData\Storage;
 interface StorageFactoryInterface
 {
     /**
-     * Creates the storage to use for the specified combination hash.
-     * @param string $combinationHash
+     * Creates the storage to use for the specified combination id.
+     * @param string $combinationId
      * @return StorageInterface
      */
-    public function createForCombination(string $combinationHash): StorageInterface;
+    public function createForCombination(string $combinationId): StorageInterface;
 }

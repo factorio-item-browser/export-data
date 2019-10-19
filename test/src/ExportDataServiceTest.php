@@ -64,7 +64,7 @@ class ExportDataServiceTest extends TestCase
         /* @var StorageInterface&MockObject $storage */
         $storage = $this->createMock(StorageInterface::class);
 
-        $expectedResult = new ExportData((new Combination())->setHash('abc'), $storage);
+        $expectedResult = new ExportData((new Combination())->setId('abc'), $storage);
 
         $this->storageFactory->expects($this->once())
                              ->method('createForCombination')

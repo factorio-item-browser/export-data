@@ -13,10 +13,10 @@ namespace FactorioItemBrowser\ExportData\Entity;
 class Combination
 {
     /**
-     * The hash of the combination.
+     * The id of the combination.
      * @var string
      */
-    protected $hash = '';
+    protected $id = '';
 
     /**
      * The mods of the combination.
@@ -49,23 +49,23 @@ class Combination
     protected $icons = [];
 
     /**
-     * Sets the hash of the combination.
-     * @param string $hash
+     * Sets the id of the combination.
+     * @param string $id
      * @return $this
      */
-    public function setHash(string $hash): self
+    public function setId(string $id): self
     {
-        $this->hash = $hash;
+        $this->id = $id;
         return $this;
     }
 
     /**
-     * Returns the hash of the combination.
+     * Returns the id of the combination.
      * @return string
      */
-    public function getHash(): string
+    public function getId(): string
     {
-        return $this->hash;
+        return $this->id;
     }
 
     /**

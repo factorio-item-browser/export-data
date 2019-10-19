@@ -2,7 +2,7 @@ FactorioItemBrowser\ExportData\Entity\Combination:
   access_type: public_method
   exclusion_policy: all
   properties:
-    hash:
+    id:
       type: string
     mods:
       type: array<FactorioItemBrowser\ExportData\Entity\Mod>
