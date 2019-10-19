@@ -33,7 +33,7 @@ class MachineTest extends SerializerTestCase
                 ->setNumberOfModuleSlots(78)
                 ->setEnergyUsage(2.1)
                 ->setEnergyUsageUnit('jkl')
-                ->setIconHash('mno');
+                ->setIconId('mno');
         $machine->getLabels()->addTranslation('pqr', 'stu');
         $machine->getDescriptions()->addTranslation('vwx', 'yza');
 
@@ -56,7 +56,7 @@ class MachineTest extends SerializerTestCase
             'numberOfModuleSlots' => 78,
             'energyUsage' => 2.1,
             'energyUsageUnit' => 'jkl',
-            'iconHash' => 'mno',
+            'iconId' => 'mno',
             'labels' => [
                 'pqr' => 'stu',
             ],

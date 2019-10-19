@@ -137,7 +137,7 @@ class ZipArchiveStorageTest extends TestCase
      */
     public function testAddRenderedIcon(): void
     {
-        $iconHash = 'abc';
+        $iconId = 'abc';
         $iconFileName = 'def';
         $contents = 'ghi';
 
@@ -148,10 +148,10 @@ class ZipArchiveStorageTest extends TestCase
         $storage = $this->createMockedStorage(['getRenderedIconFileName']);
         $storage->expects($this->once())
                 ->method('getRenderedIconFileName')
-                ->with($this->identicalTo($iconHash))
+                ->with($this->identicalTo($iconId))
                 ->willReturn($iconFileName);
 
-        $storage->addRenderedIcon($iconHash, $contents);
+        $storage->addRenderedIcon($iconId, $contents);
     }
 
     /**
@@ -160,7 +160,7 @@ class ZipArchiveStorageTest extends TestCase
      */
     public function testGetRenderedIcon(): void
     {
-        $iconHash = 'abc';
+        $iconId = 'abc';
         $iconFileName = 'def';
         $contents = 'ghi';
 
@@ -172,10 +172,10 @@ class ZipArchiveStorageTest extends TestCase
         $storage = $this->createMockedStorage(['getRenderedIconFileName']);
         $storage->expects($this->once())
                 ->method('getRenderedIconFileName')
-                ->with($this->identicalTo($iconHash))
+                ->with($this->identicalTo($iconId))
                 ->willReturn($iconFileName);
 
-        $result = $storage->getRenderedIcon($iconHash);
+        $result = $storage->getRenderedIcon($iconId);
 
         $this->assertSame($contents, $result);
     }
@@ -187,11 +187,11 @@ class ZipArchiveStorageTest extends TestCase
      */
     public function testGetRenderedIconFileName(): void
     {
-        $iconHash = 'abc';
+        $iconId = 'abc';
         $expectedResult = 'icons/abc.png';
 
         $storage = $this->createMockedStorage();
-        $result = $this->invokeMethod($storage, 'getRenderedIconFileName', $iconHash);
+        $result = $this->invokeMethod($storage, 'getRenderedIconFileName', $iconId);
 
         $this->assertSame($expectedResult, $result);
     }

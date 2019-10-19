@@ -63,10 +63,10 @@ class StorageFactoryTest extends TestCase
     public function testCreateForCombination(): void
     {
         $workingDirectory = 'abc';
-        $combinationHash = 'def';
+        $combinationId = 'def';
 
         $factory = new StorageFactory($this->serializer, $workingDirectory);
-        $storage = $factory->createForCombination($combinationHash);
+        $storage = $factory->createForCombination($combinationId);
 
         $this->assertInstanceOf(ZipArchiveStorage::class, $storage);
         $this->assertSame($this->serializer, $this->extractProperty($storage, 'serializer'));

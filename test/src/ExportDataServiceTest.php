@@ -59,7 +59,7 @@ class ExportDataServiceTest extends TestCase
      */
     public function testCreateExport(): void
     {
-        $combinationHash = 'abc';
+        $combinationId = 'abc';
 
         /* @var StorageInterface&MockObject $storage */
         $storage = $this->createMock(StorageInterface::class);
@@ -68,11 +68,11 @@ class ExportDataServiceTest extends TestCase
 
         $this->storageFactory->expects($this->once())
                              ->method('createForCombination')
-                             ->with($this->equalTo($combinationHash))
+                             ->with($this->equalTo($combinationId))
                              ->willReturn($storage);
 
         $service = new ExportDataService($this->storageFactory);
-        $result = $service->createExport($combinationHash);
+        $result = $service->createExport($combinationId);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -83,7 +83,7 @@ class ExportDataServiceTest extends TestCase
      */
     public function testLoadExport(): void
     {
-        $combinationHash = 'abc';
+        $combinationId = 'abc';
 
         /* @var Combination&MockObject $combination */
         $combination = $this->createMock(Combination::class);
@@ -98,11 +98,11 @@ class ExportDataServiceTest extends TestCase
 
         $this->storageFactory->expects($this->once())
                              ->method('createForCombination')
-                             ->with($this->identicalTo($combinationHash))
+                             ->with($this->identicalTo($combinationId))
                              ->willReturn($storage);
 
         $service = new ExportDataService($this->storageFactory);
-        $result = $service->loadExport($combinationHash);
+        $result = $service->loadExport($combinationId);
 
         $this->assertEquals($expectedResult, $result);
     }

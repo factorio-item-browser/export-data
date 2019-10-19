@@ -30,7 +30,7 @@ class ModTest extends TestCase
         $this->assertSame('', $mod->getName());
         $this->assertSame('', $mod->getAuthor());
         $this->assertSame('', $mod->getVersion());
-        $this->assertSame('', $mod->getThumbnailHash());
+        $this->assertSame('', $mod->getThumbnailId());
 
         // Asserted through type-hints
         $mod->getTitles();
@@ -110,16 +110,16 @@ class ModTest extends TestCase
     }
 
     /**
-     * Tests the setting and getting the thumbnail hash.
-     * @covers ::getThumbnailHash
-     * @covers ::setThumbnailHash
+     * Tests the setting and getting the thumbnail id.
+     * @covers ::getThumbnailId
+     * @covers ::setThumbnailId
      */
-    public function testSetAndGetThumbnailHash(): void
+    public function testSetAndGetThumbnailId(): void
     {
-        $thumbnailHash = 'abc';
+        $thumbnailId = 'abc';
         $mod = new Mod();
 
-        $this->assertSame($mod, $mod->setThumbnailHash($thumbnailHash));
-        $this->assertSame($thumbnailHash, $mod->getThumbnailHash());
+        $this->assertSame($mod, $mod->setThumbnailId($thumbnailId));
+        $this->assertSame($thumbnailId, $mod->getThumbnailId());
     }
 }

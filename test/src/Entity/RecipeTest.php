@@ -35,7 +35,7 @@ class RecipeTest extends TestCase
         $this->assertSame([], $recipe->getProducts());
         $this->assertSame(0., $recipe->getCraftingTime());
         $this->assertSame('', $recipe->getCraftingCategory());
-        $this->assertSame('', $recipe->getIconHash());
+        $this->assertSame('', $recipe->getIconId());
 
         // Asserted through type-hints
         $recipe->getLabels();
@@ -177,16 +177,16 @@ class RecipeTest extends TestCase
     }
 
     /**
-     * Tests the setting and getting the icon hash.
-     * @covers ::getIconHash
-     * @covers ::setIconHash
+     * Tests the setting and getting the icon id.
+     * @covers ::getIconId
+     * @covers ::setIconId
      */
-    public function testSetAndGetIconHash(): void
+    public function testSetAndGetIconId(): void
     {
-        $iconHash = 'abc';
+        $iconId = 'abc';
         $recipe = new Recipe();
 
-        $this->assertSame($recipe, $recipe->setIconHash($iconHash));
-        $this->assertSame($iconHash, $recipe->getIconHash());
+        $this->assertSame($recipe, $recipe->setIconId($iconId));
+        $this->assertSame($iconId, $recipe->getIconId());
     }
 }

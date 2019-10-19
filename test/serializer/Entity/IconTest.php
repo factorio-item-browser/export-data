@@ -37,7 +37,7 @@ class IconTest extends SerializerTestCase
                ->setScale(73.31);
 
         $icon = new Icon();
-        $icon->setHash('ghi')
+        $icon->setId('ghi')
              ->setLayers([$layer1, $layer2])
              ->setSize(48)
              ->setRenderedSize(64);
@@ -52,7 +52,7 @@ class IconTest extends SerializerTestCase
     protected function getData(): array
     {
         return [
-            'hash' => 'ghi',
+            'id' => 'ghi',
             'layers' => [
                 [
                     'fileName' => 'abc',

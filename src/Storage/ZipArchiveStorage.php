@@ -67,32 +67,32 @@ class ZipArchiveStorage implements StorageInterface
 
     /**
      * Adds a rendered icon to the storage.
-     * @param string $iconHash
+     * @param string $iconId
      * @param string $contents
      */
-    public function addRenderedIcon(string $iconHash, string $contents): void
+    public function addRenderedIcon(string $iconId, string $contents): void
     {
-        $this->zipArchive->addFromString($this->getRenderedIconFileName($iconHash), $contents);
+        $this->zipArchive->addFromString($this->getRenderedIconFileName($iconId), $contents);
     }
 
     /**
      * Returns a rendered icon from the storage.
-     * @param string $iconHash
+     * @param string $iconId
      * @return string
      */
-    public function getRenderedIcon(string $iconHash): string
+    public function getRenderedIcon(string $iconId): string
     {
-        return (string) $this->zipArchive->getFromName($this->getRenderedIconFileName($iconHash));
+        return (string) $this->zipArchive->getFromName($this->getRenderedIconFileName($iconId));
     }
 
     /**
      * Returns the filename to use for the rendered icon.
-     * @param string $iconHash
+     * @param string $iconId
      * @return string
      */
-    protected function getRenderedIconFileName(string $iconHash): string
+    protected function getRenderedIconFileName(string $iconId): string
     {
-        return sprintf('icons/%s.png', $iconHash);
+        return sprintf('icons/%s.png', $iconId);
     }
 
     /**

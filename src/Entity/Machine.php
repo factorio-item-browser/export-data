@@ -79,10 +79,10 @@ class Machine
     protected $energyUsageUnit = 'W';
 
     /**
-     * The icon hash of the machine.
+     * The icon id of the machine.
      * @var string
      */
-    protected $iconHash = '';
+    protected $iconId = '';
 
     /**
      * Initializes the entity.
@@ -325,22 +325,22 @@ class Machine
     }
 
     /**
-     * Sets the icon hash of the machine.
-     * @param string $iconHash
+     * Sets the icon id of the machine.
+     * @param string $iconId
      * @return $this
      */
-    public function setIconHash(string $iconHash): self
+    public function setIconId(string $iconId): self
     {
-        $this->iconHash = $iconHash;
+        $this->iconId = $iconId;
         return $this;
     }
 
     /**
-     * Returns the icon hash of the machine.
+     * Returns the icon id of the machine.
      * @return string
      */
-    public function getIconHash(): string
+    public function getIconId(): string
     {
-        return $this->iconHash;
+        return $this->iconId;
     }
 }

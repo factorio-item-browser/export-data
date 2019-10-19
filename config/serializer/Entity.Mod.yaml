@@ -12,5 +12,5 @@ FactorioItemBrowser\ExportData\Entity\Mod:
       type: string
     version:
       type: string
-    thumbnailHash:
+    thumbnailId:
       type: string

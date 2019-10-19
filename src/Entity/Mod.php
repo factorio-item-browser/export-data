@@ -43,10 +43,10 @@ class Mod
     protected $version = '';
 
     /**
-     * The hash of the mod thumbnail.
+     * The id of the mod thumbnail.
      * @var string
      */
-    protected $thumbnailHash = '';
+    protected $thumbnailId = '';
 
     /**
      * Initializes the mod.
@@ -158,22 +158,22 @@ class Mod
     }
 
     /**
-     * Sets the hash of the mod thumbnail.
-     * @param string $thumbnailHash
+     * Sets the id of the mod thumbnail.
+     * @param string $thumbnailId
      * @return $this
      */
-    public function setThumbnailHash(string $thumbnailHash): self
+    public function setThumbnailId(string $thumbnailId): self
     {
-        $this->thumbnailHash = $thumbnailHash;
+        $this->thumbnailId = $thumbnailId;
         return $this;
     }
 
     /**
-     * Returns the hash of the mod thumbnail.
+     * Returns the id of the mod thumbnail.
      * @return string
      */
-    public function getThumbnailHash(): string
+    public function getThumbnailId(): string
     {
-        return $this->thumbnailHash;
+        return $this->thumbnailId;
     }
 }

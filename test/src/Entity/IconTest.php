@@ -27,24 +27,24 @@ class IconTest extends TestCase
     {
         $icon = new Icon();
 
-        $this->assertSame('', $icon->getHash());
+        $this->assertSame('', $icon->getId());
         $this->assertSame(0, $icon->getSize());
         $this->assertSame(0, $icon->getRenderedSize());
         $this->assertSame([], $icon->getLayers());
     }
 
     /**
-     * Tests the setting and getting the hash.
-     * @covers ::getHash
-     * @covers ::setHash
+     * Tests the setting and getting the id.
+     * @covers ::getId
+     * @covers ::setId
      */
-    public function testSetAndGetHash(): void
+    public function testSetAndGetId(): void
     {
-        $hash = 'abc';
+        $id = 'abc';
         $icon = new Icon();
 
-        $this->assertSame($icon, $icon->setHash($hash));
-        $this->assertSame($hash, $icon->getHash());
+        $this->assertSame($icon, $icon->setId($id));
+        $this->assertSame($id, $icon->getId());
     }
 
     /**

@@ -2,7 +2,7 @@ FactorioItemBrowser\ExportData\Entity\Icon:
   access_type: public_method
   exclusion_policy: all
   properties:
-    hash:
+    id:
       type: string
     size:
       type: integer

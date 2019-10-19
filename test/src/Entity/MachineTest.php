@@ -33,7 +33,7 @@ class MachineTest extends TestCase
         $this->assertSame(0, $machine->getNumberOfModuleSlots());
         $this->assertSame(0., $machine->getEnergyUsage());
         $this->assertSame('W', $machine->getEnergyUsageUnit());
-        $this->assertSame('', $machine->getIconHash());
+        $this->assertSame('', $machine->getIconId());
 
         // Asserted through type-hints
         $machine->getLabels();
@@ -200,16 +200,16 @@ class MachineTest extends TestCase
     }
 
     /**
-     * Tests the setting and getting the icon hash.
-     * @covers ::getIconHash
-     * @covers ::setIconHash
+     * Tests the setting and getting the icon id.
+     * @covers ::getIconId
+     * @covers ::setIconId
      */
-    public function testSetAndGetIconHash(): void
+    public function testSetAndGetIconId(): void
     {
-        $iconHash = 'abc';
+        $iconId = 'abc';
         $machine = new Machine();
 
-        $this->assertSame($machine, $machine->setIconHash($iconHash));
-        $this->assertSame($iconHash, $machine->getIconHash());
+        $this->assertSame($machine, $machine->setIconId($iconId));
+        $this->assertSame($iconId, $machine->getIconId());
     }
 }

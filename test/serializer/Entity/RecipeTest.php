@@ -46,7 +46,7 @@ class RecipeTest extends SerializerTestCase
                ->setProducts([$product1, $product2])
                ->setCraftingTime(13.37)
                ->setCraftingCategory('efg')
-               ->setIconHash('hij');
+               ->setIconId('hij');
         $recipe->getLabels()->addTranslation('klm', 'opq');
         $recipe->getDescriptions()->addTranslation('rst', 'uvw');
 
@@ -92,7 +92,7 @@ class RecipeTest extends SerializerTestCase
             ],
             'craftingTime' => 13.37,
             'craftingCategory' => 'efg',
-            'iconHash' => 'hij',
+            'iconId' => 'hij',
             'labels' => [
                 'klm' => 'opq',
             ],

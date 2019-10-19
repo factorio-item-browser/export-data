@@ -78,18 +78,18 @@ class ExportDataTest extends TestCase
      */
     public function testAddRenderedIcon(): void
     {
-        $iconHash = 'abc';
+        $iconId = 'abc';
         $contents = 'def';
 
         /* @var Icon&MockObject $icon */
         $icon = $this->createMock(Icon::class);
         $icon->expects($this->once())
-             ->method('getHash')
-             ->willReturn($iconHash);
+             ->method('getId')
+             ->willReturn($iconId);
 
         $this->storage->expects($this->once())
                       ->method('addRenderedIcon')
-                      ->with($this->identicalTo($iconHash), $this->identicalTo($contents));
+                      ->with($this->identicalTo($iconId), $this->identicalTo($contents));
 
         $exportData = new ExportData($this->combination, $this->storage);
         $result = $exportData->addRenderedIcon($icon, $contents);
@@ -103,18 +103,18 @@ class ExportDataTest extends TestCase
      */
     public function testGetRenderedIcon(): void
     {
-        $iconHash = 'abc';
+        $iconId = 'abc';
         $contents = 'def';
 
         /* @var Icon&MockObject $icon */
         $icon = $this->createMock(Icon::class);
         $icon->expects($this->once())
-             ->method('getHash')
-             ->willReturn($iconHash);
+             ->method('getId')
+             ->willReturn($iconId);
 
         $this->storage->expects($this->once())
                       ->method('getRenderedIcon')
-                      ->with($this->identicalTo($iconHash))
+                      ->with($this->identicalTo($iconId))
                       ->willReturn($contents);
 
         $exportData = new ExportData($this->combination, $this->storage);

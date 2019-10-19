@@ -10,5 +10,5 @@ FactorioItemBrowser\ExportData\Entity\Item:
       type: FactorioItemBrowser\ExportData\Entity\LocalisedString
     descriptions:
       type: FactorioItemBrowser\ExportData\Entity\LocalisedString
-    iconHash:
+    iconId:
       type: string

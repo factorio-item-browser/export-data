@@ -45,12 +45,12 @@ class ExportDataService
 
     /**
      * Loads the export data of the specified combination.
-     * @param string $combinationHash
+     * @param string $combinationId
      * @return ExportData
      */
-    public function loadExport(string $combinationHash): ExportData
+    public function loadExport(string $combinationId): ExportData
     {
-        $storage = $this->storageFactory->createForCombination($combinationHash);
+        $storage = $this->storageFactory->createForCombination($combinationId);
 
         return new ExportData($storage->load(), $storage);
     }

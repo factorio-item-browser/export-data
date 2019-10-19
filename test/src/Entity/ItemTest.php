@@ -29,7 +29,7 @@ class ItemTest extends TestCase
 
         $this->assertSame('', $item->getType());
         $this->assertSame('', $item->getName());
-        $this->assertSame('', $item->getIconHash());
+        $this->assertSame('', $item->getIconId());
 
         // Asserted through type-hints
         $item->getLabels();
@@ -95,16 +95,16 @@ class ItemTest extends TestCase
     }
 
     /**
-     * Tests the setting and getting the icon hash.
-     * @covers ::getIconHash
-     * @covers ::setIconHash
+     * Tests the setting and getting the icon id.
+     * @covers ::getIconId
+     * @covers ::setIconId
      */
-    public function testSetAndGetIconHash(): void
+    public function testSetAndGetIconId(): void
     {
-        $iconHash = 'abc';
+        $iconId = 'abc';
         $item = new Item();
 
-        $this->assertSame($item, $item->setIconHash($iconHash));
-        $this->assertSame($iconHash, $item->getIconHash());
+        $this->assertSame($item, $item->setIconId($iconId));
+        $this->assertSame($iconId, $item->getIconId());
     }
 }

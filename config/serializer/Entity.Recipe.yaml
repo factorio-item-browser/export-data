@@ -18,5 +18,5 @@ FactorioItemBrowser\ExportData\Entity\Recipe:
       type: FactorioItemBrowser\ExportData\Entity\LocalisedString
     descriptions:
       type: FactorioItemBrowser\ExportData\Entity\LocalisedString
-    iconHash:
+    iconId:
       type: string

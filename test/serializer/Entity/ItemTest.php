@@ -26,7 +26,7 @@ class ItemTest extends SerializerTestCase
         $item = new Item();
         $item->setType('abc')
              ->setName('def')
-             ->setIconHash('ghi');
+             ->setIconId('ghi');
         $item->getLabels()->addTranslation('jkl', 'mno');
         $item->getDescriptions()->addTranslation('pqr', 'stu');
 
@@ -42,7 +42,7 @@ class ItemTest extends SerializerTestCase
         return [
             'type' => 'abc',
             'name' => 'def',
-            'iconHash' => 'ghi',
+            'iconId' => 'ghi',
             'labels' => [
                 'jkl' => 'mno',
             ],

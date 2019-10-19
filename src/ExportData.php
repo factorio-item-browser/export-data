@@ -56,7 +56,7 @@ class ExportData
      */
     public function addRenderedIcon(Icon $icon, string $contents): self
     {
-        $this->storage->addRenderedIcon($icon->getHash(), $contents);
+        $this->storage->addRenderedIcon($icon->getId(), $contents);
         return $this;
     }
 
@@ -67,7 +67,7 @@ class ExportData
      */
     public function getRenderedIcon(Icon $icon): string
     {
-        return $this->storage->getRenderedIcon($icon->getHash());
+        return $this->storage->getRenderedIcon($icon->getId());
     }
 
     /**

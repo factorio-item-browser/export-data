@@ -27,7 +27,7 @@ class ModTest extends SerializerTestCase
         $mod->setName('abc')
             ->setAuthor('def')
             ->setVersion('ghi')
-            ->setThumbnailHash('jkl');
+            ->setThumbnailId('jkl');
         $mod->getTitles()->addTranslation('mno', 'pqr');
         $mod->getDescriptions()->addTranslation('stu', 'vwx');
 
@@ -44,7 +44,7 @@ class ModTest extends SerializerTestCase
             'name' => 'abc',
             'author' => 'def',
             'version' => 'ghi',
-            'thumbnailHash' => 'jkl',
+            'thumbnailId' => 'jkl',
             'titles' => [
                 'mno' => 'pqr',
             ],

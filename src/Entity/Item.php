@@ -37,10 +37,10 @@ class Item
     protected $descriptions;
 
     /**
-     * The icon hash of the item.
+     * The icon id of the item.
      * @var string
      */
-    protected $iconHash = '';
+    protected $iconId = '';
 
     /**
      * Initializes the entity.
@@ -132,22 +132,22 @@ class Item
     }
 
     /**
-     * Sets the icon hash of the item.
-     * @param string $iconHash
+     * Sets the icon id of the item.
+     * @param string $iconId
      * @return $this Implementing fluent interface.
      */
-    public function setIconHash(string $iconHash): self
+    public function setIconId(string $iconId): self
     {
-        $this->iconHash = $iconHash;
+        $this->iconId = $iconId;
         return $this;
     }
 
     /**
-     * Returns the icon hash of the item.
+     * Returns the icon id of the item.
      * @return string
      */
-    public function getIconHash(): string
+    public function getIconId(): string
     {
-        return $this->iconHash;
+        return $this->iconId;
     }
 }

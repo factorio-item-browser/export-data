@@ -16,17 +16,17 @@ interface StorageInterface
 {
     /**
      * Adds a rendered icon to the storage.
-     * @param string $iconHash
+     * @param string $iconId
      * @param string $contents
      */
-    public function addRenderedIcon(string $iconHash, string $contents): void;
+    public function addRenderedIcon(string $iconId, string $contents): void;
 
     /**
      * Returns a rendered icon from the storage.
-     * @param string $iconHash
+     * @param string $iconId
      * @return string
      */
-    public function getRenderedIcon(string $iconHash): string;
+    public function getRenderedIcon(string $iconId): string;
 
     /**
      * Saves the combination data to the storage.

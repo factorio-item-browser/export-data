@@ -49,9 +49,9 @@ class CombinationTest extends SerializerTestCase
         $recipe2->setName('vwx');
 
         $icon1 = new Icon();
-        $icon1->setHash('yza');
+        $icon1->setId('yza');
         $icon2 = new Icon();
-        $icon2->setHash('bcd');
+        $icon2->setId('bcd');
 
         $combination = new Combination();
         $combination->setId('efg')
@@ -79,7 +79,7 @@ class CombinationTest extends SerializerTestCase
                     'descriptions' => [],
                     'author' => '',
                     'version' => '',
-                    'thumbnailHash' => '',
+                    'thumbnailId' => '',
                 ],
                 [
                     'name' => 'def',
@@ -87,7 +87,7 @@ class CombinationTest extends SerializerTestCase
                     'descriptions' => [],
                     'author' => '',
                     'version' => '',
-                    'thumbnailHash' => '',
+                    'thumbnailId' => '',
                 ],
             ],
             'items' => [
@@ -96,14 +96,14 @@ class CombinationTest extends SerializerTestCase
                     'type' => '',
                     'labels' => [],
                     'descriptions' => [],
-                    'iconHash' => '',
+                    'iconId' => '',
                 ],
                 [
                     'name' => 'jkl',
                     'type' => '',
                     'labels' => [],
                     'descriptions' => [],
-                    'iconHash' => '',
+                    'iconId' => '',
                 ],
             ],
             'machines' => [
@@ -119,7 +119,7 @@ class CombinationTest extends SerializerTestCase
                     'numberOfModuleSlots' => 0,
                     'energyUsage' => 0.,
                     'energyUsageUnit' => 'W',
-                    'iconHash' => '',
+                    'iconId' => '',
                 ],
                 [
                     'name' => 'pqr',
@@ -133,7 +133,7 @@ class CombinationTest extends SerializerTestCase
                     'numberOfModuleSlots' => 0,
                     'energyUsage' => 0.,
                     'energyUsageUnit' => 'W',
-                    'iconHash' => '',
+                    'iconId' => '',
                 ],
             ],
             'recipes' => [
@@ -146,7 +146,7 @@ class CombinationTest extends SerializerTestCase
                     'craftingCategory' => '',
                     'labels' => [],
                     'descriptions' => [],
-                    'iconHash' => '',
+                    'iconId' => '',
                 ],
                 [
                     'name' => 'vwx',
@@ -157,18 +157,18 @@ class CombinationTest extends SerializerTestCase
                     'craftingCategory' => '',
                     'labels' => [],
                     'descriptions' => [],
-                    'iconHash' => '',
+                    'iconId' => '',
                 ],
             ],
             'icons' => [
                 [
-                    'hash' => 'yza',
+                    'id' => 'yza',
                     'size' => 0,
                     'renderedSize' => 0,
                     'layers' => [],
                 ],
                 [
-                    'hash' => 'bcd',
+                    'id' => 'bcd',
                     'size' => 0,
                     'renderedSize' => 0,
                     'layers' => [],
