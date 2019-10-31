@@ -23,14 +23,25 @@ class ZipArchiveStorage implements StorageInterface
     protected const DATA_FILENAME = 'data.json';
 
     /**
+     * The filename used for the icons.
+     */
+    protected const ICON_FILENAME = 'icons/%s.png';
+
+    /**
      * The serializer.
      * @var SerializerInterface
      */
     protected $serializer;
 
     /**
+     * The file name to use.
+     * @var string
+     */
+    protected $fileName;
+
+    /**
      * The zip archive the storage is working on.
-     * @var ZipArchive
+     * @var ZipArchive|null
      */
     protected $zipArchive;
 
@@ -42,7 +53,7 @@ class ZipArchiveStorage implements StorageInterface
     public function __construct(SerializerInterface $serializer, string $fileName)
     {
         $this->serializer = $serializer;
-        $this->zipArchive = $this->createZipArchive($fileName);
+        $this->fileName = $fileName;
     }
 
     /**
@@ -50,19 +61,32 @@ class ZipArchiveStorage implements StorageInterface
      */
     public function __destruct()
     {
-        $this->zipArchive->close();
+        $this->closeZipArchive();
     }
 
     /**
-     * Creates the zip archive instance to work on.
-     * @param string $fileName
+     * Returns the zip archive instance to work on, and creates it if it not yet existing.
      * @return ZipArchive
      */
-    protected function createZipArchive(string $fileName): ZipArchive
+    protected function getZipArchive(): ZipArchive
     {
-        $result = new ZipArchive();
-        $result->open($fileName, ZipArchive::CREATE);
-        return $result;
+        if ($this->zipArchive === null) {
+            $this->zipArchive = new ZipArchive();
+            $this->zipArchive->open($this->fileName, ZipArchive::CREATE);
+        }
+
+        return $this->zipArchive;
+    }
+
+    /**
+     * Closes the zip archive if it has been opened.
+     */
+    protected function closeZipArchive(): void
+    {
+        if ($this->zipArchive !== null) {
+            $this->zipArchive->close();
+            $this->zipArchive = null;
+        }
     }
 
     /**
@@ -72,7 +96,7 @@ class ZipArchiveStorage implements StorageInterface
      */
     public function addRenderedIcon(string $iconId, string $contents): void
     {
-        $this->zipArchive->addFromString($this->getRenderedIconFileName($iconId), $contents);
+        $this->getZipArchive()->addFromString($this->getRenderedIconFileName($iconId), $contents);
     }
 
     /**
@@ -82,7 +106,7 @@ class ZipArchiveStorage implements StorageInterface
      */
     public function getRenderedIcon(string $iconId): string
     {
-        return (string) $this->zipArchive->getFromName($this->getRenderedIconFileName($iconId));
+        return (string) $this->getZipArchive()->getFromName($this->getRenderedIconFileName($iconId));
     }
 
     /**
@@ -92,7 +116,7 @@ class ZipArchiveStorage implements StorageInterface
      */
     protected function getRenderedIconFileName(string $iconId): string
     {
-        return sprintf('icons/%s.png', $iconId);
+        return sprintf(self::ICON_FILENAME, $iconId);
     }
 
     /**
@@ -103,8 +127,10 @@ class ZipArchiveStorage implements StorageInterface
     public function save(Combination $combination): string
     {
         $serializedData = $this->serializer->serialize($combination, 'json');
-        $this->zipArchive->addFromString(self::DATA_FILENAME, $serializedData);
-        return $this->zipArchive->filename;
+        $this->getZipArchive()->addFromString(self::DATA_FILENAME, $serializedData);
+        $this->closeZipArchive();
+
+        return $this->fileName;
     }
 
     /**
@@ -114,7 +140,7 @@ class ZipArchiveStorage implements StorageInterface
     {
         $result = new Combination();
 
-        $serializedData = (string) $this->zipArchive->getFromName(self::DATA_FILENAME);
+        $serializedData = (string) $this->getZipArchive()->getFromName(self::DATA_FILENAME);
         if ($serializedData !== '') {
             try {
                 $result = $this->serializer->deserialize($serializedData, Combination::class, 'json');
@@ -123,5 +149,17 @@ class ZipArchiveStorage implements StorageInterface
             }
         }
         return $result;
+    }
+
+    /**
+     * Removes all persisted data from the storage.
+     */
+    public function remove(): void
+    {
+        $this->closeZipArchive();
+
+        if (file_exists($this->fileName)) {
+            unlink($this->fileName);
+        }
     }
 }

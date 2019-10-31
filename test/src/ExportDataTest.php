@@ -141,4 +141,18 @@ class ExportDataTest extends TestCase
 
         $this->assertSame($fileName, $result);
     }
+
+    /**
+     * Tests the remove method.
+     * @covers ::remove
+     */
+    public function testRemove(): void
+    {
+        $this->storage->expects($this->once())
+                      ->method('remove');
+
+
+        $exportData = new ExportData($this->combination, $this->storage);
+        $exportData->remove();
+    }
 }

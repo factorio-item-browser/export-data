@@ -22,6 +22,7 @@
   },
   "require-dev": {
     "bluepsyduck/test-helper": "^1.0",
+    "mikey179/vfsstream": "^1.6",
     "phpstan/phpstan": "^0.11",
     "phpstan/phpstan-phpunit": "^0.11",
     "phpstan/phpstan-strict-rules": "^0.11",

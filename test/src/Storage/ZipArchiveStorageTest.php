@@ -9,6 +9,7 @@ use Exception;
 use FactorioItemBrowser\ExportData\Entity\Combination;
 use FactorioItemBrowser\ExportData\Storage\ZipArchiveStorage;
 use JMS\Serializer\SerializerInterface;
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
@@ -32,12 +33,6 @@ class ZipArchiveStorageTest extends TestCase
     protected $serializer;
 
     /**
-     * The mocked zip archive.
-     * @var ZipArchive&MockObject
-     */
-    protected $zipArchive;
-
-    /**
      * Sets up the test case.
      */
     protected function setUp(): void
@@ -45,30 +40,6 @@ class ZipArchiveStorageTest extends TestCase
         parent::setUp();
 
         $this->serializer = $this->createMock(SerializerInterface::class);
-        $this->zipArchive = $this->createMock(ZipArchive::class);
-    }
-
-    /**
-     * Creates a mocked storage instance without actual constructor and destructor.
-     * @param array $mockedMethods
-     * @return ZipArchiveStorage&MockObject
-     */
-    protected function createMockedStorage(array $mockedMethods = []): ZipArchiveStorage
-    {
-        $fileName = 'abc';
-
-        /* @var ZipArchiveStorage&MockObject $storage */
-        $storage = $this->getMockBuilder(ZipArchiveStorage::class)
-                        ->setMethods(array_merge($mockedMethods, ['createZipArchive', '__destruct']))
-                        ->disableOriginalConstructor()
-                        ->getMock();
-        $storage->expects($this->once())
-                ->method('createZipArchive')
-                ->with($this->identicalTo($fileName))
-                ->willReturn($this->zipArchive);
-
-        $storage->__construct($this->serializer, $fileName);
-        return $storage;
     }
 
     /**
@@ -78,57 +49,92 @@ class ZipArchiveStorageTest extends TestCase
      */
     public function testConstruct(): void
     {
-        $storage = $this->createMockedStorage();
+        $fileName = 'abc';
+
+        $storage = new ZipArchiveStorage($this->serializer, $fileName);
 
         $this->assertSame($this->serializer, $this->extractProperty($storage, 'serializer'));
-        $this->assertSame($this->zipArchive, $this->extractProperty($storage, 'zipArchive'));
+        $this->assertSame($fileName, $this->extractProperty($storage, 'fileName'));
     }
 
     /**
      * Tests the destructor.
+     * @throws ReflectionException
      * @covers ::__destruct
      */
     public function testDestruct(): void
     {
-        $fileName = 'abc';
+        /* @var ZipArchive&MockObject $zipArchive */
+        $zipArchive = $this->createMock(ZipArchive::class);
 
         /* @var ZipArchiveStorage&MockObject $storage */
         $storage = $this->getMockBuilder(ZipArchiveStorage::class)
-                        ->setMethods(['createZipArchive'])
-                        ->disableOriginalConstructor()
+                        ->onlyMethods(['closeZipArchive'])
+                        ->setConstructorArgs([$this->serializer, 'abc'])
                         ->getMock();
+        $this->injectProperty($storage, 'zipArchive', $zipArchive);
+
         $storage->expects($this->once())
-                ->method('createZipArchive')
-                ->with($this->identicalTo($fileName))
-                ->willReturn($this->zipArchive);
-
-        $storage->__construct($this->serializer, $fileName);
-
-        $this->zipArchive->expects($this->once())
-                         ->method('close');
+                ->method('closeZipArchive');
 
         $storage->__destruct();
     }
 
     /**
-     * Tests the createZipArchive method.
+     * Tests the getZipArchive method.
      * @throws ReflectionException
-     * @covers ::createZipArchive
+     * @covers ::getZipArchive
      */
-    public function testCreateZipArchive(): void
+    public function testGetZipArchive(): void
     {
         $fileName = realpath(__DIR__ . '/../../asset') . '/temp.zip';
 
-        /* @var ZipArchiveStorage&MockObject $storage */
-        $storage = $this->getMockBuilder(ZipArchiveStorage::class)
-                        ->setMethods(['__destruct'])
-                        ->disableOriginalConstructor()
-                        ->getMock();
+        $storage = new ZipArchiveStorage($this->serializer, $fileName);
 
-        /* @var ZipArchive $result */
-        $result = $this->invokeMethod($storage, 'createZipArchive', $fileName);
+        $result = $this->invokeMethod($storage, 'getZipArchive');
 
+        $this->assertInstanceOf(ZipArchive::class, $result);
         $this->assertSame($fileName, $result->filename);
+    }
+
+    /**
+     * Tests the getZipArchive method.
+     * @throws ReflectionException
+     * @covers ::getZipArchive
+     */
+    public function testGetZipArchiveWithExistingArchive(): void
+    {
+        $fileName = realpath(__DIR__ . '/../../asset') . '/temp.zip';
+
+        /* @var ZipArchive&MockObject $zipArchive */
+        $zipArchive = $this->createMock(ZipArchive::class);
+
+        $storage = new ZipArchiveStorage($this->serializer, $fileName);
+        $this->injectProperty($storage, 'zipArchive', $zipArchive);
+
+        $result = $this->invokeMethod($storage, 'getZipArchive');
+
+        $this->assertSame($zipArchive, $result);
+    }
+
+    /**
+     * Tests the closeZipArchive method.
+     * @throws ReflectionException
+     * @covers ::closeZipArchive
+     */
+    public function testCloseZipArchive(): void
+    {
+        /* @var ZipArchive&MockObject $zipArchive */
+        $zipArchive = $this->createMock(ZipArchive::class);
+        $zipArchive->expects($this->once())
+                   ->method('close');
+
+        $storage = new ZipArchiveStorage($this->serializer, 'foo');
+        $this->injectProperty($storage, 'zipArchive', $zipArchive);
+
+        $this->invokeMethod($storage, 'closeZipArchive');
+
+        $this->assertNull($this->extractProperty($storage, 'zipArchive'));
     }
 
     /**
@@ -141,11 +147,20 @@ class ZipArchiveStorageTest extends TestCase
         $iconFileName = 'def';
         $contents = 'ghi';
 
-        $this->zipArchive->expects($this->once())
-                         ->method('addFromString')
-                         ->with($this->identicalTo($iconFileName), $this->identicalTo($contents));
+        /* @var ZipArchive&MockObject $zipArchive */
+        $zipArchive = $this->createMock(ZipArchive::class);
+        $zipArchive->expects($this->once())
+                   ->method('addFromString')
+                   ->with($this->identicalTo($iconFileName), $this->identicalTo($contents));
 
-        $storage = $this->createMockedStorage(['getRenderedIconFileName']);
+        /* @var ZipArchiveStorage&MockObject $storage */
+        $storage = $this->getMockBuilder(ZipArchiveStorage::class)
+                        ->onlyMethods(['getZipArchive', 'getRenderedIconFileName'])
+                        ->setConstructorArgs([$this->serializer, 'abc'])
+                        ->getMock();
+        $storage->expects($this->once())
+                ->method('getZipArchive')
+                ->willReturn($zipArchive);
         $storage->expects($this->once())
                 ->method('getRenderedIconFileName')
                 ->with($this->identicalTo($iconId))
@@ -164,12 +179,21 @@ class ZipArchiveStorageTest extends TestCase
         $iconFileName = 'def';
         $contents = 'ghi';
 
-        $this->zipArchive->expects($this->once())
-                         ->method('getFromName')
-                         ->with($this->identicalTo($iconFileName))
-                         ->willReturn($contents);
+        /* @var ZipArchive&MockObject $zipArchive */
+        $zipArchive = $this->createMock(ZipArchive::class);
+        $zipArchive->expects($this->once())
+                   ->method('getFromName')
+                   ->with($this->identicalTo($iconFileName))
+                   ->willReturn($contents);
 
-        $storage = $this->createMockedStorage(['getRenderedIconFileName']);
+        /* @var ZipArchiveStorage&MockObject $storage */
+        $storage = $this->getMockBuilder(ZipArchiveStorage::class)
+                        ->onlyMethods(['getZipArchive', 'getRenderedIconFileName'])
+                        ->setConstructorArgs([$this->serializer, 'abc'])
+                        ->getMock();
+        $storage->expects($this->once())
+                ->method('getZipArchive')
+                ->willReturn($zipArchive);
         $storage->expects($this->once())
                 ->method('getRenderedIconFileName')
                 ->with($this->identicalTo($iconId))
@@ -190,7 +214,7 @@ class ZipArchiveStorageTest extends TestCase
         $iconId = 'abc';
         $expectedResult = 'icons/abc.png';
 
-        $storage = $this->createMockedStorage();
+        $storage = new ZipArchiveStorage($this->serializer, 'foo');
         $result = $this->invokeMethod($storage, 'getRenderedIconFileName', $iconId);
 
         $this->assertSame($expectedResult, $result);
@@ -212,11 +236,21 @@ class ZipArchiveStorageTest extends TestCase
                          ->with($this->identicalTo($combination), $this->identicalTo('json'))
                          ->willReturn($serializedData);
 
-        $this->zipArchive->expects($this->once())
-                         ->method('addFromString')
-                         ->with($this->identicalTo('data.json'), $this->identicalTo($serializedData));
+        /* @var ZipArchive&MockObject $zipArchive */
+        $zipArchive = $this->createMock(ZipArchive::class);
+        $zipArchive->expects($this->once())
+                   ->method('addFromString')
+                   ->with($this->identicalTo('data.json'), $this->identicalTo($serializedData));
 
-        $storage = $this->createMockedStorage();
+        /* @var ZipArchiveStorage&MockObject $storage */
+        $storage = $this->getMockBuilder(ZipArchiveStorage::class)
+                        ->onlyMethods(['getZipArchive'])
+                        ->setConstructorArgs([$this->serializer, 'foo'])
+                        ->getMock();
+        $storage->expects($this->once())
+                ->method('getZipArchive')
+                ->willReturn($zipArchive);
+
         $storage->save($combination);
         // Unable to assert fileName, cannot be assigned.
     }
@@ -232,10 +266,12 @@ class ZipArchiveStorageTest extends TestCase
         /* @var Combination&MockObject $combination */
         $combination = $this->createMock(Combination::class);
 
-        $this->zipArchive->expects($this->once())
-                         ->method('getFromName')
-                         ->with($this->identicalTo('data.json'))
-                         ->willReturn($serializedData);
+        /* @var ZipArchive&MockObject $zipArchive */
+        $zipArchive = $this->createMock(ZipArchive::class);
+        $zipArchive->expects($this->once())
+                   ->method('getFromName')
+                   ->with($this->identicalTo('data.json'))
+                   ->willReturn($serializedData);
 
         $this->serializer->expects($this->once())
                          ->method('deserialize')
@@ -246,7 +282,15 @@ class ZipArchiveStorageTest extends TestCase
                          )
                          ->willReturn($combination);
 
-        $storage = $this->createMockedStorage();
+        /* @var ZipArchiveStorage&MockObject $storage */
+        $storage = $this->getMockBuilder(ZipArchiveStorage::class)
+                        ->onlyMethods(['getZipArchive'])
+                        ->setConstructorArgs([$this->serializer, 'foo'])
+                        ->getMock();
+        $storage->expects($this->once())
+                ->method('getZipArchive')
+                ->willReturn($zipArchive);
+
         $result = $storage->load();
 
         $this->assertSame($combination, $result);
@@ -260,15 +304,25 @@ class ZipArchiveStorageTest extends TestCase
     {
         $expectedResult = new Combination();
 
-        $this->zipArchive->expects($this->once())
-                         ->method('getFromName')
-                         ->with($this->identicalTo('data.json'))
-                         ->willReturn(false);
+        /* @var ZipArchive&MockObject $zipArchive */
+        $zipArchive = $this->createMock(ZipArchive::class);
+        $zipArchive->expects($this->once())
+                   ->method('getFromName')
+                   ->with($this->identicalTo('data.json'))
+                   ->willReturn(false);
 
         $this->serializer->expects($this->never())
                          ->method('deserialize');
 
-        $storage = $this->createMockedStorage();
+        /* @var ZipArchiveStorage&MockObject $storage */
+        $storage = $this->getMockBuilder(ZipArchiveStorage::class)
+                        ->onlyMethods(['getZipArchive'])
+                        ->setConstructorArgs([$this->serializer, 'foo'])
+                        ->getMock();
+        $storage->expects($this->once())
+                ->method('getZipArchive')
+                ->willReturn($zipArchive);
+
         $result = $storage->load();
 
         $this->assertEquals($expectedResult, $result);
@@ -283,10 +337,12 @@ class ZipArchiveStorageTest extends TestCase
         $serializedData = 'abc';
         $expectedResult = new Combination();
 
-        $this->zipArchive->expects($this->once())
-                         ->method('getFromName')
-                         ->with($this->identicalTo('data.json'))
-                         ->willReturn($serializedData);
+        /* @var ZipArchive&MockObject $zipArchive */
+        $zipArchive = $this->createMock(ZipArchive::class);
+        $zipArchive->expects($this->once())
+                   ->method('getFromName')
+                   ->with($this->identicalTo('data.json'))
+                   ->willReturn($serializedData);
 
         $this->serializer->expects($this->once())
                          ->method('deserialize')
@@ -297,9 +353,43 @@ class ZipArchiveStorageTest extends TestCase
                          )
                          ->willThrowException($this->createMock(Exception::class));
 
-        $storage = $this->createMockedStorage();
+
+        /* @var ZipArchiveStorage&MockObject $storage */
+        $storage = $this->getMockBuilder(ZipArchiveStorage::class)
+                        ->onlyMethods(['getZipArchive'])
+                        ->setConstructorArgs([$this->serializer, 'foo'])
+                        ->getMock();
+        $storage->expects($this->once())
+                ->method('getZipArchive')
+                ->willReturn($zipArchive);
+
         $result = $storage->load();
 
         $this->assertEquals($expectedResult, $result);
+    }
+
+    /**
+     * Tests the remove method.
+     * @covers ::remove
+     */
+    public function testRemove(): void
+    {
+        $directory = vfsStream::setup('root');
+        $directory->addChild(vfsStream::newFile('foo'));
+        $fileName = vfsStream::url('root/foo');
+
+        /* @var ZipArchiveStorage&MockObject $storage */
+        $storage = $this->getMockBuilder(ZipArchiveStorage::class)
+                        ->onlyMethods(['closeZipArchive'])
+                        ->setConstructorArgs([$this->serializer, $fileName])
+                        ->getMock();
+        $storage->expects($this->once())
+                ->method('closeZipArchive');
+
+        $this->assertTrue($directory->hasChild('foo'));
+
+        $storage->remove();
+
+        $this->assertFalse($directory->hasChild('foo'));
     }
 }

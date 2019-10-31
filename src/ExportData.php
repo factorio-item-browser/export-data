@@ -78,4 +78,12 @@ class ExportData
     {
         return $this->storage->save($this->combination);
     }
+
+    /**
+     * Removes the export data from the storage.
+     */
+    public function remove(): void
+    {
+        $this->storage->remove();
+    }
 }

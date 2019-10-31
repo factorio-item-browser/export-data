@@ -11,7 +11,6 @@ use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
-use ZipArchive;
 
 /**
  * The PHPUnit test of the StorageFactory class.
@@ -64,12 +63,13 @@ class StorageFactoryTest extends TestCase
     {
         $workingDirectory = 'abc';
         $combinationId = 'def';
+        $expectedFileName = 'abc/def.zip';
 
         $factory = new StorageFactory($this->serializer, $workingDirectory);
         $storage = $factory->createForCombination($combinationId);
 
         $this->assertInstanceOf(ZipArchiveStorage::class, $storage);
         $this->assertSame($this->serializer, $this->extractProperty($storage, 'serializer'));
-        $this->assertInstanceOf(ZipArchive::class, $this->extractProperty($storage, 'zipArchive'));
+        $this->assertSame($expectedFileName, $this->extractProperty($storage, 'fileName'));
     }
 }
