@@ -2,17 +2,10 @@
 
 declare(strict_types=1);
 
-/**
- * The interface for the storage factory.
- *
- * @author BluePsyduck <bluepsyduck@gmx.com>
- * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- */
-
 namespace FactorioItemBrowser\ExportData\Storage;
 
 /**
- * The factory for creating the storage instances.
+ * The interface for the storage factory.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
