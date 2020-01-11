@@ -67,7 +67,7 @@ abstract class SerializerTestCase extends TestCase
 
     /**
      * Returns the serialized data.
-     * @return array
+     * @return array<mixed>
      */
     abstract protected function getData(): array;
 }
