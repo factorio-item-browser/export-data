@@ -15,10 +15,10 @@
     "php": "^7.3",
     "ext-json": "*",
     "ext-zip": "*",
-    "bluepsyduck/zend-autowire-factory": "^1.1",
+    "bluepsyduck/laminas-autowire-factory": "^1.0",
     "jms/serializer": "^3.2",
-    "symfony/yaml": "^4.0",
-    "zendframework/zend-servicemanager": "^3.0"
+    "laminas/laminas-servicemanager": "^3.0",
+    "symfony/yaml": "^4.0"
   },
   "require-dev": {
     "bluepsyduck/test-helper": "^1.0",
