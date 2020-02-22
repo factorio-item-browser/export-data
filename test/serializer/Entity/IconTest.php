@@ -26,21 +26,18 @@ class IconTest extends SerializerTestCase
     {
         $layer1 = new Layer();
         $layer1->setFileName('abc')
-               ->setOffsetX(42)
-               ->setOffsetY(21)
-               ->setScale(13.37);
+               ->setScale(13.37)
+               ->setSize(42);
 
         $layer2 = new Layer();
         $layer2->setFileName('def')
-               ->setOffsetX(13)
-               ->setOffsetY(37)
-               ->setScale(73.31);
+               ->setScale(73.31)
+               ->setSize(21);
 
         $icon = new Icon();
         $icon->setId('ghi')
              ->setLayers([$layer1, $layer2])
-             ->setSize(48)
-             ->setRenderedSize(64);
+             ->setSize(1337);
 
         return $icon;
     }
@@ -56,9 +53,12 @@ class IconTest extends SerializerTestCase
             'layers' => [
                 [
                     'fileName' => 'abc',
-                    'offsetX' => 42,
-                    'offsetY' => 21,
+                    'offset' => [
+                        'x' => 0,
+                        'y' => 0,
+                    ],
                     'scale' => 13.37,
+                    'size' => 42,
                     'tint' => [
                         'red' => 1.,
                         'green' => 1.,
@@ -68,9 +68,12 @@ class IconTest extends SerializerTestCase
                 ],
                 [
                     'fileName' => 'def',
-                    'offsetX' => 13,
-                    'offsetY' => 37,
+                    'offset' => [
+                        'x' => 0,
+                        'y' => 0,
+                    ],
                     'scale' => 73.31,
+                    'size' => 21,
                     'tint' => [
                         'red' => 1.,
                         'green' => 1.,
@@ -79,8 +82,7 @@ class IconTest extends SerializerTestCase
                     ],
                 ]
             ],
-            'size' => 48,
-            'renderedSize' => 64,
+            'size' => 1337,
         ];
     }
 }

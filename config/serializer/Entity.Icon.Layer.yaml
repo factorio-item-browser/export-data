@@ -4,11 +4,11 @@ FactorioItemBrowser\ExportData\Entity\Icon\Layer:
   properties:
     fileName:
       type: string
-    tint:
-      type: FactorioItemBrowser\ExportData\Entity\Icon\Color
-    offsetX:
-      type: integer
-    offsetY:
-      type: integer
+    offset:
+      type: FactorioItemBrowser\ExportData\Entity\Icon\Offset
     scale:
       type: float
+    size:
+      type: integer
+    tint:
+      type: FactorioItemBrowser\ExportData\Entity\Icon\Color

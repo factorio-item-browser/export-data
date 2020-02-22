@@ -6,7 +6,5 @@ FactorioItemBrowser\ExportData\Entity\Icon:
       type: string
     size:
       type: integer
-    renderedSize:
-      type: integer
     layers:
       type: array<FactorioItemBrowser\ExportData\Entity\Icon\Layer>

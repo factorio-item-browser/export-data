@@ -19,22 +19,10 @@ class Layer
     protected $fileName = '';
 
     /**
-     * The tint of the layer.
-     * @var Color
+     * The offset of the layer.
+     * @var Offset
      */
-    protected $tint;
-
-    /**
-     * The x offset of the layer.
-     * @var int
-     */
-    protected $offsetX = 0;
-
-    /**
-     * The y offset of the layer.
-     * @var int
-     */
-    protected $offsetY = 0;
+    protected $offset;
 
     /**
      * The scale of the layer.
@@ -43,11 +31,24 @@ class Layer
     protected $scale = 1.;
 
     /**
+     * The size of the layer.
+     * @var int
+     */
+    protected $size = 0;
+
+    /**
+     * The tint of the layer.
+     * @var Color
+     */
+    protected $tint;
+
+    /**
      * Initializes the entity.
      */
     public function __construct()
     {
         $this->tint = new Color();
+        $this->offset = new Offset();
     }
 
     /**
@@ -71,63 +72,23 @@ class Layer
     }
 
     /**
-     * Sets the tint of the layer.
-     * @param Color $tint
+     * Sets the offset of the layer.
+     * @param Offset $offset
      * @return $this
      */
-    public function setTint(Color $tint): self
+    public function setOffset(Offset $offset): self
     {
-        $this->tint = $tint;
+        $this->offset = $offset;
         return $this;
     }
 
     /**
-     * Returns the tint of the layer.
-     * @return Color
+     * Returns the offset of the layer.
+     * @return Offset
      */
-    public function getTint(): Color
+    public function getOffset(): Offset
     {
-        return $this->tint;
-    }
-
-    /**
-     * Sets the x offset of the layer.
-     * @param int $offsetX
-     * @return $this
-     */
-    public function setOffsetX(int $offsetX): self
-    {
-        $this->offsetX = $offsetX;
-        return $this;
-    }
-
-    /**
-     * Returns the x offset of the layer.
-     * @return int
-     */
-    public function getOffsetX(): int
-    {
-        return $this->offsetX;
-    }
-
-    /**
-     * Sets the y offset of the layer.
-     * @param int $offsetY
-     * @return $this
-     */
-    public function setOffsetY(int $offsetY): self
-    {
-        $this->offsetY = $offsetY;
-        return $this;
-    }
-
-    /**
-     * Returns the y offset of the layer.
-     * @return int
-     */
-    public function getOffsetY(): int
-    {
-        return $this->offsetY;
+        return $this->offset;
     }
 
     /**
@@ -148,5 +109,45 @@ class Layer
     public function getScale(): float
     {
         return $this->scale;
+    }
+
+    /**
+     * Sets the size of the layer.
+     * @param int $size
+     * @return $this
+     */
+    public function setSize(int $size): self
+    {
+        $this->size = $size;
+        return $this;
+    }
+
+    /**
+     * Returns the size of the layer.
+     * @return int
+     */
+    public function getSize(): int
+    {
+        return $this->size;
+    }
+
+    /**
+     * Sets the tint of the layer.
+     * @param Color $tint
+     * @return $this
+     */
+    public function setTint(Color $tint): self
+    {
+        $this->tint = $tint;
+        return $this;
+    }
+
+    /**
+     * Returns the tint of the layer.
+     * @return Color
+     */
+    public function getTint(): Color
+    {
+        return $this->tint;
     }
 }

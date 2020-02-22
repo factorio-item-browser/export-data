@@ -6,6 +6,7 @@ namespace FactorioItemBrowserTest\ExportData\Entity\Icon;
 
 use FactorioItemBrowser\ExportData\Entity\Icon\Color;
 use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
+use FactorioItemBrowser\ExportData\Entity\Icon\Offset;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -27,12 +28,13 @@ class LayerTest extends TestCase
     {
         $layer = new Layer();
         $this->assertSame('', $layer->getFileName());
-        $this->assertSame(0, $layer->getOffsetX());
-        $this->assertSame(0, $layer->getOffsetY());
         $this->assertSame(1., $layer->getScale());
+        $this->assertSame(0, $layer->getSize());
+
 
         // Asserted through type-hints
         $layer->getTint();
+        $layer->getOffset();
     }
 
     /**
@@ -50,46 +52,18 @@ class LayerTest extends TestCase
     }
 
     /**
-     * Tests the setting and getting the tint.
-     * @covers ::getTint
-     * @covers ::setTint
+     * Tests the setting and getting the offset.
+     * @covers ::getOffset
+     * @covers ::setOffset
      */
-    public function testSetAndGetTint(): void
+    public function testSetAndGetOffset(): void
     {
-        /* @var Color&MockObject $tint */
-        $tint = $this->createMock(Color::class);
+        /* @var Offset&MockObject $offset */
+        $offset = $this->createMock(Offset::class);
         $layer = new Layer();
 
-        $this->assertSame($layer, $layer->setTint($tint));
-        $this->assertSame($tint, $layer->getTint());
-    }
-
-    /**
-     * Tests the setting and getting the offset x.
-     * @covers ::getOffsetX
-     * @covers ::setOffsetX
-     */
-    public function testSetAndGetOffsetX(): void
-    {
-        $offsetX = 42;
-        $layer = new Layer();
-
-        $this->assertSame($layer, $layer->setOffsetX($offsetX));
-        $this->assertSame($offsetX, $layer->getOffsetX());
-    }
-
-    /**
-     * Tests the setting and getting the offset y.
-     * @covers ::getOffsetY
-     * @covers ::setOffsetY
-     */
-    public function testSetAndGetOffsetY(): void
-    {
-        $offsetY = 42;
-        $layer = new Layer();
-
-        $this->assertSame($layer, $layer->setOffsetY($offsetY));
-        $this->assertSame($offsetY, $layer->getOffsetY());
+        $this->assertSame($layer, $layer->setOffset($offset));
+        $this->assertSame($offset, $layer->getOffset());
     }
 
     /**
@@ -104,5 +78,34 @@ class LayerTest extends TestCase
 
         $this->assertSame($layer, $layer->setScale($scale));
         $this->assertSame($scale, $layer->getScale());
+    }
+
+    /**
+     * Tests the setting and getting the size.
+     * @covers ::getSize
+     * @covers ::setSize
+     */
+    public function testSetAndGetSize(): void
+    {
+        $size = 42;
+        $layer = new Layer();
+
+        $this->assertSame($layer, $layer->setSize($size));
+        $this->assertSame($size, $layer->getSize());
+    }
+
+    /**
+     * Tests the setting and getting the tint.
+     * @covers ::getTint
+     * @covers ::setTint
+     */
+    public function testSetAndGetTint(): void
+    {
+        /* @var Color&MockObject $tint */
+        $tint = $this->createMock(Color::class);
+        $layer = new Layer();
+
+        $this->assertSame($layer, $layer->setTint($tint));
+        $this->assertSame($tint, $layer->getTint());
     }
 }

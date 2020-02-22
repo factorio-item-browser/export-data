@@ -21,16 +21,10 @@ class Icon
     protected $id = '';
 
     /**
-     * The original size of the icon.
+     * The size of the icon.
      * @var int
      */
     protected $size = 0;
-
-    /**
-     * The rendered size of the icon.
-     * @var int
-     */
-    protected $renderedSize = 0;
 
     /**
      * The layers of the icon.
@@ -59,7 +53,7 @@ class Icon
     }
 
     /**
-     * Sets the original size of the icon.
+     * Sets the size of the icon.
      * @param int $size
      * @return $this
      */
@@ -70,32 +64,12 @@ class Icon
     }
 
     /**
-     * Returns the original size of the icon.
+     * Returns the size of the icon.
      * @return int
      */
     public function getSize(): int
     {
         return $this->size;
-    }
-
-    /**
-     * Sets the rendered size of the icon.
-     * @param int $renderedSize
-     * @return $this
-     */
-    public function setRenderedSize(int $renderedSize): self
-    {
-        $this->renderedSize = $renderedSize;
-        return $this;
-    }
-
-    /**
-     * Returns the rendered size of the icon.
-     * @return int
-     */
-    public function getRenderedSize(): int
-    {
-        return $this->renderedSize;
     }
 
     /**

@@ -164,13 +164,11 @@ class CombinationTest extends SerializerTestCase
                 [
                     'id' => 'yza',
                     'size' => 0,
-                    'renderedSize' => 0,
                     'layers' => [],
                 ],
                 [
                     'id' => 'bcd',
                     'size' => 0,
-                    'renderedSize' => 0,
                     'layers' => [],
                 ],
             ],

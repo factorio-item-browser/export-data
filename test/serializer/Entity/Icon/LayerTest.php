@@ -25,9 +25,10 @@ class LayerTest extends SerializerTestCase
     {
         $layer = new Layer();
         $layer->setFileName('abc')
-              ->setOffsetX(42)
-              ->setOffsetY(21)
-              ->setScale(13.37);
+              ->setScale(13.37)
+              ->setSize(1337);
+        $layer->getOffset()->setX(42)
+                           ->setY(21);
         $layer->getTint()->setRed(12.34)
                          ->setGreen(23.45)
                          ->setBlue(34.56)
@@ -44,9 +45,12 @@ class LayerTest extends SerializerTestCase
     {
         return [
             'fileName' => 'abc',
-            'offsetX' => 42,
-            'offsetY' => 21,
+            'offset' => [
+                'x' => 42,
+                'y' => 21,
+            ],
             'scale' => 13.37,
+            'size' => 1337,
             'tint' => [
                 'red' => 12.34,
                 'green' => 23.45,
