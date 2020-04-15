@@ -10,7 +10,7 @@ use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\Machine;
 use FactorioItemBrowser\ExportData\Entity\Mod;
 use FactorioItemBrowser\ExportData\Entity\Recipe;
-use FactorioItemBrowserTestAsset\ExportData\SerializerTestCase;
+use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
 
 /**
  * The test of the serializing the combination class.

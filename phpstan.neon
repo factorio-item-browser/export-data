@@ -2,7 +2,6 @@ parameters:
   level: max
   paths:
     - src
-    - test/asset
     - test/serializer
     - test/src
   ignoreErrors:

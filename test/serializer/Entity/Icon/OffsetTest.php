@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FactorioItemBrowserTestSerializer\ExportData\Entity\Icon;
 
 use FactorioItemBrowser\ExportData\Entity\Icon\Offset;
-use FactorioItemBrowserTestAsset\ExportData\SerializerTestCase;
+use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
 
 /**
  * The test of the serializing the offset class.

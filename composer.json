@@ -38,13 +38,7 @@
   "autoload-dev": {
     "psr-4": {
       "FactorioItemBrowserTest\\ExportData\\": "test/src/",
-      "FactorioItemBrowserTestAsset\\ExportData\\": "test/asset/",
       "FactorioItemBrowserTestSerializer\\ExportData\\": "test/serializer/"
-    }
-  },
-  "extra": {
-    "zf": {
-      "config-provider": "FactorioItemBrowser\\ExportData\\ConfigProvider"
     }
   },
   "scripts": {

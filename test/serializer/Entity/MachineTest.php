@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FactorioItemBrowserTestSerializer\ExportData\Entity;
 
 use FactorioItemBrowser\ExportData\Entity\Machine;
-use FactorioItemBrowserTestAsset\ExportData\SerializerTestCase;
+use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
 
 /**
  * The test of the serializing the machine class.

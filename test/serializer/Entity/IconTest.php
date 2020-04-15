@@ -6,7 +6,7 @@ namespace FactorioItemBrowserTestSerializer\ExportData\Entity;
 
 use FactorioItemBrowser\ExportData\Entity\Icon;
 use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
-use FactorioItemBrowserTestAsset\ExportData\SerializerTestCase;
+use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
 
 /**
  * The test of the serializing the icon class.

@@ -7,7 +7,7 @@ namespace FactorioItemBrowserTestSerializer\ExportData\Entity;
 use FactorioItemBrowser\ExportData\Entity\Recipe;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
-use FactorioItemBrowserTestAsset\ExportData\SerializerTestCase;
+use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
 
 /**
  * The test of the serializing the recipe class.

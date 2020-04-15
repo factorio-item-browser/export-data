@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FactorioItemBrowserTestAsset\ExportData;
+namespace FactorioItemBrowserTestSerializer\ExportData;
 
 use FactorioItemBrowser\ExportData\Serializer\SerializerFactory;
 use Interop\Container\ContainerInterface;
