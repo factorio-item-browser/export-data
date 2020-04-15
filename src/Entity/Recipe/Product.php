@@ -4,18 +4,13 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity\Recipe;
 
-use BluePsyduck\Common\Data\DataBuilder;
-use BluePsyduck\Common\Data\DataContainer;
-use FactorioItemBrowser\ExportData\Entity\EntityInterface;
-use FactorioItemBrowser\ExportData\Utils\EntityUtils;
-
 /**
- * The class representing a product of a recipe.
+ * The entity representing a product of a recipe.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Product implements EntityInterface
+class Product
 {
     /**
      * The type of the product.
@@ -48,17 +43,11 @@ class Product implements EntityInterface
     protected $probability = 1.;
 
     /**
-     * The order of the product in the recipe.
-     * @var int
-     */
-    protected $order = 0;
-
-    /**
      * Sets the type of the product.
      * @param string $type
      * @return $this Implementing fluent interface.
      */
-    public function setType(string $type)
+    public function setType(string $type): self
     {
         $this->type = $type;
         return $this;
@@ -78,7 +67,7 @@ class Product implements EntityInterface
      * @param string $name
      * @return $this Implementing fluent interface.
      */
-    public function setName(string $name)
+    public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
@@ -98,7 +87,7 @@ class Product implements EntityInterface
      * @param float $amountMin
      * @return $this Implementing fluent interface.
      */
-    public function setAmountMin(float $amountMin)
+    public function setAmountMin(float $amountMin): self
     {
         $this->amountMin = $amountMin;
         return $this;
@@ -118,7 +107,7 @@ class Product implements EntityInterface
      * @param float $amountMax
      * @return $this Implementing fluent interface.
      */
-    public function setAmountMax(float $amountMax)
+    public function setAmountMax(float $amountMax): self
     {
         $this->amountMax = $amountMax;
         return $this;
@@ -138,7 +127,7 @@ class Product implements EntityInterface
      * @param float $probability
      * @return $this Implementing fluent interface.
      */
-    public function setProbability(float $probability)
+    public function setProbability(float $probability): self
     {
         $this->probability = $probability;
         return $this;
@@ -151,73 +140,5 @@ class Product implements EntityInterface
     public function getProbability(): float
     {
         return $this->probability;
-    }
-
-    /**
-     * Sets the order of the product in the recipe.
-     * @param int $order
-     * @return $this Implementing fluent interface.
-     */
-    public function setOrder(int $order)
-    {
-        $this->order = $order;
-        return $this;
-    }
-
-    /**
-     * Returns the order of the product in the recipe.
-     * @return int
-     */
-    public function getOrder(): int
-    {
-        return $this->order;
-    }
-
-    /**
-     * Writes the entity data to an array.
-     * @return array
-     */
-    public function writeData(): array
-    {
-        $dataBuilder = new DataBuilder();
-        $dataBuilder->setString('t', $this->type, '')
-                    ->setString('n', $this->name, '')
-                    ->setFloat('i', $this->amountMin, 1.)
-                    ->setFloat('a', $this->amountMax, 1.)
-                    ->setFloat('p', $this->probability, 1.)
-                    ->setInteger('o', $this->order, 0);
-        return $dataBuilder->getData();
-    }
-
-    /**
-     * Reads the entity data.
-     * @param DataContainer $data
-     * @return $this
-     */
-    public function readData(DataContainer $data)
-    {
-        $this->type = $data->getString('t', '');
-        $this->name = $data->getString('n', '');
-        $this->amountMin = $data->getFloat('i', 1.);
-        $this->amountMax = $data->getFloat('a', 1.);
-        $this->probability = $data->getFloat('p', 1.);
-        $this->order = $data->getInteger('o', 0);
-        return $this;
-    }
-
-        /**
-     * Calculates a hash value representing the entity.
-     * @return string
-     */
-    public function calculateHash(): string
-    {
-        return EntityUtils::calculateHashOfArray([
-            $this->type,
-            $this->name,
-            $this->amountMin,
-            $this->amountMax,
-            $this->probability,
-            $this->order,
-        ]);
     }
 }

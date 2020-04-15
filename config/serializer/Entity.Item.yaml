@@ -1,0 +1,14 @@
+FactorioItemBrowser\ExportData\Entity\Item:
+  access_type: public_method
+  exclusion_policy: all
+  properties:
+    type:
+      type: string
+    name:
+      type: string
+    labels:
+      type: FactorioItemBrowser\ExportData\Entity\LocalisedString
+    descriptions:
+      type: FactorioItemBrowser\ExportData\Entity\LocalisedString
+    iconId:
+      type: string

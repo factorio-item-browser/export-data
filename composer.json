@@ -12,18 +12,23 @@
     }
   ],
   "require": {
-    "php": "^7.2",
+    "php": "^7.3",
     "ext-json": "*",
-    "bluepsyduck/common": "^1.0"
+    "ext-zip": "*",
+    "bluepsyduck/laminas-autowire-factory": "^1.0",
+    "jms/serializer": "^3.2",
+    "laminas/laminas-servicemanager": "^3.0",
+    "symfony/yaml": "^4.0 | ^5.0"
   },
   "require-dev": {
-    "mikey179/vfsStream": "^1.6",
-    "phpstan/phpstan": "^0.10",
-    "phpstan/phpstan-phpunit": "^0.10",
-    "phpstan/phpstan-strict-rules": "^0.10",
-    "phpunit/phpunit": "^7.1",
-    "rregeer/phpunit-coverage-check": "^0.1",
-    "squizlabs/php_codesniffer": "^3.3"
+    "bluepsyduck/test-helper": "^1.0",
+    "mikey179/vfsstream": "^1.6",
+    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan-phpunit": "^0.12",
+    "phpstan/phpstan-strict-rules": "^0.12",
+    "phpunit/phpunit": "^8.3",
+    "rregeer/phpunit-coverage-check": "^0.3",
+    "squizlabs/php_codesniffer": "^3.4"
   },
   "autoload": {
     "psr-4": {
@@ -32,17 +37,20 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "FactorioItemBrowserTest\\ExportData\\": "test/src/"
+      "FactorioItemBrowserTest\\ExportData\\": "test/src/",
+      "FactorioItemBrowserTestSerializer\\ExportData\\": "test/serializer/"
     }
   },
   "scripts": {
-    "coverage-check": "coverage-check test/log/clover.xml 100",
+    "coverage-check": "coverage-check test/coverage/clover.xml 100",
     "phpcbf": "phpcbf -p --colors",
     "phpcs": "phpcs -p --colors",
     "phpstan": "phpstan analyse --no-interaction --ansi",
-    "phpunit": "phpunit --colors=always --coverage-html=test/log --coverage-clover=test/log/clover.xml",
+    "test-unit": "phpunit --testsuite unit-test --colors=always --coverage-html=test/coverage --coverage-clover=test/coverage/clover.xml",
+    "test-serializer": "phpunit --testsuite serializer-test --colors=always",
     "test": [
-      "@phpunit",
+      "@test-unit",
+      "@test-serializer",
       "@coverage-check",
       "@phpcs",
       "@phpstan"

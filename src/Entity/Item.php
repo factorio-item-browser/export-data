@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
-use BluePsyduck\Common\Data\DataBuilder;
-use BluePsyduck\Common\Data\DataContainer;
-use FactorioItemBrowser\ExportData\Utils\EntityUtils;
-
 /**
  * The class representing an item from the export.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Item implements EntityInterface, EntityWithIdentifierInterface
+class Item
 {
     /**
      * The type of the item.
@@ -41,28 +37,10 @@ class Item implements EntityInterface, EntityWithIdentifierInterface
     protected $descriptions;
 
     /**
-     * Whether the item is providing the localisation of a recipe with the same name.
-     * @var bool
-     */
-    protected $providesRecipeLocalisation = false;
-
-    /**
-     * Whether the item is providing the localisation of a machine with the same name.
-     * @var bool
-     */
-    protected $providesMachineLocalisation = false;
-
-    /**
-     * The icon hash of the item.
+     * The icon id of the item.
      * @var string
      */
-    protected $iconHash = '';
-
-    /**
-     * Whether the item is newly introduced in the combination or was already there before.
-     * @var bool
-     */
-    protected $isNew = true;
+    protected $iconId = '';
 
     /**
      * Initializes the entity.
@@ -74,20 +52,11 @@ class Item implements EntityInterface, EntityWithIdentifierInterface
     }
 
     /**
-     * Clones the entity.
-     */
-    public function __clone()
-    {
-        $this->labels = clone($this->labels);
-        $this->descriptions = clone($this->descriptions);
-    }
-
-    /**
      * Sets the type of the item.
      * @param string $type
      * @return $this Implementing fluent interface.
      */
-    public function setType(string $type)
+    public function setType(string $type): self
     {
         $this->type = $type;
         return $this;
@@ -107,7 +76,7 @@ class Item implements EntityInterface, EntityWithIdentifierInterface
      * @param string $name
      * @return $this Implementing fluent interface.
      */
-    public function setName(string $name)
+    public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
@@ -127,7 +96,7 @@ class Item implements EntityInterface, EntityWithIdentifierInterface
      * @param LocalisedString $labels
      * @return $this Implementing fluent interface.
      */
-    public function setLabels(LocalisedString $labels)
+    public function setLabels(LocalisedString $labels): self
     {
         $this->labels = $labels;
         return $this;
@@ -147,7 +116,7 @@ class Item implements EntityInterface, EntityWithIdentifierInterface
      * @param LocalisedString $descriptions
      * @return $this Implementing fluent interface.
      */
-    public function setDescriptions(LocalisedString $descriptions)
+    public function setDescriptions(LocalisedString $descriptions): self
     {
         $this->descriptions = $descriptions;
         return $this;
@@ -163,145 +132,22 @@ class Item implements EntityInterface, EntityWithIdentifierInterface
     }
 
     /**
-     * Sets whether the item is providing the localisation of a recipe with the same name.
-     * @param bool $providesRecipeLocalisation
+     * Sets the icon id of the item.
+     * @param string $iconId
      * @return $this Implementing fluent interface.
      */
-    public function setProvidesRecipeLocalisation(bool $providesRecipeLocalisation)
+    public function setIconId(string $iconId): self
     {
-        $this->providesRecipeLocalisation = $providesRecipeLocalisation;
+        $this->iconId = $iconId;
         return $this;
     }
 
     /**
-     * Returns whether the item is providing the localisation of a recipe with the same name.
-     * @return bool
-     */
-    public function getProvidesRecipeLocalisation(): bool
-    {
-        return $this->providesRecipeLocalisation;
-    }
-
-    /**
-     * Sets whether the item is providing the localisation of a machine with the same name.
-     * @param bool $providesMachineLocalisation
-     * @return $this Implementing fluent interface.
-     */
-    public function setProvidesMachineLocalisation(bool $providesMachineLocalisation)
-    {
-        $this->providesMachineLocalisation = $providesMachineLocalisation;
-        return $this;
-    }
-
-    /**
-     * Returns whether the item is providing the localisation of a machine with the same name.
-     * @return bool
-     */
-    public function getProvidesMachineLocalisation(): bool
-    {
-        return $this->providesMachineLocalisation;
-    }
-
-    /**
-     * Sets the icon hash of the item.
-     * @param string $iconHash
-     * @return $this Implementing fluent interface.
-     */
-    public function setIconHash(string $iconHash)
-    {
-        $this->iconHash = $iconHash;
-        return $this;
-    }
-
-    /**
-     * Returns the icon hash of the item.
+     * Returns the icon id of the item.
      * @return string
      */
-    public function getIconHash(): string
+    public function getIconId(): string
     {
-        return $this->iconHash;
-    }
-
-    /**
-     * Sets whether the item is newly introduced in the combination or was already there before.
-     * @param bool $isNew
-     * @return $this
-     */
-    public function setIsNew(bool $isNew)
-    {
-        $this->isNew = $isNew;
-        return $this;
-    }
-
-    /**
-     * Returns whether the item is newly introduced in the combination or was already there before.
-     * @return bool
-     */
-    public function getIsNew(): bool
-    {
-        return $this->isNew;
-    }
-
-    /**
-     * Writes the entity data to an array.
-     * @return array
-     */
-    public function writeData(): array
-    {
-        $dataBuilder = new DataBuilder();
-        $dataBuilder->setString('t', $this->type, '')
-                    ->setString('n', $this->name, '')
-                    ->setArray('l', $this->labels->writeData(), null, [])
-                    ->setArray('d', $this->descriptions->writeData(), null, [])
-                    ->setInteger('r', $this->providesRecipeLocalisation ? 1 : 0, 0)
-                    ->setInteger('m', $this->providesMachineLocalisation ? 1 : 0, 0)
-                    ->setString('i', $this->iconHash, '')
-                    ->setInteger('e', $this->isNew ? 1 : 0, 1);
-        return $dataBuilder->getData();
-    }
-
-    /**
-     * Reads the entity data.
-     * @param DataContainer $data
-     * @return $this
-     */
-    public function readData(DataContainer $data)
-    {
-        $this->type = $data->getString('t', '');
-        $this->name = $data->getString('n', '');
-        $this->labels->readData($data->getObject('l'));
-        $this->descriptions->readData($data->getObject('d'));
-        $this->providesRecipeLocalisation = $data->getInteger('r', 0) === 1;
-        $this->providesMachineLocalisation = $data->getInteger('m', 0) === 1;
-        $this->iconHash = $data->getString('i');
-        $this->isNew = $data->getInteger('e', 1) === 1;
-        return $this;
-    }
-
-    /**
-     * Calculates a hash value representing the entity.
-     * @return string
-     */
-    public function calculateHash(): string
-    {
-        return EntityUtils::calculateHashOfArray([
-            $this->type,
-            $this->name,
-            $this->labels->calculateHash(),
-            $this->descriptions->calculateHash(),
-            $this->providesRecipeLocalisation,
-            $this->providesMachineLocalisation,
-            $this->iconHash,
-            $this->isNew,
-        ]);
-    }
-
-    /**
-     * Returns the identifier of the entity.
-     * @return string
-     */
-    public function getIdentifier(): string
-    {
-        return EntityUtils::buildIdentifier([$this->type, $this->name]);
+        return $this->iconId;
     }
 }

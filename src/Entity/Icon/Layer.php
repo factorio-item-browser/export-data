@@ -4,18 +4,13 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity\Icon;
 
-use BluePsyduck\Common\Data\DataBuilder;
-use BluePsyduck\Common\Data\DataContainer;
-use FactorioItemBrowser\ExportData\Entity\EntityInterface;
-use FactorioItemBrowser\ExportData\Utils\EntityUtils;
-
 /**
  * The entity representing one layer of an icon.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Layer implements EntityInterface
+class Layer
 {
     /**
      * The file name of the icon layer.
@@ -24,22 +19,10 @@ class Layer implements EntityInterface
     protected $fileName = '';
 
     /**
-     * The tint color of the layer.
-     * @var Color
+     * The offset of the layer.
+     * @var Offset
      */
-    protected $tintColor;
-
-    /**
-     * The x offset of the layer.
-     * @var int
-     */
-    protected $offsetX = 0;
-
-    /**
-     * The y offset of the layer.
-     * @var int
-     */
-    protected $offsetY = 0;
+    protected $offset;
 
     /**
      * The scale of the layer.
@@ -48,27 +31,32 @@ class Layer implements EntityInterface
     protected $scale = 1.;
 
     /**
+     * The size of the layer.
+     * @var int
+     */
+    protected $size = 0;
+
+    /**
+     * The tint of the layer.
+     * @var Color
+     */
+    protected $tint;
+
+    /**
      * Initializes the entity.
      */
     public function __construct()
     {
-        $this->tintColor = new Color();
-    }
-
-    /**
-     * Clones the entity.
-     */
-    public function __clone()
-    {
-        $this->tintColor = clone($this->tintColor);
+        $this->tint = new Color();
+        $this->offset = new Offset();
     }
 
     /**
      * Sets the file name of the icon layer.
      * @param string $fileName
-     * @return $this Implementing fluent interface.
+     * @return $this
      */
-    public function setFileName(string $fileName)
+    public function setFileName(string $fileName): self
     {
         $this->fileName = $fileName;
         return $this;
@@ -84,71 +72,31 @@ class Layer implements EntityInterface
     }
 
     /**
-     * Sets the tint color of the layer.
-     * @param Color $tintColor
-     * @return $this Implementing fluent interface.
+     * Sets the offset of the layer.
+     * @param Offset $offset
+     * @return $this
      */
-    public function setTintColor(Color $tintColor)
+    public function setOffset(Offset $offset): self
     {
-        $this->tintColor = $tintColor;
+        $this->offset = $offset;
         return $this;
     }
 
     /**
-     * Returns the tint color of the layer.
-     * @return Color
+     * Returns the offset of the layer.
+     * @return Offset
      */
-    public function getTintColor(): Color
+    public function getOffset(): Offset
     {
-        return $this->tintColor;
-    }
-
-    /**
-     * Sets the x offset of the layer.
-     * @param int $offsetX
-     * @return $this Implementing fluent interface.
-     */
-    public function setOffsetX(int $offsetX)
-    {
-        $this->offsetX = $offsetX;
-        return $this;
-    }
-
-    /**
-     * Returns the x offset of the layer.
-     * @return int
-     */
-    public function getOffsetX(): int
-    {
-        return $this->offsetX;
-    }
-
-    /**
-     * Sets the y offset of the layer.
-     * @param int $offsetY
-     * @return $this Implementing fluent interface.
-     */
-    public function setOffsetY(int $offsetY)
-    {
-        $this->offsetY = $offsetY;
-        return $this;
-    }
-
-    /**
-     * Returns the y offset of the layer.
-     * @return int
-     */
-    public function getOffsetY(): int
-    {
-        return $this->offsetY;
+        return $this->offset;
     }
 
     /**
      * Sets the scale of the layer.
      * @param float $scale
-     * @return $this Implementing fluent interface.
+     * @return $this
      */
-    public function setScale(float $scale)
+    public function setScale(float $scale): self
     {
         $this->scale = $scale;
         return $this;
@@ -164,47 +112,42 @@ class Layer implements EntityInterface
     }
 
     /**
-     * Writes the entity data to an array.
-     * @return array
-     */
-    public function writeData(): array
-    {
-        $dataBuilder = new DataBuilder();
-        $dataBuilder->setString('f', $this->getFileName(), '')
-                    ->setArray('c', $this->tintColor->writeData(), null, [])
-                    ->setInteger('x', $this->getOffsetX(), 0)
-                    ->setInteger('y', $this->getOffsetY(), 0)
-                    ->setFloat('s', $this->getScale(), 1.);
-        return $dataBuilder->getData();
-    }
-
-    /**
-     * Reads the entity data.
-     * @param DataContainer $data
+     * Sets the size of the layer.
+     * @param int $size
      * @return $this
      */
-    public function readData(DataContainer $data)
+    public function setSize(int $size): self
     {
-        $this->fileName = $data->getString('f', '');
-        $this->tintColor->readData($data->getObject('c'));
-        $this->offsetX = $data->getInteger('x', 0);
-        $this->offsetY = $data->getInteger('y', 0);
-        $this->scale = $data->getFloat('s', 1.);
+        $this->size = $size;
         return $this;
     }
 
     /**
-     * Calculates a hash value representing the entity.
-     * @return string
+     * Returns the size of the layer.
+     * @return int
      */
-    public function calculateHash(): string
+    public function getSize(): int
     {
-        return EntityUtils::calculateHashOfArray([
-            $this->fileName,
-            $this->tintColor->calculateHash(),
-            $this->offsetX,
-            $this->offsetY,
-            $this->scale,
-        ]);
+        return $this->size;
+    }
+
+    /**
+     * Sets the tint of the layer.
+     * @param Color $tint
+     * @return $this
+     */
+    public function setTint(Color $tint): self
+    {
+        $this->tint = $tint;
+        return $this;
+    }
+
+    /**
+     * Returns the tint of the layer.
+     * @return Color
+     */
+    public function getTint(): Color
+    {
+        return $this->tint;
     }
 }

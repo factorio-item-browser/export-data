@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTest\ExportData\Entity;
 
-use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon;
 use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
-use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -28,64 +26,40 @@ class IconTest extends TestCase
     public function testConstruct(): void
     {
         $icon = new Icon();
-        $this->assertSame(Icon::DEFAULT_SIZE, $icon->getSize());
-        $this->assertSame(Icon::DEFAULT_SIZE, $icon->getRenderedSize());
+
+        $this->assertSame('', $icon->getId());
+        $this->assertSame(0, $icon->getSize());
         $this->assertSame([], $icon->getLayers());
     }
 
     /**
-     * Tests the cloning.
-     * @covers ::__clone
+     * Tests the setting and getting the id.
+     * @covers ::getId
+     * @covers ::setId
      */
-    public function testClone(): void
+    public function testSetAndGetId(): void
     {
-        $layer = new Layer();
-        $layer->setFileName('foo');
-
+        $id = 'abc';
         $icon = new Icon();
-        $icon->setSize(64)
-             ->setRenderedSize(128)
-             ->addLayer($layer);
 
-        $clonedIcon = clone($icon);
-        $icon->setSize(46)
-             ->setRenderedSize(821);
-        $layer->setFileName('oof');
-
-        $this->assertSame(64, $clonedIcon->getSize());
-        $this->assertSame(128, $clonedIcon->getRenderedSize());
-
-        $layers = $clonedIcon->getLayers();
-        $this->assertCount(1, $layers);
-        $this->assertSame('foo', $layers[0]->getFileName());
+        $this->assertSame($icon, $icon->setId($id));
+        $this->assertSame($id, $icon->getId());
     }
 
     /**
-     * Tests setting and getting the size.
-     * @covers ::setSize
+     * Tests the setting and getting the size.
      * @covers ::getSize
+     * @covers ::setSize
      */
     public function testSetAndGetSize(): void
     {
-        $icon = new Icon();
-        $this->assertSame($icon, $icon->setSize(64));
-        $this->assertSame(64, $icon->getSize());
-    }
-
-    /**
-     * Tests the setting and getting the rendered size.
-     * @covers ::getRenderedSize
-     * @covers ::setRenderedSize
-     */
-    public function testSetAndGetRenderedSize(): void
-    {
-        $renderedSize = 64;
+        $size = 42;
         $icon = new Icon();
 
-        $this->assertSame($icon, $icon->setRenderedSize($renderedSize));
-        $this->assertSame($renderedSize, $icon->getRenderedSize());
+        $this->assertSame($icon, $icon->setSize($size));
+        $this->assertSame($size, $icon->getSize());
     }
-    
+
     /**
      * Tests setting, adding and getting the layers.
      * @covers ::setLayers
@@ -94,12 +68,12 @@ class IconTest extends TestCase
      */
     public function testSetAddAndGetLayers(): void
     {
-        $layer1 = new Layer();
-        $layer1->setFileName('abc');
-        $layer2 = new Layer();
-        $layer2->setFileName('def');
-        $layer3 = new Layer();
-        $layer3->setFileName('ghi');
+        /* @var Layer&MockObject $layer1 */
+        $layer1 = $this->createMock(Layer::class);
+        /* @var Layer&MockObject $layer2 */
+        $layer2 = $this->createMock(Layer::class);
+        /* @var Layer&MockObject $layer3 */
+        $layer3 = $this->createMock(Layer::class);
 
         $icon = new Icon();
         $this->assertSame($icon, $icon->setLayers([$layer1, $layer2]));
@@ -107,93 +81,5 @@ class IconTest extends TestCase
 
         $this->assertSame($icon, $icon->addLayer($layer3));
         $this->assertSame([$layer1, $layer2, $layer3], $icon->getLayers());
-    }
-
-    /**
-     * Provides the data for the writeAndReadData test.
-     * @return array
-     */
-    public function provideTestWriteAndReadData(): array
-    {
-        $layer1 = new Layer();
-        $layer1->setFileName('abc');
-        $layer2 = new Layer();
-        $layer2->setFileName('def');
-
-        $icon = new Icon();
-        $icon->setSize(32)
-             ->setRenderedSize(128)
-             ->addLayer($layer1)
-             ->addLayer($layer2);
-
-        $data = [
-            's' => 32,
-            'r' => 128,
-            'l' => [
-                ['f' => 'abc'],
-                ['f' => 'def'],
-            ]
-        ];
-
-        return [
-            [$icon, $data],
-            [new Icon(), []]
-        ];
-    }
-
-    /**
-     * Tests the writing and reading of the data.
-     * @param Icon $icon
-     * @param array $expectedData
-     * @covers ::writeData
-     * @covers ::readData
-     * @dataProvider provideTestWriteAndReadData
-     */
-    public function testWriteAndReadData(Icon $icon, array $expectedData): void
-    {
-        $data = $icon->writeData();
-        $this->assertEquals($expectedData, $data);
-
-        $newIcon = new Icon();
-        $this->assertSame($newIcon, $newIcon->readData(new DataContainer($data)));
-        $this->assertEquals($newIcon, $icon);
-    }
-
-    /**
-     * Tests the calculateHash method.
-     * @covers ::calculateHash
-     */
-    public function testCalculateHash(): void
-    {
-        /* @var Layer|MockObject $layer1 */
-        $layer1 = $this->getMockBuilder(Layer::class)
-                       ->setMethods(['calculateHash'])
-                       ->getMock();
-        $layer1->expects($this->once())
-               ->method('calculateHash')
-               ->willReturn('abc');
-
-        /* @var Layer|MockObject $layer2 */
-        $layer2 = $this->getMockBuilder(Layer::class)
-                       ->setMethods(['calculateHash'])
-                       ->getMock();
-        $layer2->expects($this->once())
-               ->method('calculateHash')
-               ->willReturn('def');
-
-        $icon = new Icon();
-        $icon->setSize(32)
-             ->setRenderedSize(128)
-             ->addLayer($layer1)
-             ->addLayer($layer2);
-
-        $expectedResult = EntityUtils::calculateHashOfArray([
-            32,
-            128,
-            ['abc', 'def'],
-        ]);
-
-        $result = $icon->calculateHash();
-        $this->assertSame($expectedResult, $result);
     }
 }

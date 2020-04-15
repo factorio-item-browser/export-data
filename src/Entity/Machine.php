@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
-use BluePsyduck\Common\Data\DataBuilder;
-use BluePsyduck\Common\Data\DataContainer;
-use FactorioItemBrowser\ExportData\Utils\EntityUtils;
-
 /**
  * The class representing a (crafting) machine from the export.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Machine implements EntityInterface, EntityWithIdentifierInterface
+class Machine
 {
     /**
      * The name of the machine.
@@ -83,10 +79,10 @@ class Machine implements EntityInterface, EntityWithIdentifierInterface
     protected $energyUsageUnit = 'W';
 
     /**
-     * The icon hash of the machine.
+     * The icon id of the machine.
      * @var string
      */
-    protected $iconHash = '';
+    protected $iconId = '';
 
     /**
      * Initializes the entity.
@@ -98,20 +94,11 @@ class Machine implements EntityInterface, EntityWithIdentifierInterface
     }
 
     /**
-     * Clones the entity.
-     */
-    public function __clone()
-    {
-        $this->labels = clone($this->labels);
-        $this->descriptions = clone($this->descriptions);
-    }
-
-    /**
      * Sets the name of the machine.
      * @param string $name
      * @return $this Implementing fluent interface.
      */
-    public function setName(string $name)
+    public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
@@ -131,7 +118,7 @@ class Machine implements EntityInterface, EntityWithIdentifierInterface
      * @param LocalisedString $labels
      * @return $this Implementing fluent interface.
      */
-    public function setLabels(LocalisedString $labels)
+    public function setLabels(LocalisedString $labels): self
     {
         $this->labels = $labels;
         return $this;
@@ -151,7 +138,7 @@ class Machine implements EntityInterface, EntityWithIdentifierInterface
      * @param LocalisedString $descriptions
      * @return $this Implementing fluent interface.
      */
-    public function setDescriptions(LocalisedString $descriptions)
+    public function setDescriptions(LocalisedString $descriptions): self
     {
         $this->descriptions = $descriptions;
         return $this;
@@ -171,7 +158,7 @@ class Machine implements EntityInterface, EntityWithIdentifierInterface
      * @param array|string[] $craftingCategories
      * @return $this
      */
-    public function setCraftingCategories(array $craftingCategories)
+    public function setCraftingCategories(array $craftingCategories): self
     {
         $this->craftingCategories = $craftingCategories;
         return $this;
@@ -182,7 +169,7 @@ class Machine implements EntityInterface, EntityWithIdentifierInterface
      * @param string $craftingCategory
      * @return $this
      */
-    public function addCraftingCategory(string $craftingCategory)
+    public function addCraftingCategory(string $craftingCategory): self
     {
         $this->craftingCategories[] = $craftingCategory;
         return $this;
@@ -202,7 +189,7 @@ class Machine implements EntityInterface, EntityWithIdentifierInterface
      * @param float $craftingSpeed
      * @return $this
      */
-    public function setCraftingSpeed(float $craftingSpeed)
+    public function setCraftingSpeed(float $craftingSpeed): self
     {
         $this->craftingSpeed = $craftingSpeed;
         return $this;
@@ -222,7 +209,7 @@ class Machine implements EntityInterface, EntityWithIdentifierInterface
      * @param int $numberOfItemSlots
      * @return $this
      */
-    public function setNumberOfItemSlots(int $numberOfItemSlots)
+    public function setNumberOfItemSlots(int $numberOfItemSlots): self
     {
         $this->numberOfItemSlots = $numberOfItemSlots;
         return $this;
@@ -242,7 +229,7 @@ class Machine implements EntityInterface, EntityWithIdentifierInterface
      * @param int $numberOfFluidInputSlots
      * @return $this
      */
-    public function setNumberOfFluidInputSlots(int $numberOfFluidInputSlots)
+    public function setNumberOfFluidInputSlots(int $numberOfFluidInputSlots): self
     {
         $this->numberOfFluidInputSlots = $numberOfFluidInputSlots;
         return $this;
@@ -262,7 +249,7 @@ class Machine implements EntityInterface, EntityWithIdentifierInterface
      * @param int $numberOfFluidOutputSlots
      * @return $this
      */
-    public function setNumberOfFluidOutputSlots(int $numberOfFluidOutputSlots)
+    public function setNumberOfFluidOutputSlots(int $numberOfFluidOutputSlots): self
     {
         $this->numberOfFluidOutputSlots = $numberOfFluidOutputSlots;
         return $this;
@@ -282,7 +269,7 @@ class Machine implements EntityInterface, EntityWithIdentifierInterface
      * @param int $numberOfModuleSlots
      * @return $this
      */
-    public function setNumberOfModuleSlots(int $numberOfModuleSlots)
+    public function setNumberOfModuleSlots(int $numberOfModuleSlots): self
     {
         $this->numberOfModuleSlots = $numberOfModuleSlots;
         return $this;
@@ -302,7 +289,7 @@ class Machine implements EntityInterface, EntityWithIdentifierInterface
      * @param float $energyUsage
      * @return $this
      */
-    public function setEnergyUsage(float $energyUsage)
+    public function setEnergyUsage(float $energyUsage): self
     {
         $this->energyUsage = $energyUsage;
         return $this;
@@ -322,7 +309,7 @@ class Machine implements EntityInterface, EntityWithIdentifierInterface
      * @param string $energyUsageUnit
      * @return $this
      */
-    public function setEnergyUsageUnit(string $energyUsageUnit)
+    public function setEnergyUsageUnit(string $energyUsageUnit): self
     {
         $this->energyUsageUnit = $energyUsageUnit;
         return $this;
@@ -338,97 +325,22 @@ class Machine implements EntityInterface, EntityWithIdentifierInterface
     }
 
     /**
-     * Sets the icon hash of the machine.
-     * @param string $iconHash
+     * Sets the icon id of the machine.
+     * @param string $iconId
      * @return $this
      */
-    public function setIconHash(string $iconHash)
+    public function setIconId(string $iconId): self
     {
-        $this->iconHash = $iconHash;
+        $this->iconId = $iconId;
         return $this;
     }
 
     /**
-     * Returns the icon hash of the machine.
+     * Returns the icon id of the machine.
      * @return string
      */
-    public function getIconHash(): string
+    public function getIconId(): string
     {
-        return $this->iconHash;
-    }
-
-    /**
-     * Writes the entity data to an array.
-     * @return array
-     */
-    public function writeData(): array
-    {
-        $dataBuilder = new DataBuilder();
-        $dataBuilder->setString('n', $this->name, '')
-                    ->setArray('l', $this->labels->writeData(), null, [])
-                    ->setArray('d', $this->descriptions->writeData(), null, [])
-                    ->setArray('c', array_values(array_unique($this->craftingCategories)), 'strval', [])
-                    ->setFloat('s', $this->craftingSpeed, 1.)
-                    ->setInteger('i', $this->numberOfItemSlots, 0)
-                    ->setInteger('f', $this->numberOfFluidInputSlots, 0)
-                    ->setInteger('u', $this->numberOfFluidOutputSlots, 0)
-                    ->setInteger('m', $this->numberOfModuleSlots, 0)
-                    ->setFloat('e', $this->energyUsage, 0.)
-                    ->setString('r', $this->energyUsageUnit, 'W')
-                    ->setString('o', $this->iconHash, '');
-        return $dataBuilder->getData();
-    }
-
-    /**
-     * Reads the entity data.
-     * @param DataContainer $data
-     * @return $this
-     */
-    public function readData(DataContainer $data)
-    {
-        $this->name = $data->getString('n', '');
-        $this->labels->readData($data->getObject('l'));
-        $this->descriptions->readData($data->getObject('d'));
-        $this->craftingCategories = array_map('strval', $data->getArray('c'));
-        $this->craftingSpeed = $data->getFloat('s', 1.);
-        $this->numberOfItemSlots = $data->getInteger('i', 0);
-        $this->numberOfFluidInputSlots = $data->getInteger('f', 0);
-        $this->numberOfFluidOutputSlots = $data->getInteger('u', 0);
-        $this->numberOfModuleSlots = $data->getInteger('m', 0);
-        $this->energyUsage = $data->getFloat('e', 0.);
-        $this->energyUsageUnit = $data->getString('r', 'W');
-        $this->iconHash = $data->getString('o');
-        return $this;
-    }
-
-    /**
-     * Calculates a hash value representing the entity.
-     * @return string
-     */
-    public function calculateHash(): string
-    {
-        return EntityUtils::calculateHashOfArray([
-            $this->name,
-            $this->labels->calculateHash(),
-            $this->descriptions->calculateHash(),
-            $this->craftingCategories,
-            $this->craftingSpeed,
-            $this->numberOfItemSlots,
-            $this->numberOfFluidInputSlots,
-            $this->numberOfFluidOutputSlots,
-            $this->numberOfModuleSlots,
-            $this->energyUsage,
-            $this->energyUsageUnit,
-            $this->iconHash,
-        ]);
-    }
-
-    /**
-     * Returns the identifier of the entity.
-     * @return string
-     */
-    public function getIdentifier(): string
-    {
-        return EntityUtils::buildIdentifier([$this->name]);
+        return $this->iconId;
     }
 }

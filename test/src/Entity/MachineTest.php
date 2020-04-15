@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTest\ExportData\Entity;
 
-use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\LocalisedString;
 use FactorioItemBrowser\ExportData\Entity\Machine;
-use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -29,73 +27,31 @@ class MachineTest extends TestCase
         $machine = new Machine();
 
         $this->assertSame('', $machine->getName());
-        $this->assertEquals(new LocalisedString(), $machine->getLabels());
-        $this->assertEquals(new LocalisedString(), $machine->getDescriptions());
         $this->assertSame([], $machine->getCraftingCategories());
         $this->assertSame(1., $machine->getCraftingSpeed());
         $this->assertSame(0, $machine->getNumberOfItemSlots());
         $this->assertSame(0, $machine->getNumberOfModuleSlots());
         $this->assertSame(0., $machine->getEnergyUsage());
         $this->assertSame('W', $machine->getEnergyUsageUnit());
-        $this->assertSame('', $machine->getIconHash());
+        $this->assertSame('', $machine->getIconId());
+
+        // Asserted through type-hints
+        $machine->getLabels();
+        $machine->getDescriptions();
     }
 
     /**
-     * Tests the cloning.
-     * @covers ::__clone
-     */
-    public function testClone(): void
-    {
-        $machine = new Machine();
-        $machine->setName('abc')
-                ->setCraftingCategories(['def', 'ghi'])
-                ->setCraftingSpeed(13.37)
-                ->setNumberOfItemSlots(42)
-                ->setNumberOfFluidInputSlots(21)
-                ->setNumberOfFluidOutputSlots(13)
-                ->setNumberOfModuleSlots(37)
-                ->setEnergyUsage(73.31)
-                ->setEnergyUsageUnit('jkl')
-                ->setIconHash('mno');
-        $machine->getLabels()->setTranslation('en', 'pqr');
-        $machine->getDescriptions()->setTranslation('en', 'stu');
-
-        $clonedMachine = clone($machine);
-        $machine->setName('cba')
-                ->setCraftingCategories(['fed', 'ihg'])
-                ->setCraftingSpeed(73.31)
-                ->setNumberOfItemSlots(24)
-                ->setNumberOfModuleSlots(12)
-                ->setEnergyUsage(13.37)
-                ->setEnergyUsageUnit('lkj')
-                ->setIconHash('onm');
-        $machine->getLabels()->setTranslation('en', 'rqp');
-        $machine->getDescriptions()->setTranslation('en', 'uts');
-
-        $this->assertSame('abc', $clonedMachine->getName());
-        $this->assertSame(['def', 'ghi'], $clonedMachine->getCraftingCategories());
-        $this->assertSame(13.37, $clonedMachine->getCraftingSpeed());
-        $this->assertSame(42, $clonedMachine->getNumberOfItemSlots());
-        $this->assertSame(21, $clonedMachine->getNumberOfFluidInputSlots());
-        $this->assertSame(13, $clonedMachine->getNumberOfFluidOutputSlots());
-        $this->assertSame(37, $clonedMachine->getNumberOfModuleSlots());
-        $this->assertSame(73.31, $clonedMachine->getEnergyUsage());
-        $this->assertSame('jkl', $clonedMachine->getEnergyUsageUnit());
-        $this->assertSame('mno', $clonedMachine->getIconHash());
-        $this->assertSame('pqr', $clonedMachine->getLabels()->getTranslation('en'));
-        $this->assertSame('stu', $clonedMachine->getDescriptions()->getTranslation('en'));
-    }
-
-    /**
-     * Tests setting and getting the name.
-     * @covers ::setName
+     * Tests the setting and getting the name.
      * @covers ::getName
+     * @covers ::setName
      */
     public function testSetAndGetName(): void
     {
+        $name = 'abc';
         $machine = new Machine();
-        $this->assertSame($machine, $machine->setName('foo'));
-        $this->assertSame('foo', $machine->getName());
+
+        $this->assertSame($machine, $machine->setName($name));
+        $this->assertSame($name, $machine->getName());
     }
 
     /**
@@ -105,10 +61,10 @@ class MachineTest extends TestCase
      */
     public function testSetAndGetLabels(): void
     {
-        $labels = new LocalisedString();
-        $labels->setTranslation('en', 'foo');
-
+        /* @var LocalisedString&MockObject $labels */
+        $labels = $this->createMock(LocalisedString::class);
         $machine = new Machine();
+
         $this->assertSame($machine, $machine->setLabels($labels));
         $this->assertSame($labels, $machine->getLabels());
     }
@@ -120,10 +76,10 @@ class MachineTest extends TestCase
      */
     public function testSetAndGetDescriptions(): void
     {
-        $descriptions = new LocalisedString();
-        $descriptions->setTranslation('en', 'foo');
-
+        /* @var LocalisedString&MockObject $descriptions */
+        $descriptions = $this->createMock(LocalisedString::class);
         $machine = new Machine();
+
         $this->assertSame($machine, $machine->setDescriptions($descriptions));
         $this->assertSame($descriptions, $machine->getDescriptions());
     }
@@ -137,6 +93,7 @@ class MachineTest extends TestCase
     public function testSetAddAndGetCraftingCategories(): void
     {
         $machine = new Machine();
+
         $this->assertSame($machine, $machine->setCraftingCategories(['abc', 'def']));
         $this->assertSame(['abc', 'def'], $machine->getCraftingCategories());
 
@@ -145,230 +102,114 @@ class MachineTest extends TestCase
     }
 
     /**
-     * Tests setting and getting the crafting speed.
-     * @covers ::setCraftingSpeed
+     * Tests the setting and getting the crafting speed.
      * @covers ::getCraftingSpeed
+     * @covers ::setCraftingSpeed
      */
     public function testSetAndGetCraftingSpeed(): void
     {
+        $craftingSpeed = 13.37;
         $machine = new Machine();
-        $this->assertSame($machine, $machine->setCraftingSpeed(13.37));
-        $this->assertSame(13.37, $machine->getCraftingSpeed());
+
+        $this->assertSame($machine, $machine->setCraftingSpeed($craftingSpeed));
+        $this->assertSame($craftingSpeed, $machine->getCraftingSpeed());
     }
 
     /**
-     * Tests setting and getting the number of item slots.
-     * @covers ::setNumberOfItemSlots
+     * Tests the setting and getting the number of item slots.
      * @covers ::getNumberOfItemSlots
+     * @covers ::setNumberOfItemSlots
      */
     public function testSetAndGetNumberOfItemSlots(): void
     {
+        $numberOfItemSlots = 42;
         $machine = new Machine();
-        $this->assertSame($machine, $machine->setNumberOfItemSlots(42));
-        $this->assertSame(42, $machine->getNumberOfItemSlots());
+
+        $this->assertSame($machine, $machine->setNumberOfItemSlots($numberOfItemSlots));
+        $this->assertSame($numberOfItemSlots, $machine->getNumberOfItemSlots());
     }
 
     /**
-     * Tests setting and getting the number of fluid input slots.
-     * @covers ::setNumberOfFluidInputSlots
+     * Tests the setting and getting the number of fluid input slots.
      * @covers ::getNumberOfFluidInputSlots
+     * @covers ::setNumberOfFluidInputSlots
      */
     public function testSetAndGetNumberOfFluidInputSlots(): void
     {
+        $numberOfFluidInputSlots = 42;
         $machine = new Machine();
-        $this->assertSame($machine, $machine->setNumberOfFluidInputSlots(42));
-        $this->assertSame(42, $machine->getNumberOfFluidInputSlots());
+
+        $this->assertSame($machine, $machine->setNumberOfFluidInputSlots($numberOfFluidInputSlots));
+        $this->assertSame($numberOfFluidInputSlots, $machine->getNumberOfFluidInputSlots());
     }
 
     /**
-     * Tests setting and getting the number of fluid output slots.
-     * @covers ::setNumberOfFluidOutputSlots
+     * Tests the setting and getting the number of fluid output slots.
      * @covers ::getNumberOfFluidOutputSlots
+     * @covers ::setNumberOfFluidOutputSlots
      */
     public function testSetAndGetNumberOfFluidOutputSlots(): void
     {
+        $numberOfFluidOutputSlots = 42;
         $machine = new Machine();
-        $this->assertSame($machine, $machine->setNumberOfFluidOutputSlots(42));
-        $this->assertSame(42, $machine->getNumberOfFluidOutputSlots());
+
+        $this->assertSame($machine, $machine->setNumberOfFluidOutputSlots($numberOfFluidOutputSlots));
+        $this->assertSame($numberOfFluidOutputSlots, $machine->getNumberOfFluidOutputSlots());
     }
-    
+
     /**
-     * Tests setting and getting the number of module slots.
-     * @covers ::setNumberOfModuleSlots
+     * Tests the setting and getting the number of module slots.
      * @covers ::getNumberOfModuleSlots
+     * @covers ::setNumberOfModuleSlots
      */
     public function testSetAndGetNumberOfModuleSlots(): void
     {
+        $numberOfModuleSlots = 42;
         $machine = new Machine();
-        $this->assertSame($machine, $machine->setNumberOfModuleSlots(42));
-        $this->assertSame(42, $machine->getNumberOfModuleSlots());
+
+        $this->assertSame($machine, $machine->setNumberOfModuleSlots($numberOfModuleSlots));
+        $this->assertSame($numberOfModuleSlots, $machine->getNumberOfModuleSlots());
     }
 
     /**
-     * Tests setting and getting the energy usage.
-     * @covers ::setEnergyUsage
+     * Tests the setting and getting the energy usage.
      * @covers ::getEnergyUsage
+     * @covers ::setEnergyUsage
      */
     public function testSetAndGetEnergyUsage(): void
     {
+        $energyUsage = 13.37;
         $machine = new Machine();
-        $this->assertSame($machine, $machine->setEnergyUsage(13.37));
-        $this->assertSame(13.37, $machine->getEnergyUsage());
+
+        $this->assertSame($machine, $machine->setEnergyUsage($energyUsage));
+        $this->assertSame($energyUsage, $machine->getEnergyUsage());
     }
 
     /**
-     * Tests setting and getting the energy usage unit.
-     * @covers ::setEnergyUsageUnit
+     * Tests the setting and getting the energy usage unit.
      * @covers ::getEnergyUsageUnit
+     * @covers ::setEnergyUsageUnit
      */
     public function testSetAndGetEnergyUsageUnit(): void
     {
+        $energyUsageUnit = 'abc';
         $machine = new Machine();
-        $this->assertSame($machine, $machine->setEnergyUsageUnit('abc'));
-        $this->assertSame('abc', $machine->getEnergyUsageUnit());
-    }
-    
-    /**
-     * Tests setting and getting the icon hash.
-     * @covers ::setIconHash
-     * @covers ::getIconHash
-     */
-    public function testSetAndGetIconHash(): void
-    {
-        $machine = new Machine();
-        $this->assertSame($machine, $machine->setIconHash('foo'));
-        $this->assertSame('foo', $machine->getIconHash());
-    }
 
-
-    /**
-     * Provides the data for the writeAndReadData test.
-     * @return array
-     */
-    public function provideTestWriteAndReadData(): array
-    {
-        $machine = new Machine();
-        $machine->setName('abc')
-                ->setCraftingCategories(['def', 'ghi'])
-                ->setCraftingSpeed(13.37)
-                ->setNumberOfItemSlots(42)
-                ->setNumberOfFluidInputSlots(21)
-                ->setNumberOfFluidOutputSlots(13)
-                ->setNumberOfModuleSlots(37)
-                ->setEnergyUsage(73.31)
-                ->setEnergyUsageUnit('jkl')
-                ->setIconHash('mno');
-        $machine->getLabels()->setTranslation('en', 'pqr');
-        $machine->getDescriptions()->setTranslation('en', 'stu');
-
-        $data = [
-            'n' => 'abc',
-            'l' => [
-                'en' => 'pqr'
-            ],
-            'd' => [
-                'en' => 'stu'
-            ],
-            'c' => ['def', 'ghi'],
-            's' => 13.37,
-            'i' => 42,
-            'f' => 21,
-            'u' => 13,
-            'm' => 37,
-            'e' => 73.31,
-            'r' => 'jkl',
-            'o' => 'mno'
-        ];
-
-        return [
-            [$machine, $data],
-            [new Machine(), []]
-        ];
+        $this->assertSame($machine, $machine->setEnergyUsageUnit($energyUsageUnit));
+        $this->assertSame($energyUsageUnit, $machine->getEnergyUsageUnit());
     }
 
     /**
-     * Tests the writing and reading of the data.
-     * @param Machine $machine
-     * @param array $expectedData
-     * @covers ::writeData
-     * @covers ::readData
-     * @dataProvider provideTestWriteAndReadData
+     * Tests the setting and getting the icon id.
+     * @covers ::getIconId
+     * @covers ::setIconId
      */
-    public function testWriteAndReadData(Machine $machine, array $expectedData): void
+    public function testSetAndGetIconId(): void
     {
-        $data = $machine->writeData();
-        $this->assertEquals($expectedData, $data);
-
-        $newMachine = new Machine();
-        $this->assertSame($newMachine, $newMachine->readData(new DataContainer($data)));
-        $this->assertEquals($newMachine, $machine);
-    }
-
-    /**
-     * Tests the calculateHash method.
-     * @covers ::calculateHash
-     */
-    public function testCalculateHash(): void
-    {
-        /* @var LocalisedString|MockObject $labels */
-        $labels = $this->getMockBuilder(LocalisedString::class)
-                       ->setMethods(['calculateHash'])
-                       ->getMock();
-        $labels->expects($this->once())
-               ->method('calculateHash')
-               ->willReturn('pqr');
-
-        /* @var LocalisedString|MockObject $descriptions */
-        $descriptions = $this->getMockBuilder(LocalisedString::class)
-                             ->setMethods(['calculateHash'])
-                             ->getMock();
-        $descriptions->expects($this->once())
-                     ->method('calculateHash')
-                     ->willReturn('stu');
-
+        $iconId = 'abc';
         $machine = new Machine();
-        $machine->setName('abc')
-                ->setLabels($labels)
-                ->setDescriptions($descriptions)
-                ->setCraftingCategories(['def', 'ghi'])
-                ->setCraftingSpeed(13.37)
-                ->setNumberOfItemSlots(42)
-                ->setNumberOfFluidInputSlots(21)
-                ->setNumberOfFluidOutputSlots(13)
-                ->setNumberOfModuleSlots(37)
-                ->setEnergyUsage(73.31)
-                ->setEnergyUsageUnit('jkl')
-                ->setIconHash('mno');
 
-        $expectedResult = EntityUtils::calculateHashOfArray([
-            'abc',
-            'pqr',
-            'stu',
-            ['def', 'ghi'],
-            13.37,
-            42,
-            21,
-            13,
-            37,
-            73.31,
-            'jkl',
-            'mno',
-        ]);
-
-        $result = $machine->calculateHash();
-        $this->assertSame($expectedResult, $result);
-    }
-    
-    /**
-     * Tests the getIdentifier method.
-     * @covers ::getIdentifier
-     */
-    public function testGetIdentifier(): void
-    {
-        $machine = new Machine();
-        $machine->setName('abc');
-
-        $result = $machine->getIdentifier();
-        $this->assertSame('abc', $result);
+        $this->assertSame($machine, $machine->setIconId($iconId));
+        $this->assertSame($iconId, $machine->getIconId());
     }
 }

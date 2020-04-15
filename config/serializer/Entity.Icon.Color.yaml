@@ -1,0 +1,12 @@
+FactorioItemBrowser\ExportData\Entity\Icon\Color:
+  access_type: public_method
+  exclusion_policy: all
+  properties:
+    red:
+      type: float
+    green:
+      type: float
+    blue:
+      type: float
+    alpha:
+      type: float

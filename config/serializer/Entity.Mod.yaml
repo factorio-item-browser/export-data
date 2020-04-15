@@ -1,0 +1,16 @@
+FactorioItemBrowser\ExportData\Entity\Mod:
+  access_type: public_method
+  exclusion_policy: all
+  properties:
+    name:
+      type: string
+    titles:
+      type: FactorioItemBrowser\ExportData\Entity\LocalisedString
+    descriptions:
+      type: FactorioItemBrowser\ExportData\Entity\LocalisedString
+    author:
+      type: string
+    version:
+      type: string
+    thumbnailId:
+      type: string

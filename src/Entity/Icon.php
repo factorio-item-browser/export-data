@@ -4,35 +4,27 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
-use BluePsyduck\Common\Data\DataBuilder;
-use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
-use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
- * The class representing an icon of an item or recipe.
+ * The entity representing an icon of an item or recipe.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Icon implements EntityInterface
+class Icon
 {
     /**
-     * The default size of the icons.
+     * The id of the icon.
+     * @var string
      */
-    public const DEFAULT_SIZE = 64;
+    protected $id = '';
 
     /**
-     * The original size of the icon.
+     * The size of the icon.
      * @var int
      */
-    protected $size = self::DEFAULT_SIZE;
-
-    /**
-     * The rendered size of the icon.
-     * @var int
-     */
-    protected $renderedSize = self::DEFAULT_SIZE;
+    protected $size = 0;
 
     /**
      * The layers of the icon.
@@ -41,28 +33,38 @@ class Icon implements EntityInterface
     protected $layers = [];
 
     /**
-     * Clones the entity.
+     * Sets the id of the icon.
+     * @param string $id
+     * @return $this
      */
-    public function __clone()
+    public function setId(string $id): self
     {
-        $this->layers = array_map(function (Layer $layer): Layer {
-            return clone($layer);
-        }, $this->layers);
+        $this->id = $id;
+        return $this;
     }
 
     /**
-     * Sets the original size of the icon.
+     * Returns the id of the icon.
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * Sets the size of the icon.
      * @param int $size
      * @return $this
      */
-    public function setSize(int $size)
+    public function setSize(int $size): self
     {
         $this->size = $size;
         return $this;
     }
 
     /**
-     * Returns the original size of the icon.
+     * Returns the size of the icon.
      * @return int
      */
     public function getSize(): int
@@ -71,35 +73,13 @@ class Icon implements EntityInterface
     }
 
     /**
-     * Sets the rendered size of the icon.
-     * @param int $renderedSize
-     * @return $this
-     */
-    public function setRenderedSize(int $renderedSize)
-    {
-        $this->renderedSize = $renderedSize;
-        return $this;
-    }
-
-    /**
-     * Returns the rendered size of the icon.
-     * @return int
-     */
-    public function getRenderedSize(): int
-    {
-        return $this->renderedSize;
-    }
-
-    /**
      * Sets the layers of the icon.
      * @param array|Layer[] $layers
-     * @return $this Implementing fluent interface.
+     * @return $this
      */
-    public function setLayers(array $layers)
+    public function setLayers(array $layers): self
     {
-        $this->layers = array_values(array_filter($layers, function ($layer): bool {
-            return $layer instanceof Layer;
-        }));
+        $this->layers = $layers;
         return $this;
     }
 
@@ -108,7 +88,7 @@ class Icon implements EntityInterface
      * @param Layer $layer
      * @return $this
      */
-    public function addLayer(Layer $layer)
+    public function addLayer(Layer $layer): self
     {
         $this->layers[] = $layer;
         return $this;
@@ -121,50 +101,5 @@ class Icon implements EntityInterface
     public function getLayers(): array
     {
         return $this->layers;
-    }
-
-    /**
-     * Writes the entity data to an array.
-     * @return array
-     */
-    public function writeData(): array
-    {
-        $dataBuilder = new DataBuilder();
-        $dataBuilder->setInteger('s', $this->size, self::DEFAULT_SIZE)
-                    ->setInteger('r', $this->renderedSize, self::DEFAULT_SIZE)
-                    ->setArray('l', $this->layers, function (Layer $layer): array {
-                        return $layer->writeData();
-                    }, []);
-        return $dataBuilder->getData();
-    }
-
-    /**
-     * Reads the entity data.
-     * @param DataContainer $data
-     * @return $this
-     */
-    public function readData(DataContainer $data)
-    {
-        $this->size = $data->getInteger('s', self::DEFAULT_SIZE);
-        $this->renderedSize = $data->getInteger('r', self::DEFAULT_SIZE);
-        $this->layers = array_map(function (DataContainer $data): Layer {
-            return (new Layer())->readData($data);
-        }, $data->getObjectArray('l'));
-        return $this;
-    }
-
-    /**
-     * Calculates a hash value representing the entity.
-     * @return string
-     */
-    public function calculateHash(): string
-    {
-        return EntityUtils::calculateHashOfArray([
-            $this->size,
-            $this->renderedSize,
-            array_map(function (Layer $layer): string {
-                return $layer->calculateHash();
-            }, $this->layers)
-        ]);
     }
 }

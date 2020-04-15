@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
-use BluePsyduck\Common\Data\DataBuilder;
-use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
-use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 
 /**
  * The class representing a recipe.
@@ -16,7 +13,7 @@ use FactorioItemBrowser\ExportData\Utils\EntityUtils;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Recipe implements EntityInterface, EntityWithIdentifierInterface
+class Recipe
 {
     /**
      * The name of the recipe.
@@ -67,10 +64,10 @@ class Recipe implements EntityInterface, EntityWithIdentifierInterface
     protected $descriptions;
 
     /**
-     * The icon hash of the recipe.
+     * The icon id of the recipe.
      * @var string
      */
-    protected $iconHash = '';
+    protected $iconId = '';
 
     /**
      * Initializes the entity.
@@ -82,27 +79,11 @@ class Recipe implements EntityInterface, EntityWithIdentifierInterface
     }
 
     /**
-     * Clones the entity.
-     */
-    public function __clone()
-    {
-        $this->ingredients = array_map(function (Ingredient $ingredient): Ingredient {
-            return clone($ingredient);
-        }, $this->ingredients);
-        $this->products = array_map(function (Product $product): Product {
-            return clone($product);
-        }, $this->products);
-
-        $this->labels = clone($this->labels);
-        $this->descriptions = clone($this->descriptions);
-    }
-
-    /**
      * Sets the name of the recipe.
      * @param string $name
      * @return $this Implementing fluent interface.
      */
-    public function setName(string $name)
+    public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
@@ -122,7 +103,7 @@ class Recipe implements EntityInterface, EntityWithIdentifierInterface
      * @param string $mode
      * @return $this Implementing fluent interface.
      */
-    public function setMode(string $mode)
+    public function setMode(string $mode): self
     {
         $this->mode = $mode;
         return $this;
@@ -142,11 +123,9 @@ class Recipe implements EntityInterface, EntityWithIdentifierInterface
      * @param array|Ingredient[] $ingredients
      * @return $this Implementing fluent interface.
      */
-    public function setIngredients(array $ingredients)
+    public function setIngredients(array $ingredients): self
     {
-        $this->ingredients = array_values(array_filter($ingredients, function ($ingredient): bool {
-            return $ingredient instanceof Ingredient;
-        }));
+        $this->ingredients = $ingredients;
         return $this;
     }
 
@@ -155,7 +134,7 @@ class Recipe implements EntityInterface, EntityWithIdentifierInterface
      * @param Ingredient $ingredient
      * @return $this
      */
-    public function addIngredient(Ingredient $ingredient)
+    public function addIngredient(Ingredient $ingredient): self
     {
         $this->ingredients[] = $ingredient;
         return $this;
@@ -175,11 +154,9 @@ class Recipe implements EntityInterface, EntityWithIdentifierInterface
      * @param array|Product[] $products
      * @return $this Implementing fluent interface.
      */
-    public function setProducts(array $products)
+    public function setProducts(array $products): self
     {
-        $this->products = array_values(array_filter($products, function ($product): bool {
-            return $product instanceof Product;
-        }));
+        $this->products = $products;
         return $this;
     }
 
@@ -188,7 +165,7 @@ class Recipe implements EntityInterface, EntityWithIdentifierInterface
      * @param Product $product
      * @return $this
      */
-    public function addProduct(Product $product)
+    public function addProduct(Product $product): self
     {
         $this->products[] = $product;
         return $this;
@@ -208,7 +185,7 @@ class Recipe implements EntityInterface, EntityWithIdentifierInterface
      * @param float $craftingTime
      * @return $this Implementing fluent interface.
      */
-    public function setCraftingTime(float $craftingTime)
+    public function setCraftingTime(float $craftingTime): self
     {
         $this->craftingTime = $craftingTime;
         return $this;
@@ -228,7 +205,7 @@ class Recipe implements EntityInterface, EntityWithIdentifierInterface
      * @param string $craftingCategory
      * @return $this
      */
-    public function setCraftingCategory(string $craftingCategory)
+    public function setCraftingCategory(string $craftingCategory): self
     {
         $this->craftingCategory = $craftingCategory;
         return $this;
@@ -248,7 +225,7 @@ class Recipe implements EntityInterface, EntityWithIdentifierInterface
      * @param LocalisedString $labels
      * @return $this Implementing fluent interface.
      */
-    public function setLabels(LocalisedString $labels)
+    public function setLabels(LocalisedString $labels): self
     {
         $this->labels = $labels;
         return $this;
@@ -268,7 +245,7 @@ class Recipe implements EntityInterface, EntityWithIdentifierInterface
      * @param LocalisedString $descriptions
      * @return $this Implementing fluent interface.
      */
-    public function setDescriptions(LocalisedString $descriptions)
+    public function setDescriptions(LocalisedString $descriptions): self
     {
         $this->descriptions = $descriptions;
         return $this;
@@ -284,100 +261,22 @@ class Recipe implements EntityInterface, EntityWithIdentifierInterface
     }
 
     /**
-     * Sets the icon hash of the recipe.
-     * @param string $iconHash
+     * Sets the icon id of the recipe.
+     * @param string $iconId
      * @return $this Implementing fluent interface.
      */
-    public function setIconHash(string $iconHash)
+    public function setIconId(string $iconId): self
     {
-        $this->iconHash = $iconHash;
+        $this->iconId = $iconId;
         return $this;
     }
 
     /**
-     * Returns the icon hash of the recipe.
+     * Returns the icon id of the recipe.
      * @return string
      */
-    public function getIconHash(): string
+    public function getIconId(): string
     {
-        return $this->iconHash;
-    }
-
-    /**
-     * Writes the entity data to an array.
-     * @return array
-     */
-    public function writeData(): array
-    {
-        $dataBuilder = new DataBuilder();
-        $dataBuilder->setString('n', $this->name, '')
-                    ->setString('m', $this->mode, '')
-                    ->setArray('i', $this->ingredients, function (Ingredient $ingredient): array {
-                        return $ingredient->writeData();
-                    }, [])
-                    ->setArray('p', $this->products, function (Product $product): array {
-                        return $product->writeData();
-                    }, [])
-                    ->setFloat('c', $this->craftingTime, 0.)
-                    ->setString('a', $this->craftingCategory, '')
-                    ->setArray('l', $this->labels->writeData(), null, [])
-                    ->setArray('d', $this->descriptions->writeData(), null, [])
-                    ->setString('h', $this->iconHash, '');
-        return $dataBuilder->getData();
-    }
-
-    /**
-     * Reads the entity data.
-     * @param DataContainer $data
-     * @return $this
-     */
-    public function readData(DataContainer $data)
-    {
-        $this->name = $data->getString('n', '');
-        $this->mode = $data->getString('m', '');
-        $this->ingredients = array_map(function (DataContainer $data): Ingredient {
-            return (new Ingredient())->readData($data);
-        }, $data->getObjectArray('i'));
-        $this->products = array_map(function (DataContainer $data): Product {
-            return (new Product())->readData($data);
-        }, $data->getObjectArray('p'));
-        $this->craftingTime = $data->getFloat('c', 0.);
-        $this->craftingCategory = $data->getString('a', '');
-        $this->labels->readData($data->getObject('l'));
-        $this->descriptions->readData($data->getObject('d'));
-        $this->iconHash = $data->getString('h', '');
-        return $this;
-    }
-
-    /**
-     * Calculates a hash value representing the entity.
-     * @return string
-     */
-    public function calculateHash(): string
-    {
-        return EntityUtils::calculateHashOfArray([
-            $this->name,
-            $this->mode,
-            array_map(function (Ingredient $ingredient): string {
-                return $ingredient->calculateHash();
-            }, $this->ingredients),
-            array_map(function (Product $product): string {
-                return $product->calculateHash();
-            }, $this->products),
-            $this->craftingTime,
-            $this->craftingCategory,
-            $this->labels->calculateHash(),
-            $this->descriptions->calculateHash(),
-            $this->iconHash,
-        ]);
-    }
-
-    /**
-     * Returns the identifier of the entity.
-     * @return string
-     */
-    public function getIdentifier(): string
-    {
-        return EntityUtils::buildIdentifier([$this->name, $this->mode]);
+        return $this->iconId;
     }
 }

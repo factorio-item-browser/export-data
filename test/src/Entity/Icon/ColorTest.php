@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTest\ExportData\Entity\Icon;
 
-use BluePsyduck\Common\Data\DataContainer;
 use FactorioItemBrowser\ExportData\Entity\Icon\Color;
-use FactorioItemBrowser\ExportData\Utils\EntityUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -26,6 +24,7 @@ class ColorTest extends TestCase
     public function testConstruct(): void
     {
         $color = new Color();
+
         $this->assertSame(1., $color->getRed());
         $this->assertSame(1., $color->getGreen());
         $this->assertSame(1., $color->getBlue());
@@ -41,6 +40,7 @@ class ColorTest extends TestCase
     public function testSetAndGetRed(): void
     {
         $color = new Color();
+
         $this->assertSame($color, $color->setRed(0.25));
         $this->assertSame(0.25, $color->getRed());
         $this->assertSame(64., $color->getRed(256.));
@@ -59,6 +59,7 @@ class ColorTest extends TestCase
     public function testSetAndGetGreen(): void
     {
         $color = new Color();
+
         $this->assertSame($color, $color->setGreen(0.25));
         $this->assertSame(0.25, $color->getGreen());
         $this->assertSame(64., $color->getGreen(256.));
@@ -77,6 +78,7 @@ class ColorTest extends TestCase
     public function testSetAndGetBlue(): void
     {
         $color = new Color();
+
         $this->assertSame($color, $color->setBlue(0.25));
         $this->assertSame(0.25, $color->getBlue());
         $this->assertSame(64., $color->getBlue(256.));
@@ -95,6 +97,7 @@ class ColorTest extends TestCase
     public function testSetAndGetAlpha(): void
     {
         $color = new Color();
+
         $this->assertSame($color, $color->setAlpha(0.25));
         $this->assertSame(0.25, $color->getAlpha());
         $this->assertSame(64., $color->getAlpha(256.));
@@ -102,71 +105,5 @@ class ColorTest extends TestCase
         $this->assertSame($color, $color->setAlpha(64., 256.));
         $this->assertSame(0.25, $color->getAlpha());
         $this->assertSame(64., $color->getAlpha(256.));
-    }
-
-    /**
-     * Provides the data for the writeAndReadData test.
-     * @return array
-     */
-    public function provideWriteAndReadData(): array
-    {
-        $color = new Color();
-        $color->setRed(0.2)
-              ->setGreen(0.4)
-              ->setBlue(0.6)
-              ->setAlpha(0.8);
-
-        $data = [
-            'r' => 0.2,
-            'g' => 0.4,
-            'b' => 0.6,
-            'a' => 0.8
-        ];
-
-        return [
-            [$color, $data],
-            [new Color(), []]
-        ];
-    }
-
-    /**
-     * Tests the writing and reading of the data.
-     * @param Color $color
-     * @param array $expectedData
-     * @covers ::writeData
-     * @covers ::readData
-     * @dataProvider provideWriteAndReadData
-     */
-    public function testWriteAndReadData(Color $color, array $expectedData): void
-    {
-        $data = $color->writeData();
-        $this->assertEquals($expectedData, $data);
-
-        $newColor = new Color();
-        $this->assertSame($newColor, $newColor->readData(new DataContainer($data)));
-        $this->assertEquals($newColor, $color);
-    }
-
-    /**
-     * Tests the calculateHash method.
-     * @covers ::calculateHash
-     */
-    public function testCalculateHash(): void
-    {
-        $color = new Color();
-        $color->setRed(0.2)
-              ->setGreen(0.4)
-              ->setBlue(0.6)
-              ->setAlpha(0.8);
-
-        $expectedResult = EntityUtils::calculateHashOfArray([
-            0.2,
-            0.4,
-            0.6,
-            0.8
-        ]);
-
-        $result = $color->calculateHash();
-        $this->assertSame($expectedResult, $result);
     }
 }

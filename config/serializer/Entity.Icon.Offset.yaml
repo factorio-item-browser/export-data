@@ -1,0 +1,8 @@
+FactorioItemBrowser\ExportData\Entity\Icon\Offset:
+  access_type: public_method
+  exclusion_policy: all
+  properties:
+    x:
+      type: integer
+    y:
+      type: integer

@@ -1,0 +1,16 @@
+FactorioItemBrowser\ExportData\Entity\Combination:
+  access_type: public_method
+  exclusion_policy: all
+  properties:
+    id:
+      type: string
+    mods:
+      type: array<FactorioItemBrowser\ExportData\Entity\Mod>
+    items:
+      type: array<FactorioItemBrowser\ExportData\Entity\Item>
+    machines:
+      type: array<FactorioItemBrowser\ExportData\Entity\Machine>
+    recipes:
+      type: array<FactorioItemBrowser\ExportData\Entity\Recipe>
+    icons:
+      type: array<FactorioItemBrowser\ExportData\Entity\Icon>
