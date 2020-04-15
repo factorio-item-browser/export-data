@@ -5,24 +5,13 @@
 [![Build Status](https://travis-ci.com/factorio-item-browser/export-data.svg?branch=master)](https://travis-ci.com/factorio-item-browser/export-data)
 [![codecov](https://codecov.io/gh/factorio-item-browser/export-data/branch/master/graph/badge.svg)](https://codecov.io/gh/factorio-item-browser/export-data)
 
-This small library provides a data format used for temporarily persisting the exported data from the Factorio game to
-the disk to later import it into the actual database.
+This library provides a data structure used to persist all the exported data from the Factorio game to the disk to later
+upload it to the server and import it into the actual database. 
 
-This persistence step is required because the export is executed on a local machine (able to run Factorio), which is 
-not able to directly access the database. The files created by this library can be easily uploaded to the server and
-loaded by the importing script.
+This persistence layer is required because the export gets executed on a local machine (able to run Factorio), which 
+does not have access to the database on the server. This library simplifies uploading all the data (of which most are the 
+icon images) and reading it into the importer script.  
 
-The data is organized in registries and referenced by hashes. If e.g. two mods define the same recipe (same ingredients,
-recipes etc.) then the recipe data is saved only once and referenced from both mods. All registries are accessible 
-through the `ExportDataService` instance.
-
-## Usage
-
-To save or load any data, the `ExportDataService` is used. Upon creation an adapter must be specified to actually 
-persist the data.
-
-The following adapter are available:
-
-- **FileSystemAdapter**: This adapter stores the data in a directory on the server. The writable base directory must be
-  specified in the constructor, and the adapter will manage the directory structure on its own.
-- **VoidAdapter**: This adapter voids any data and will actually not persist it.
+The data itself is saved in a single JSON file. The library puts this file into a zip archive, and adds all the rendered
+icon files to it as well, creating a single zip file as upload. All this is managed by the `ExportDataService`, which
+is the main entry point for the library.

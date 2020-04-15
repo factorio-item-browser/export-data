@@ -1,5 +1,18 @@
 # Changelog
 
+## 3.0.0 - 2020-04-15
+
+### Added
+
+- JMSSerializer for serializing and unserializing the entities instead of own implementation.
+
+### Changed
+
+- Refactoring of the data structure to be based on a combination instead of a mod.
+- Renamed combination hash to combination id.
+- Migrated dependencies of Zend to Laminas.
+- Icon entity following the changes of Factorio 0.18.
+
 ## 2.1.0 - 2019-05-04
 
 ### Added
