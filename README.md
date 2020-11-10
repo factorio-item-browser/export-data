@@ -1,9 +1,11 @@
-# Factorio Item Browser - Export Data
+![Factorio Item Browser](https://raw.githubusercontent.com/factorio-item-browser/documentation/master/asset/image/logo.png) 
 
-[![Latest Stable Version](https://poser.pugx.org/factorio-item-browser/export-data/v/stable)](https://packagist.org/packages/factorio-item-browser/export-data)
-[![License](https://poser.pugx.org/factorio-item-browser/export-data/license)](https://packagist.org/packages/factorio-item-browser/export-data)
-[![Build Status](https://travis-ci.com/factorio-item-browser/export-data.svg?branch=master)](https://travis-ci.com/factorio-item-browser/export-data)
-[![codecov](https://codecov.io/gh/factorio-item-browser/export-data/branch/master/graph/badge.svg)](https://codecov.io/gh/factorio-item-browser/export-data)
+# Export Data Library
+
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/factorio-item-browser/export-data)](https://github.com/factorio-item-browser/export-data/releases)
+[![GitHub](https://img.shields.io/github/license/factorio-item-browser/export-data)](LICENSE.md)
+[![build](https://img.shields.io/github/workflow/status/factorio-item-browser/export-data/CI?logo=github)](https://github.com/factorio-item-browser/export-data/actions)
+[![Codecov](https://img.shields.io/codecov/c/gh/factorio-item-browser/export-data?logo=codecov)](https://codecov.io/gh/factorio-item-browser/export-data)
 
 This library provides a data structure used to persist all the exported data from the Factorio game to the disk to later
 upload it to the server and import it into the actual database. 
