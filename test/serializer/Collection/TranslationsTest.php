@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace FactorioItemBrowserTestSerializer\ExportData\Entity;
+namespace FactorioItemBrowserTestSerializer\ExportData\Collection;
 
-use FactorioItemBrowser\ExportData\Entity\LocalisedString;
+use FactorioItemBrowser\ExportData\Collection\Translations;
 use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
 
 /**
- * The test of the serializing the localisedString class.
+ * The test of the serializing the translations class.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\LocalisedString
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Collection\Translations
  */
-class LocalisedStringTest extends SerializerTestCase
+class TranslationsTest extends SerializerTestCase
 {
     /**
      * Returns the object to be serialized or deserialized.
@@ -23,13 +23,11 @@ class LocalisedStringTest extends SerializerTestCase
      */
     protected function getObject(): object
     {
-        $localisedString = new LocalisedString();
-        $localisedString->setTranslations([
-            'abc' => 'def',
-            'ghi' => 'jkl',
-        ]);
+        $translations = new Translations();
+        $translations->set('abc', 'def');
+        $translations->set('ghi', 'jkl');
 
-        return $localisedString;
+        return $translations;
     }
 
     /**

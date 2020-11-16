@@ -24,8 +24,8 @@ class OffsetTest extends SerializerTestCase
     protected function getObject(): object
     {
         $offset = new Offset();
-        $offset->setX(42)
-               ->setY(21);
+        $offset->x = 42;
+        $offset->y = 21;
 
         return $offset;
     }

@@ -24,11 +24,11 @@ class ItemTest extends SerializerTestCase
     protected function getObject(): object
     {
         $item = new Item();
-        $item->setType('abc')
-             ->setName('def')
-             ->setIconId('ghi');
-        $item->getLabels()->addTranslation('jkl', 'mno');
-        $item->getDescriptions()->addTranslation('pqr', 'stu');
+        $item->type = 'abc';
+        $item->name = 'def';
+        $item->iconId = 'ghi';
+        $item->labels->set('jkl', 'mno');
+        $item->descriptions->set('pqr', 'stu');
 
         return $item;
     }

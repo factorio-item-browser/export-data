@@ -1,5 +1,4 @@
-FactorioItemBrowser\ExportData\Entity\LocalisedString:
-  access_type: public_method
+FactorioItemBrowser\ExportData\Collection\Translations:
   exclusion_policy: all
   properties:
     translations:

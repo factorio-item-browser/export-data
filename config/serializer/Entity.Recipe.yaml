@@ -1,9 +1,12 @@
 FactorioItemBrowser\ExportData\Entity\Recipe:
-  access_type: public_method
   exclusion_policy: all
   properties:
     name:
       type: string
+    labels:
+      type: FactorioItemBrowser\ExportData\Collection\Translations
+    descriptions:
+      type: FactorioItemBrowser\ExportData\Collection\Translations
     mode:
       type: string
     ingredients:
@@ -14,9 +17,5 @@ FactorioItemBrowser\ExportData\Entity\Recipe:
       type: float
     craftingCategory:
       type: string
-    labels:
-      type: FactorioItemBrowser\ExportData\Entity\LocalisedString
-    descriptions:
-      type: FactorioItemBrowser\ExportData\Entity\LocalisedString
     iconId:
       type: string

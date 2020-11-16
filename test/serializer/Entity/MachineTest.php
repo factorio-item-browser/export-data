@@ -24,18 +24,18 @@ class MachineTest extends SerializerTestCase
     protected function getObject(): object
     {
         $machine = new Machine();
-        $machine->setName('abc')
-                ->setCraftingCategories(['def', 'ghi'])
-                ->setCraftingSpeed(13.37)
-                ->setNumberOfItemSlots(12)
-                ->setNumberOfFluidInputSlots(34)
-                ->setNumberOfFluidOutputSlots(56)
-                ->setNumberOfModuleSlots(78)
-                ->setEnergyUsage(2.1)
-                ->setEnergyUsageUnit('jkl')
-                ->setIconId('mno');
-        $machine->getLabels()->addTranslation('pqr', 'stu');
-        $machine->getDescriptions()->addTranslation('vwx', 'yza');
+        $machine->name = 'abc';
+        $machine->craftingCategories = ['def', 'ghi'];
+        $machine->craftingSpeed = 13.37;
+        $machine->numberOfItemSlots = 12;
+        $machine->numberOfFluidInputSlots = 34;
+        $machine->numberOfFluidOutputSlots = 56;
+        $machine->numberOfModuleSlots = 78;
+        $machine->energyUsage = 2.1;
+        $machine->energyUsageUnit = 'jkl';
+        $machine->iconId = 'mno';
+        $machine->labels->set('pqr', 'stu');
+        $machine->descriptions->set('vwx', 'yza');
 
         return $machine;
     }

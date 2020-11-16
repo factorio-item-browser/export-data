@@ -1,13 +1,12 @@
 FactorioItemBrowser\ExportData\Entity\Machine:
-  access_type: public_method
   exclusion_policy: all
   properties:
     name:
       type: string
     labels:
-      type: FactorioItemBrowser\ExportData\Entity\LocalisedString
+      type: FactorioItemBrowser\ExportData\Collection\Translations
     descriptions:
-      type: FactorioItemBrowser\ExportData\Entity\LocalisedString
+      type: FactorioItemBrowser\ExportData\Collection\Translations
     craftingCategories:
       type: array<string>
     craftingSpeed:
