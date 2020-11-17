@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 class TranslationsTest extends TestCase
 {
     /**
-     * @covers ::<public>>
+     * @covers ::<public>
      */
     public function testSetAndGet(): void
     {
