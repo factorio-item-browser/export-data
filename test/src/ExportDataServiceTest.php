@@ -84,7 +84,8 @@ class ExportDataServiceTest extends TestCase
         $exportData = $this->createMock(ExportData::class);
 
         $this->storage->expects($this->once())
-                      ->method('readMeta')
+                      ->method('readData')
+                      ->with($this->identicalTo('meta'), $this->identicalTo(ExportData::class))
                       ->willReturn($exportData);
 
         $instance = $this->createInstance();
@@ -101,7 +102,8 @@ class ExportDataServiceTest extends TestCase
         $expectedResult = new ExportData($this->storage, $this->combinationId);
 
         $this->storage->expects($this->once())
-                      ->method('readMeta')
+                      ->method('readData')
+                      ->with($this->identicalTo('meta'), $this->identicalTo(ExportData::class))
                       ->willThrowException($this->createMock(Exception::class));
 
         $instance = $this->createInstance();
@@ -123,8 +125,8 @@ class ExportDataServiceTest extends TestCase
                    ->willReturn($this->combinationId);
 
         $this->storage->expects($this->once())
-                      ->method('writeMeta')
-                      ->with($this->identicalTo($exportData));
+                      ->method('writeData')
+                      ->with($this->identicalTo('meta'), $this->identicalTo($exportData));
         $this->storage->expects($this->once())
                       ->method('getFileName')
                       ->willReturn($fileName);

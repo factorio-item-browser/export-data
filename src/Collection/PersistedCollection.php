@@ -7,12 +7,12 @@ namespace FactorioItemBrowser\ExportData\Collection;
 use FactorioItemBrowser\ExportData\Storage\Storage;
 
 /**
- * The collection persisting the items as files in the storage.
+ * The collection persisting the items directly into the storage.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class PersistedFileCollection
+class PersistedCollection
 {
     private Storage $storage;
     private string $filePattern;

@@ -20,7 +20,7 @@ use Traversable;
  */
 class ChunkedCollection implements Countable, IteratorAggregate
 {
-    private const CHUNK_SIZE = 2;
+    private const CHUNK_SIZE = 1024;
 
     private Storage $storage;
     private string $itemClass;

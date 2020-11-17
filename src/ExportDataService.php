@@ -45,7 +45,7 @@ class ExportDataService
     {
         $storage = $this->storageFactory->createForCombination($combinationId);
         try {
-            return $storage->readMeta();
+            return $storage->readData('meta', ExportData::class);
         } catch (Exception $e) {
             return new ExportData($storage, $combinationId);
         }
@@ -59,7 +59,7 @@ class ExportDataService
     public function persistExport(ExportData $exportData): string
     {
         $storage = $this->storageFactory->createForCombination($exportData->getCombinationId());
-        $storage->writeMeta($exportData);
+        $storage->writeData('meta', $exportData);
         return $storage->getFileName();
     }
 

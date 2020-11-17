@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Storage;
 
-use FactorioItemBrowser\ExportData\ExportData;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializerInterface;
 use ZipArchive;
@@ -19,27 +18,11 @@ class Storage
 {
     private SerializerInterface $exportDataSerializer;
     private string $fileName;
-    private ?ZipArchive $zipArchive = null;
 
     public function __construct(SerializerInterface $exportDataSerializer, string $fileName)
     {
         $this->exportDataSerializer = $exportDataSerializer;
         $this->fileName = $fileName;
-    }
-
-    public function __destruct()
-    {
-        $this->close();
-    }
-
-    private function getZipArchive(): ZipArchive
-    {
-        if ($this->zipArchive === null) {
-            $this->zipArchive = new ZipArchive();
-            $this->zipArchive->open($this->fileName, ZipArchive::CREATE);
-        }
-
-        return $this->zipArchive;
     }
 
     /**
@@ -49,15 +32,6 @@ class Storage
     public function getFileName(): string
     {
         return $this->fileName;
-    }
-
-    /**
-     * Writes the meta data of the export to the storage file.
-     * @param ExportData $exportData
-     */
-    public function writeMeta(ExportData $exportData): void
-    {
-        $this->writeData('meta', $exportData);
     }
 
     /**
@@ -78,21 +52,13 @@ class Storage
      */
     public function writeFile(string $name, string $contents): void
     {
-        $this->getZipArchive()->addFromString($name, $contents);
-    }
-
-    /**
-     * Reads the meta data from the storage file.
-     * @return ExportData
-     */
-    public function readMeta(): ExportData
-    {
-        $context = new DeserializationContext();
-        $context->setAttribute(self::class, $this)
-                ->setAttribute(ExportData::class, new ExportData($this, ''));
-
-        $contents = $this->readFile("meta.json");
-        return $this->exportDataSerializer->deserialize($contents, ExportData::class, 'json', $context);
+        try {
+            $zipArchive = new ZipArchive();
+            $zipArchive->open($this->fileName, ZipArchive::CREATE);
+            $zipArchive->addFromString($name, $contents);
+        } finally {
+            $zipArchive->close();
+        }
     }
 
     /**
@@ -118,17 +84,12 @@ class Storage
      */
     public function readFile(string $name): string
     {
-        return (string) $this->getZipArchive()->getFromName($name);
-    }
-
-    /**
-     * Closes any still open handles to the storage file.
-     */
-    public function close(): void
-    {
-        if ($this->zipArchive !== null) {
-            $this->zipArchive->close();
-            $this->zipArchive = null;
+        try {
+            $zipArchive = new ZipArchive();
+            $zipArchive->open($this->fileName, ZipArchive::CREATE);
+            return (string) $zipArchive->getFromName($name);
+        } finally {
+            $zipArchive->close();
         }
     }
 
@@ -137,7 +98,6 @@ class Storage
      */
     public function remove(): void
     {
-        $this->close();
         if (file_exists($this->fileName)) {
             unlink($this->fileName);
         }
