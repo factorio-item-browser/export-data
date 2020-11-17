@@ -19,9 +19,6 @@ use function BluePsyduck\LaminasAutoWireFactory\readConfig;
 
 return [
     'dependencies' => [
-        'aliases' => [
-            Storage\StorageFactoryInterface::class => Storage\StorageFactory::class,
-        ],
         'factories'  => [
             ExportDataService::class => AutoWireFactory::class,
             Storage\StorageFactory::class => AutoWireFactory::class,

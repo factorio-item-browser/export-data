@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace FactorioItemBrowser\ExportData\Serializer;
 
 use FactorioItemBrowser\ExportData\Constant\ConfigKey;
+use FactorioItemBrowser\ExportData\Serializer\Handler\ChunkedCollectionHandler;
 use Interop\Container\ContainerInterface;
+use JMS\Serializer\Handler\HandlerRegistry;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
@@ -20,7 +22,6 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 class SerializerFactory implements FactoryInterface
 {
     /**
-     * Creates the serializer.
      * @param ContainerInterface $container
      * @param string $requestedName
      * @param array<mixed>|null $options
@@ -34,18 +35,17 @@ class SerializerFactory implements FactoryInterface
                 (string) realpath(__DIR__ . '/../../config/serializer'),
                 'FactorioItemBrowser\ExportData'
             )
-            ->setPropertyNamingStrategy(new IdenticalPropertyNamingStrategy());
+            ->setPropertyNamingStrategy(new IdenticalPropertyNamingStrategy())
+            ->addDefaultHandlers()
+            ->configureHandlers(function (HandlerRegistry $registry): void {
+                $registry->registerSubscribingHandler(new ChunkedCollectionHandler());
+            });
 
         $this->addCacheDirectory($container, $builder);
 
         return $builder->build();
     }
 
-    /**
-     * Adds the cache directory from the config to the builder.
-     * @param ContainerInterface $container
-     * @param SerializerBuilder $builder
-     */
     protected function addCacheDirectory(ContainerInterface $container, SerializerBuilder $builder): void
     {
         $config = $container->get('config');

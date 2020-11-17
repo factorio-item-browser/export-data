@@ -12,41 +12,36 @@ use JMS\Serializer\SerializerInterface;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class StorageFactory implements StorageFactoryInterface
+class StorageFactory
 {
-    /**
-     * The serializer.
-     * @var SerializerInterface
-     */
-    protected $serializer;
+    private SerializerInterface $exportDataSerializer;
+    private string $exportDataWorkingDirectory;
 
-    /**
-     * The working directory to save the exports to.
-     * @var string
-     */
-    protected $workingDirectory;
+    /** @var array<string, Storage> */
+    private array $instances = [];
 
-    /**
-     * StorageFactory constructor.
-     * @param SerializerInterface $exportDataSerializer
-     * @param string $exportDataWorkingDirectory
-     */
-    public function __construct(SerializerInterface $exportDataSerializer, string $exportDataWorkingDirectory)
-    {
-        $this->serializer = $exportDataSerializer;
-        $this->workingDirectory = $exportDataWorkingDirectory;
+    public function __construct(
+        SerializerInterface $exportDataSerializer,
+        string $exportDataWorkingDirectory
+    ) {
+        $this->exportDataSerializer = $exportDataSerializer;
+        $this->exportDataWorkingDirectory = $exportDataWorkingDirectory;
     }
 
     /**
-     * Creates the storage to use for the specified combination id.
+     * Creates the storage to use for the combination with the specified id.
      * @param string $combinationId
-     * @return StorageInterface
+     * @return Storage
      */
-    public function createForCombination(string $combinationId): StorageInterface
+    public function createForCombination(string $combinationId): Storage
     {
-        return new ZipArchiveStorage(
-            $this->serializer,
-            sprintf('%s/%s.zip', $this->workingDirectory, $combinationId)
-        );
+        if (!isset($this->instances[$combinationId])) {
+            $this->instances[$combinationId] = new Storage(
+                $this->exportDataSerializer,
+                sprintf('%s/%s.zip', $this->exportDataWorkingDirectory, $combinationId),
+            );
+        }
+
+        return $this->instances[$combinationId];
     }
 }

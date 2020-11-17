@@ -1,0 +1,15 @@
+FactorioItemBrowser\ExportData\ExportData:
+  exclusion_policy: all
+  properties:
+    combinationId:
+      type: string
+    mods:
+      type: ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Mod>
+    items:
+      type: ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Item>
+    machines:
+      type: ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Machine>
+    recipes:
+      type: ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Recipe>
+    icons:
+      type: ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Icon>

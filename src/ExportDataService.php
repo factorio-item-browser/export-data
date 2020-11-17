@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData;
 
-use FactorioItemBrowser\ExportData\Entity\Combination;
-use FactorioItemBrowser\ExportData\Storage\StorageFactoryInterface;
+use Exception;
+use FactorioItemBrowser\ExportData\Storage\StorageFactory;
 
 /**
  * The main service managing the export data.
@@ -15,32 +15,25 @@ use FactorioItemBrowser\ExportData\Storage\StorageFactoryInterface;
  */
 class ExportDataService
 {
-    /**
-     * The storage factory.
-     * @var StorageFactoryInterface
-     */
-    protected $storageFactory;
+    private StorageFactory $storageFactory;
 
-    /**
-     * Initializes the export data service.
-     * @param StorageFactoryInterface $storageFactory
-     */
-    public function __construct(StorageFactoryInterface $storageFactory)
-    {
+    public function __construct(
+        StorageFactory $storageFactory
+    ) {
         $this->storageFactory = $storageFactory;
     }
 
     /**
-     * Creates a new export data instance for the specified combination.
+     * Creates a new export data instance for the specified combination. This will remove any existing data for that
+     * combination.
      * @param string $combinationId
      * @return ExportData
      */
     public function createExport(string $combinationId): ExportData
     {
-        $combination = new Combination();
-        $combination->setId($combinationId);
-
-        return new ExportData($combination, $this->storageFactory->createForCombination($combinationId));
+        $storage = $this->storageFactory->createForCombination($combinationId);
+        $storage->remove();
+        return new ExportData($storage, $combinationId);
     }
 
     /**
@@ -51,7 +44,32 @@ class ExportDataService
     public function loadExport(string $combinationId): ExportData
     {
         $storage = $this->storageFactory->createForCombination($combinationId);
+        try {
+            return $storage->readMeta();
+        } catch (Exception $e) {
+            return new ExportData($storage, $combinationId);
+        }
+    }
 
-        return new ExportData($storage->load(), $storage);
+    /**
+     * Persists the export and all its data which have not been persisted.
+     * @param ExportData $exportData
+     * @return string
+     */
+    public function persistExport(ExportData $exportData): string
+    {
+        $storage = $this->storageFactory->createForCombination($exportData->getCombinationId());
+        $storage->writeMeta($exportData);
+        return $storage->getFileName();
+    }
+
+    /**
+     * Removes the export with the specified combination, if it exists.
+     * @param string $combinationId
+     */
+    public function removeExport(string $combinationId): void
+    {
+        $storage = $this->storageFactory->createForCombination($combinationId);
+        $storage->remove();
     }
 }

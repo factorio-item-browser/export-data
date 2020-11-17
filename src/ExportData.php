@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData;
 
-use FactorioItemBrowser\ExportData\Entity\Combination;
+use FactorioItemBrowser\ExportData\Collection\ChunkedCollection;
+use FactorioItemBrowser\ExportData\Collection\PersistedFileCollection;
 use FactorioItemBrowser\ExportData\Entity\Icon;
-use FactorioItemBrowser\ExportData\Storage\StorageInterface;
+use FactorioItemBrowser\ExportData\Entity\Item;
+use FactorioItemBrowser\ExportData\Entity\Machine;
+use FactorioItemBrowser\ExportData\Entity\Mod;
+use FactorioItemBrowser\ExportData\Entity\Recipe;
+use FactorioItemBrowser\ExportData\Storage\Storage;
 
 /**
  * The class managing the data of an export.
@@ -16,74 +21,85 @@ use FactorioItemBrowser\ExportData\Storage\StorageInterface;
  */
 class ExportData
 {
-    /**
-     * The combination of the export.
-     * @var Combination
-     */
-    protected $combination;
+    private string $combinationId;
 
-    /**
-     * The storage to use for the combination.
-     * @var StorageInterface
-     */
-    protected $storage;
+    /** @var ChunkedCollection<Mod> */
+    private ChunkedCollection $mods;
+    /** @var ChunkedCollection<Item> */
+    private ChunkedCollection $items;
+    /** @var ChunkedCollection<Machine> */
+    private ChunkedCollection $machines;
+    /** @var ChunkedCollection<Recipe> */
+    private ChunkedCollection $recipes;
+    /** @var ChunkedCollection<Icon> */
+    private ChunkedCollection $icons;
+    private PersistedFileCollection $renderedIcons;
 
-    /**
-     * Initializes the export.
-     * @param Combination $combination
-     * @param StorageInterface $storage
-     */
-    public function __construct(Combination $combination, StorageInterface $storage)
+    public function __construct(Storage $storage, string $combinationId)
     {
-        $this->combination = $combination;
-        $this->storage = $storage;
+        $this->combinationId = $combinationId;
+
+        $this->mods = new ChunkedCollection($storage, Mod::class);
+        $this->items = new ChunkedCollection($storage, Item::class);
+        $this->machines = new ChunkedCollection($storage, Machine::class);
+        $this->recipes = new ChunkedCollection($storage, Recipe::class);
+        $this->icons = new ChunkedCollection($storage, Icon::class);
+        $this->renderedIcons = new PersistedFileCollection($storage, 'rendered-icon/%s.png');
     }
 
     /**
-     * The combination of the export.
-     * @return Combination
-     */
-    public function getCombination(): Combination
-    {
-        return $this->combination;
-    }
-
-    /**
-     * Adds a rendered icon to the export data.
-     * @param Icon $icon
-     * @param string $contents
-     * @return $this
-     */
-    public function addRenderedIcon(Icon $icon, string $contents): self
-    {
-        $this->storage->addRenderedIcon($icon->getId(), $contents);
-        return $this;
-    }
-
-    /**
-     * Returns a rendered icon from the export data.
-     * @param Icon $icon
      * @return string
      */
-    public function getRenderedIcon(Icon $icon): string
+    public function getCombinationId(): string
     {
-        return $this->storage->getRenderedIcon($icon->getId());
+        return $this->combinationId;
     }
 
     /**
-     * Persists the export data.
-     * @return string The filename used for the file.
+     * @return ChunkedCollection<Mod>
      */
-    public function persist(): string
+    public function getMods(): ChunkedCollection
     {
-        return $this->storage->save($this->combination);
+        return $this->mods;
     }
 
     /**
-     * Removes the export data from the storage.
+     * @return ChunkedCollection<Item>
      */
-    public function remove(): void
+    public function getItems(): ChunkedCollection
     {
-        $this->storage->remove();
+        return $this->items;
+    }
+
+    /**
+     * @return ChunkedCollection<Machine>
+     */
+    public function getMachines(): ChunkedCollection
+    {
+        return $this->machines;
+    }
+
+    /**
+     * @return ChunkedCollection<Recipe>
+     */
+    public function getRecipes(): ChunkedCollection
+    {
+        return $this->recipes;
+    }
+
+    /**
+     * @return ChunkedCollection<Icon>
+     */
+    public function getIcons(): ChunkedCollection
+    {
+        return $this->icons;
+    }
+
+    /**
+     * @return PersistedFileCollection
+     */
+    public function getRenderedIcons(): PersistedFileCollection
+    {
+        return $this->renderedIcons;
     }
 }
