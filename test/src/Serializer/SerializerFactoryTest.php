@@ -6,12 +6,13 @@ namespace FactorioItemBrowserTest\ExportData\Serializer;
 
 use BluePsyduck\TestHelper\ReflectionTrait;
 use FactorioItemBrowser\ExportData\Constant\ConfigKey;
+use FactorioItemBrowser\ExportData\Serializer\Handler\ChunkedCollectionHandler;
 use FactorioItemBrowser\ExportData\Serializer\SerializerFactory;
 use Interop\Container\ContainerInterface;
+use JMS\Serializer\Handler\HandlerRegistry;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
 
@@ -27,7 +28,6 @@ class SerializerFactoryTest extends TestCase
     use ReflectionTrait;
 
     /**
-     * Tests the invoking.
      * @covers ::__invoke
      */
     public function testInvoke(): void
@@ -38,14 +38,16 @@ class SerializerFactoryTest extends TestCase
                 (string) realpath(__DIR__ . '/../../../config/serializer'),
                 'FactorioItemBrowser\ExportData'
             )
-            ->setPropertyNamingStrategy(new IdenticalPropertyNamingStrategy());
+            ->setPropertyNamingStrategy(new IdenticalPropertyNamingStrategy())
+            ->addDefaultHandlers()
+            ->configureHandlers(function (HandlerRegistry $registry): void {
+                $registry->registerSubscribingHandler(new ChunkedCollectionHandler());
+            });
 
         $expectedResult = $builder->build();
 
-        /* @var ContainerInterface&MockObject $container */
         $container = $this->createMock(ContainerInterface::class);
 
-        /* @var SerializerFactory&MockObject $factory */
         $factory = $this->getMockBuilder(SerializerFactory::class)
                         ->onlyMethods(['addCacheDirectory'])
                         ->getMock();
@@ -59,7 +61,6 @@ class SerializerFactoryTest extends TestCase
     }
 
     /**
-     * Tests the addCacheDirectory method.
      * @throws ReflectionException
      * @covers ::addCacheDirectory
      */
@@ -74,7 +75,6 @@ class SerializerFactoryTest extends TestCase
             ],
         ];
 
-        /* @var ContainerInterface&MockObject $container */
         $container = $this->createMock(ContainerInterface::class);
         $container->expects($this->once())
                   ->method('get')
@@ -92,7 +92,6 @@ class SerializerFactoryTest extends TestCase
     }
 
     /**
-     * Tests the addCacheDirectory method without a proper config value.
      * @throws ReflectionException
      * @covers ::addCacheDirectory
      */
@@ -100,7 +99,6 @@ class SerializerFactoryTest extends TestCase
     {
         $config = [];
 
-        /* @var ContainerInterface&MockObject $container */
         $container = $this->createMock(ContainerInterface::class);
         $container->expects($this->once())
                   ->method('get')

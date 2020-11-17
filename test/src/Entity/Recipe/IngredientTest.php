@@ -18,57 +18,14 @@ use PHPUnit\Framework\TestCase;
 class IngredientTest extends TestCase
 {
     /**
-     * Tests the constructing.
      * @coversNothing
      */
     public function testConstruct(): void
     {
         $ingredient = new Ingredient();
 
-        $this->assertSame('', $ingredient->getType());
-        $this->assertSame('', $ingredient->getName());
-        $this->assertSame(1., $ingredient->getAmount());
-    }
-
-    /**
-     * Tests the setting and getting the type.
-     * @covers ::getType
-     * @covers ::setType
-     */
-    public function testSetAndGetType(): void
-    {
-        $type = 'abc';
-        $ingredient = new Ingredient();
-
-        $this->assertSame($ingredient, $ingredient->setType($type));
-        $this->assertSame($type, $ingredient->getType());
-    }
-
-    /**
-     * Tests the setting and getting the name.
-     * @covers ::getName
-     * @covers ::setName
-     */
-    public function testSetAndGetName(): void
-    {
-        $name = 'abc';
-        $ingredient = new Ingredient();
-
-        $this->assertSame($ingredient, $ingredient->setName($name));
-        $this->assertSame($name, $ingredient->getName());
-    }
-
-    /**
-     * Tests the setting and getting the amount.
-     * @covers ::getAmount
-     * @covers ::setAmount
-     */
-    public function testSetAndGetAmount(): void
-    {
-        $amount = 13.37;
-        $ingredient = new Ingredient();
-
-        $this->assertSame($ingredient, $ingredient->setAmount($amount));
-        $this->assertSame($amount, $ingredient->getAmount());
+        $this->assertSame('', $ingredient->type);
+        $this->assertSame('', $ingredient->name);
+        $this->assertSame(1., $ingredient->amount);
     }
 }
