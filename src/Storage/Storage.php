@@ -19,10 +19,26 @@ class Storage
     private SerializerInterface $exportDataSerializer;
     private string $fileName;
 
+    private ?ZipArchive $zipArchive = null;
+
     public function __construct(SerializerInterface $exportDataSerializer, string $fileName)
     {
         $this->exportDataSerializer = $exportDataSerializer;
         $this->fileName = $fileName;
+    }
+
+    public function __destruct()
+    {
+        $this->close();
+    }
+
+    private function getZipArchive(): ZipArchive
+    {
+        if ($this->zipArchive === null) {
+            $this->zipArchive = new ZipArchive();
+            $this->zipArchive->open($this->fileName, ZipArchive::CREATE);
+        }
+        return $this->zipArchive;
     }
 
     /**
@@ -52,13 +68,7 @@ class Storage
      */
     public function writeFile(string $name, string $contents): void
     {
-        try {
-            $zipArchive = new ZipArchive();
-            $zipArchive->open($this->fileName, ZipArchive::CREATE);
-            $zipArchive->addFromString($name, $contents);
-        } finally {
-            $zipArchive->close();
-        }
+        $this->getZipArchive()->addFromString($name, $contents);
     }
 
     /**
@@ -84,12 +94,17 @@ class Storage
      */
     public function readFile(string $name): string
     {
-        try {
-            $zipArchive = new ZipArchive();
-            $zipArchive->open($this->fileName, ZipArchive::CREATE);
-            return (string) $zipArchive->getFromName($name);
-        } finally {
-            $zipArchive->close();
+        return (string) $this->getZipArchive()->getFromName($name);
+    }
+
+    /**
+     * Closes the storage file, writing all temporary changes to disk.
+     */
+    public function close(): void
+    {
+        if ($this->zipArchive !== null) {
+            $this->zipArchive->close();
+            $this->zipArchive = null;
         }
     }
 
@@ -98,6 +113,7 @@ class Storage
      */
     public function remove(): void
     {
+        $this->close();
         if (file_exists($this->fileName)) {
             unlink($this->fileName);
         }

@@ -41,11 +41,6 @@ class StorageTest extends TestCase
         return new Storage($this->exportDataSerializer, $this->fileName);
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getFileName
-     * @covers ::remove
-     */
     public function testConstruct(): void
     {
         $instance = $this->createInstance();
@@ -84,6 +79,7 @@ class StorageTest extends TestCase
 
         $instance = $this->createInstance();
         $instance->writeData('foo.json', $item);
+        $instance->close();
 
         $result = $instance->readData('foo.json', Item::class);
         $this->assertSame($item, $result);
@@ -100,6 +96,7 @@ class StorageTest extends TestCase
 
         $instance = $this->createInstance();
         $instance->writeFile($name, $contents);
+        $instance->close();
 
         $result = $instance->readFile($name);
         $this->assertSame($contents, $result);

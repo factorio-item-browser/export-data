@@ -60,6 +60,7 @@ class ExportDataService
     {
         $storage = $this->storageFactory->createForCombination($exportData->getCombinationId());
         $storage->writeData('meta', $exportData);
+        $storage->close();
         return $storage->getFileName();
     }
 
