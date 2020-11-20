@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
+use FactorioItemBrowser\ExportData\Collection\DictionaryInterface;
 use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
 
 /**
@@ -16,8 +17,8 @@ class Item
 {
     public string $type = '';
     public string $name = '';
-    public TranslationDictionary $labels;
-    public TranslationDictionary $descriptions;
+    public DictionaryInterface $labels;
+    public DictionaryInterface $descriptions;
     public string $iconId = '';
 
     public function __construct()

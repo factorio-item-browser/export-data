@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
+use FactorioItemBrowser\ExportData\Collection\DictionaryInterface;
 use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
 
 /**
@@ -15,8 +16,8 @@ use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
 class Mod
 {
     public string $name = '';
-    public TranslationDictionary $titles;
-    public TranslationDictionary $descriptions;
+    public DictionaryInterface $titles;
+    public DictionaryInterface $descriptions;
     public string $author = '';
     public string $version = '';
     public string $thumbnailId = '';

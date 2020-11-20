@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
+use FactorioItemBrowser\ExportData\Collection\DictionaryInterface;
 use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
 
 /**
@@ -15,8 +16,8 @@ use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
 class Machine
 {
     public string $name = '';
-    public TranslationDictionary $labels;
-    public TranslationDictionary $descriptions;
+    public DictionaryInterface $labels;
+    public DictionaryInterface $descriptions;
     /** @var array<string> */
     public array $craftingCategories = [];
     public float $craftingSpeed = 1.;
