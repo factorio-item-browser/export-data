@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTest\ExportData\Collection;
 
-use FactorioItemBrowser\ExportData\Collection\PersistedCollection;
+use FactorioItemBrowser\ExportData\Collection\FileDictionary;
 use FactorioItemBrowser\ExportData\Storage\Storage;
 use PHPUnit\Framework\TestCase;
 
 /**
- * The PHPUnit test of the PersistedCollection class.
+ * The PHPUnit test of the FileDictionary class.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Collection\PersistedCollection
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Collection\FileDictionary
  */
-class PersistedCollectionTest extends TestCase
+class FileDictionaryTest extends TestCase
 {
-    /**
-     * @covers ::<public>
-     */
     public function testSetAndGet(): void
     {
         $filePattern = 'foo/%s.txt';
@@ -35,10 +32,12 @@ class PersistedCollectionTest extends TestCase
                 ->with($this->identicalTo('foo/abc.txt'))
                 ->willReturn($contents);
 
-        $instance = new PersistedCollection($storage, $filePattern);
+        $instance = new FileDictionary($storage, $filePattern);
         $instance->set($fileName, $contents);
 
         $result = $instance->get($fileName);
         $this->assertSame($contents, $result);
+
+        $this->assertEquals([], iterator_to_array($instance));
     }
 }

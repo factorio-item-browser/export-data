@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTest\ExportData\Collection;
 
-use FactorioItemBrowser\ExportData\Collection\Translations;
+use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
 use PHPUnit\Framework\TestCase;
 
 /**
- * The PHPUnit test of the Translations class.
+ * The PHPUnit test of the TranslationDictionary class.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Collection\Translations
+ * @coversDefaultClass \FactorioItemBrowser\ExportData\Collection\TranslationDictionary
  */
-class TranslationsTest extends TestCase
+class TranslationDictionaryTest extends TestCase
 {
-    /**
-     * @covers ::<public>
-     */
     public function testSetAndGet(): void
     {
-        $instance = new Translations();
+        $instance = new TranslationDictionary();
         $this->assertSame('', $instance->get('foo'));
 
         $instance->set('foo', 'abc');

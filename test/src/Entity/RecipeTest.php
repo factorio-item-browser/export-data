@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTest\ExportData\Entity;
 
-use FactorioItemBrowser\ExportData\Collection\Translations;
+use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
 use FactorioItemBrowser\ExportData\Entity\Recipe;
 use PHPUnit\Framework\TestCase;
 
@@ -26,8 +26,8 @@ class RecipeTest extends TestCase
         $recipe = new Recipe();
 
         $this->assertSame('', $recipe->name);
-        $this->assertEquals(new Translations(), $recipe->labels);
-        $this->assertEquals(new Translations(), $recipe->descriptions);
+        $this->assertEquals(new TranslationDictionary(), $recipe->labels);
+        $this->assertEquals(new TranslationDictionary(), $recipe->descriptions);
         $this->assertSame('', $recipe->mode);
         $this->assertSame([], $recipe->ingredients);
         $this->assertSame([], $recipe->products);

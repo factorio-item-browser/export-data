@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace FactorioItemBrowser\ExportData;
 
 use FactorioItemBrowser\ExportData\Collection\ChunkedCollection;
-use FactorioItemBrowser\ExportData\Collection\PersistedCollection;
+use FactorioItemBrowser\ExportData\Collection\DictionaryInterface;
+use FactorioItemBrowser\ExportData\Collection\FileDictionary;
 use FactorioItemBrowser\ExportData\Entity\Icon;
 use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\Machine;
@@ -33,7 +34,7 @@ class ExportData
     private ChunkedCollection $recipes;
     /** @var ChunkedCollection<Icon> */
     private ChunkedCollection $icons;
-    private PersistedCollection $renderedIcons;
+    private DictionaryInterface $renderedIcons;
 
     public function __construct(Storage $storage, string $combinationId)
     {
@@ -44,7 +45,7 @@ class ExportData
         $this->machines = new ChunkedCollection($storage, Machine::class);
         $this->recipes = new ChunkedCollection($storage, Recipe::class);
         $this->icons = new ChunkedCollection($storage, Icon::class);
-        $this->renderedIcons = new PersistedCollection($storage, 'rendered-icon/%s.png');
+        $this->renderedIcons = new FileDictionary($storage, 'rendered-icon/%s.png');
     }
 
     /**
@@ -96,9 +97,9 @@ class ExportData
     }
 
     /**
-     * @return PersistedCollection
+     * @return DictionaryInterface
      */
-    public function getRenderedIcons(): PersistedCollection
+    public function getRenderedIcons(): DictionaryInterface
     {
         return $this->renderedIcons;
     }

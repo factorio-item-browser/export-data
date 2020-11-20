@@ -4,9 +4,9 @@ FactorioItemBrowser\ExportData\Entity\Recipe:
     name:
       type: string
     labels:
-      type: FactorioItemBrowser\ExportData\Collection\Translations
+      type: FactorioItemBrowser\ExportData\Collection\TranslationDictionary
     descriptions:
-      type: FactorioItemBrowser\ExportData\Collection\Translations
+      type: FactorioItemBrowser\ExportData\Collection\TranslationDictionary
     mode:
       type: string
     ingredients:

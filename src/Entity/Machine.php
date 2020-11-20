@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
-use FactorioItemBrowser\ExportData\Collection\Translations;
+use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
 
 /**
  * The class representing a (crafting) machine from the export.
@@ -15,8 +15,8 @@ use FactorioItemBrowser\ExportData\Collection\Translations;
 class Machine
 {
     public string $name = '';
-    public Translations $labels;
-    public Translations $descriptions;
+    public TranslationDictionary $labels;
+    public TranslationDictionary $descriptions;
     /** @var array<string> */
     public array $craftingCategories = [];
     public float $craftingSpeed = 1.;
@@ -30,7 +30,7 @@ class Machine
 
     public function __construct()
     {
-        $this->labels = new Translations();
-        $this->descriptions = new Translations();
+        $this->labels = new TranslationDictionary();
+        $this->descriptions = new TranslationDictionary();
     }
 }

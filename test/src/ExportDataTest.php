@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FactorioItemBrowserTest\ExportData;
 
 use FactorioItemBrowser\ExportData\Collection\ChunkedCollection;
-use FactorioItemBrowser\ExportData\Collection\PersistedCollection;
+use FactorioItemBrowser\ExportData\Collection\FileDictionary;
 use FactorioItemBrowser\ExportData\Entity\Icon;
 use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\Machine;
@@ -40,9 +40,6 @@ class ExportDataTest extends TestCase
         $this->assertEquals(new ChunkedCollection($storage, Machine::class), $instance->getMachines());
         $this->assertEquals(new ChunkedCollection($storage, Recipe::class), $instance->getRecipes());
         $this->assertEquals(new ChunkedCollection($storage, Icon::class), $instance->getIcons());
-        $this->assertEquals(
-            new PersistedCollection($storage, 'rendered-icon/%s.png'),
-            $instance->getRenderedIcons(),
-        );
+        $this->assertInstanceOf(FileDictionary::class, $instance->getRenderedIcons());
     }
 }

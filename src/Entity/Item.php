@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
-use FactorioItemBrowser\ExportData\Collection\Translations;
+use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
 
 /**
  * The class representing an item from the export.
@@ -16,13 +16,13 @@ class Item
 {
     public string $type = '';
     public string $name = '';
-    public Translations $labels;
-    public Translations $descriptions;
+    public TranslationDictionary $labels;
+    public TranslationDictionary $descriptions;
     public string $iconId = '';
 
     public function __construct()
     {
-        $this->labels = new Translations();
-        $this->descriptions = new Translations();
+        $this->labels = new TranslationDictionary();
+        $this->descriptions = new TranslationDictionary();
     }
 }

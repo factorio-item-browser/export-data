@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
-use FactorioItemBrowser\ExportData\Collection\Translations;
+use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
 
@@ -17,8 +17,8 @@ use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
 class Recipe
 {
     public string $name = '';
-    public Translations $labels;
-    public Translations $descriptions;
+    public TranslationDictionary $labels;
+    public TranslationDictionary $descriptions;
     public string $mode = '';
     /** @var array<Ingredient> */
     public array $ingredients = [];
@@ -30,7 +30,7 @@ class Recipe
 
     public function __construct()
     {
-        $this->labels = new Translations();
-        $this->descriptions = new Translations();
+        $this->labels = new TranslationDictionary();
+        $this->descriptions = new TranslationDictionary();
     }
 }

@@ -1,6 +1,6 @@
-FactorioItemBrowser\ExportData\Collection\Translations:
+FactorioItemBrowser\ExportData\Collection\TranslationDictionary:
   exclusion_policy: all
   properties:
-    translations:
+    values:
       type: array<string, string>
       inline: true

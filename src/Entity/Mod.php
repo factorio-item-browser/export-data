@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
-use FactorioItemBrowser\ExportData\Collection\Translations;
+use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
 
 /**
  * The entity representing a mod.
@@ -15,15 +15,15 @@ use FactorioItemBrowser\ExportData\Collection\Translations;
 class Mod
 {
     public string $name = '';
-    public Translations $titles;
-    public Translations $descriptions;
+    public TranslationDictionary $titles;
+    public TranslationDictionary $descriptions;
     public string $author = '';
     public string $version = '';
     public string $thumbnailId = '';
 
     public function __construct()
     {
-        $this->titles = new Translations();
-        $this->descriptions = new Translations();
+        $this->titles = new TranslationDictionary();
+        $this->descriptions = new TranslationDictionary();
     }
 }

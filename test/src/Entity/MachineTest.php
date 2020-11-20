@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTest\ExportData\Entity;
 
-use FactorioItemBrowser\ExportData\Collection\Translations;
+use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
 use FactorioItemBrowser\ExportData\Entity\Machine;
 use PHPUnit\Framework\TestCase;
 
@@ -25,8 +25,8 @@ class MachineTest extends TestCase
         $machine = new Machine();
 
         $this->assertSame('', $machine->name);
-        $this->assertEquals(new Translations(), $machine->labels);
-        $this->assertEquals(new Translations(), $machine->descriptions);
+        $this->assertEquals(new TranslationDictionary(), $machine->labels);
+        $this->assertEquals(new TranslationDictionary(), $machine->descriptions);
         $this->assertSame([], $machine->craftingCategories);
         $this->assertSame(1., $machine->craftingSpeed);
         $this->assertSame(0, $machine->numberOfItemSlots);

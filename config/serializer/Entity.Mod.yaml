@@ -4,9 +4,9 @@ FactorioItemBrowser\ExportData\Entity\Mod:
     name:
       type: string
     titles:
-      type: FactorioItemBrowser\ExportData\Collection\Translations
+      type: FactorioItemBrowser\ExportData\Collection\TranslationDictionary
     descriptions:
-      type: FactorioItemBrowser\ExportData\Collection\Translations
+      type: FactorioItemBrowser\ExportData\Collection\TranslationDictionary
     author:
       type: string
     version:
