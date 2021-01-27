@@ -6,6 +6,7 @@ namespace FactorioItemBrowserTest\ExportData\Serializer;
 
 use BluePsyduck\TestHelper\ReflectionTrait;
 use FactorioItemBrowser\ExportData\Constant\ConfigKey;
+use FactorioItemBrowser\ExportData\Serializer\Construction\ObjectConstructor;
 use FactorioItemBrowser\ExportData\Serializer\Handler\ChunkedCollectionHandler;
 use FactorioItemBrowser\ExportData\Serializer\SerializerFactory;
 use Interop\Container\ContainerInterface;
@@ -39,6 +40,7 @@ class SerializerFactoryTest extends TestCase
                 'FactorioItemBrowser\ExportData'
             )
             ->setPropertyNamingStrategy(new IdenticalPropertyNamingStrategy())
+            ->setObjectConstructor(new ObjectConstructor())
             ->addDefaultHandlers()
             ->configureHandlers(function (HandlerRegistry $registry): void {
                 $registry->registerSubscribingHandler(new ChunkedCollectionHandler());

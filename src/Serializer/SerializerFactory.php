@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FactorioItemBrowser\ExportData\Serializer;
 
 use FactorioItemBrowser\ExportData\Constant\ConfigKey;
+use FactorioItemBrowser\ExportData\Serializer\Construction\ObjectConstructor;
 use FactorioItemBrowser\ExportData\Serializer\Handler\ChunkedCollectionHandler;
 use Interop\Container\ContainerInterface;
 use JMS\Serializer\Handler\HandlerRegistry;
@@ -36,6 +37,7 @@ class SerializerFactory implements FactoryInterface
                 'FactorioItemBrowser\ExportData'
             )
             ->setPropertyNamingStrategy(new IdenticalPropertyNamingStrategy())
+            ->setObjectConstructor(new ObjectConstructor())
             ->addDefaultHandlers()
             ->configureHandlers(function (HandlerRegistry $registry): void {
                 $registry->registerSubscribingHandler(new ChunkedCollectionHandler());
