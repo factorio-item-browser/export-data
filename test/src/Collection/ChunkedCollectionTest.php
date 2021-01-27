@@ -7,6 +7,7 @@ namespace FactorioItemBrowserTest\ExportData\Collection;
 use FactorioItemBrowser\ExportData\Collection\ChunkedCollection;
 use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Storage\Storage;
+use Generator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -15,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Collection\ChunkedCollection
+ * @covers \FactorioItemBrowser\ExportData\Collection\ChunkedCollection
  */
 class ChunkedCollectionTest extends TestCase
 {
@@ -130,6 +131,33 @@ class ChunkedCollectionTest extends TestCase
             $iteratedItems[] = $item;
         }
         $this->assertEquals($items, $iteratedItems);
+    }
+
+    public function testIteratorWithGenerator(): void
+    {
+        $chunk1 = $this->createItemArray(1024, 'foo');
+        $chunk2 = $this->createItemArray(512, 'bar');
+        $items = array_merge($chunk1, $chunk2);
+
+        $this->storage->expects($this->exactly(2))
+                      ->method('readData')
+                      ->withConsecutive(
+                          [$this->identicalTo('item/0')],
+                          [$this->identicalTo('item/1')],
+                      )
+                      ->willReturnOnConsecutiveCalls(
+                          $chunk1,
+                          $chunk2,
+                      );
+
+        $instance = new ChunkedCollection($this->storage, Item::class, 1536);
+
+        $generator = function () use ($instance): Generator {
+            yield from $instance;
+        };
+
+        $result = iterator_to_array($generator());
+        $this->assertSame($items, $result);
     }
 
     public function testCountUnloadedChunks(): void

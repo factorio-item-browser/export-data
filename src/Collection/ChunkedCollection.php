@@ -100,6 +100,6 @@ class ChunkedCollection implements Countable, IteratorAggregate
         array_push($this->items, ...$items);
         ++$this->nextChunk;
 
-        return $items;
+        return array_slice($this->items, -count($items), null, true);
     }
 }
