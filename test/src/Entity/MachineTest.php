@@ -13,13 +13,10 @@ use PHPUnit\Framework\TestCase;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Machine
+ * @covers \FactorioItemBrowser\ExportData\Entity\Machine
  */
 class MachineTest extends TestCase
 {
-    /**
-     * @covers ::__construct
-     */
     public function testConstruct(): void
     {
         $machine = new Machine();

@@ -14,13 +14,10 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Recipe
+ * @covers \FactorioItemBrowser\ExportData\Entity\Recipe
  */
 class RecipeTest extends TestCase
 {
-    /**
-     * @covers ::__construct
-     */
     public function testConstruct(): void
     {
         $recipe = new Recipe();

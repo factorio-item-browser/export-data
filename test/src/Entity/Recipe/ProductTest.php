@@ -13,13 +13,10 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Recipe\Product
+ * @covers \FactorioItemBrowser\ExportData\Entity\Recipe\Product
  */
 class ProductTest extends TestCase
 {
-    /**
-     * @coversNothing
-     */
     public function testConstruct(): void
     {
         $product = new Product();

@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Storage\Storage
+ * @covers \FactorioItemBrowser\ExportData\Storage\Storage
  */
 class StorageTest extends TestCase
 {
@@ -53,10 +53,6 @@ class StorageTest extends TestCase
         $this->assertFalse(file_exists($this->fileName));
     }
 
-    /**
-     * @covers ::readData
-     * @covers ::writeData
-     */
     public function testWriteAndReadData(): void
     {
         $item = new Item();
@@ -85,10 +81,6 @@ class StorageTest extends TestCase
         $this->assertSame($item, $result);
     }
 
-    /**
-     * @covers ::readFile
-     * @covers ::writeFile
-     */
     public function testWriteAndReadFile(): void
     {
         $name = 'abc.txt';

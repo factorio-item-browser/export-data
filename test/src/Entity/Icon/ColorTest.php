@@ -13,13 +13,10 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Icon\Color
+ * @covers \FactorioItemBrowser\ExportData\Entity\Icon\Color
  */
 class ColorTest extends TestCase
 {
-    /**
-     * @coversNothing
-     */
     public function testConstruct(): void
     {
         $color = new Color();

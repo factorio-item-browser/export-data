@@ -13,13 +13,10 @@ use PHPUnit\Framework\TestCase;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  *
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Icon
+ * @covers \FactorioItemBrowser\ExportData\Entity\Icon
  */
 class IconTest extends TestCase
 {
-    /**
-     * @coversNothing
-     */
     public function testConstruct(): void
     {
         $icon = new Icon();

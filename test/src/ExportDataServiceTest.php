@@ -19,7 +19,7 @@ use ReflectionException;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- * @coversDefaultClass \FactorioItemBrowser\ExportData\ExportDataService
+ * @covers \FactorioItemBrowser\ExportData\ExportDataService
  */
 class ExportDataServiceTest extends TestCase
 {
@@ -51,7 +51,6 @@ class ExportDataServiceTest extends TestCase
 
     /**
      * @throws ReflectionException
-     * @covers ::__construct
      */
     public function testConstruct(): void
     {
@@ -60,9 +59,6 @@ class ExportDataServiceTest extends TestCase
         $this->assertSame($this->storageFactory, $this->extractProperty($instance, 'storageFactory'));
     }
 
-    /**
-     * @covers ::createExport
-     */
     public function testCreateExport(): void
     {
         $expectedResult = new ExportData($this->storage, $this->combinationId);
@@ -76,9 +72,6 @@ class ExportDataServiceTest extends TestCase
         $this->assertEquals($expectedResult, $result);
     }
 
-    /**
-     * @covers ::loadExport
-     */
     public function testLoadExport(): void
     {
         $exportData = $this->createMock(ExportData::class);
@@ -94,9 +87,6 @@ class ExportDataServiceTest extends TestCase
         $this->assertSame($exportData, $result);
     }
 
-    /**
-     * @covers ::loadExport
-     */
     public function testLoadExportWithException(): void
     {
         $expectedResult = new ExportData($this->storage, $this->combinationId);
@@ -112,9 +102,6 @@ class ExportDataServiceTest extends TestCase
         $this->assertEquals($expectedResult, $result);
     }
 
-    /**
-     * @covers ::persistExport
-     */
     public function testPersistExport(): void
     {
         $fileName = 'def';
@@ -136,9 +123,6 @@ class ExportDataServiceTest extends TestCase
         $this->assertSame($fileName, $result);
     }
 
-    /**
-     * @covers ::removeExport
-     */
     public function testRemoveExport(): void
     {
         $this->storage->expects($this->once())

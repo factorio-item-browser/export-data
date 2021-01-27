@@ -18,13 +18,10 @@ use PHPUnit\Framework\TestCase;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Serializer\Handler\ChunkedCollectionHandler
+ * @covers \FactorioItemBrowser\ExportData\Serializer\Handler\ChunkedCollectionHandler
  */
 class ChunkedCollectionHandlerTest extends TestCase
 {
-    /**
-     * @covers ::getSubscribingMethods
-     */
     public function testGetSubscribingMethods(): void
     {
         $expectedResult = [
@@ -47,9 +44,6 @@ class ChunkedCollectionHandlerTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    /**
-     * @covers ::serialize
-     */
     public function testSerialize(): void
     {
         $visitor = new JsonSerializationVisitor();
@@ -69,9 +63,6 @@ class ChunkedCollectionHandlerTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    /**
-     * @covers ::serialize
-     */
     public function testSerializeWithoutCollection(): void
     {
         $visitor = new JsonSerializationVisitor();
@@ -83,9 +74,6 @@ class ChunkedCollectionHandlerTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    /**
-     * @covers ::deserialize
-     */
     public function testDeserialize(): void
     {
         $visitor = new JsonDeserializationVisitor();

@@ -22,15 +22,12 @@ use ReflectionException;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Serializer\SerializerFactory
+ * @covers \FactorioItemBrowser\ExportData\Serializer\SerializerFactory
  */
 class SerializerFactoryTest extends TestCase
 {
     use ReflectionTrait;
 
-    /**
-     * @covers ::__invoke
-     */
     public function testInvoke(): void
     {
         $builder = SerializerBuilder::create();
@@ -64,7 +61,6 @@ class SerializerFactoryTest extends TestCase
 
     /**
      * @throws ReflectionException
-     * @covers ::addCacheDirectory
      */
     public function testAddCacheDirectory(): void
     {
@@ -95,7 +91,6 @@ class SerializerFactoryTest extends TestCase
 
     /**
      * @throws ReflectionException
-     * @covers ::addCacheDirectory
      */
     public function testAddCacheDirectoryWithoutConfig(): void
     {

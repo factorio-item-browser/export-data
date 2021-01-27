@@ -14,13 +14,10 @@ use PHPUnit\Framework\TestCase;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Storage\StorageFactory
+ * @covers \FactorioItemBrowser\ExportData\Storage\StorageFactory
  */
 class StorageFactoryTest extends TestCase
 {
-    /**
-     * @covers ::<public>
-     */
     public function testCreateForCombination(): void
     {
         $serializer = $this->createMock(SerializerInterface::class);
