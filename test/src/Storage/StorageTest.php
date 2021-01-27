@@ -27,6 +27,7 @@ class StorageTest extends TestCase
     {
         $this->exportDataSerializer = $this->createMock(SerializerInterface::class);
         $this->fileName = (string) tempnam(sys_get_temp_dir(), 'test');
+        unlink($this->fileName); // tempnam() is already creating the file. We don't want to ahve it yet.
     }
 
     protected function tearDown(): void
@@ -47,6 +48,7 @@ class StorageTest extends TestCase
         $this->assertSame($this->fileName, $instance->getFileName());
 
         $instance->writeFile('foo', 'bar');
+        $instance->close();
         $this->assertTrue(file_exists($this->fileName));
 
         $instance->remove();
