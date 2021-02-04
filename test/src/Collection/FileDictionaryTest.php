@@ -21,18 +21,19 @@ class FileDictionaryTest extends TestCase
     {
         $filePattern = 'foo/%s.txt';
         $fileName = 'abc';
+        $compressFiles = false;
         $contents = 'def';
 
         $storage = $this->createMock(Storage::class);
         $storage->expects($this->once())
                 ->method('writeFile')
-                ->with($this->identicalTo('foo/abc.txt'), $this->identicalTo($contents));
+                ->with($this->identicalTo('foo/abc.txt'), $this->identicalTo($contents), $this->isFalse());
         $storage->expects($this->once())
                 ->method('readFile')
                 ->with($this->identicalTo('foo/abc.txt'))
                 ->willReturn($contents);
 
-        $instance = new FileDictionary($storage, $filePattern);
+        $instance = new FileDictionary($storage, $filePattern, $compressFiles);
         $instance->set($fileName, $contents);
 
         $result = $instance->get($fileName);

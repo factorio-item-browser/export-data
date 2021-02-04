@@ -21,11 +21,13 @@ class FileDictionary implements DictionaryInterface, IteratorAggregate
 {
     private Storage $storage;
     private string $filePattern;
+    private bool $compressFiles;
 
-    public function __construct(Storage $storage, string $filePattern)
+    public function __construct(Storage $storage, string $filePattern, bool $compressFiles = true)
     {
         $this->storage = $storage;
         $this->filePattern = $filePattern;
+        $this->compressFiles = $compressFiles;
     }
 
     public function get(string $key): string
@@ -37,7 +39,7 @@ class FileDictionary implements DictionaryInterface, IteratorAggregate
     public function set(string $key, string $value): void
     {
         $file = sprintf($this->filePattern, $key);
-        $this->storage->writeFile($file, $value);
+        $this->storage->writeFile($file, $value, $this->compressFiles);
     }
 
     public function getIterator(): Traversable

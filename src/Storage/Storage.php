@@ -65,10 +65,16 @@ class Storage
      * Write a (binary) file to the storage file.
      * @param string $name
      * @param string $contents
+     * @param bool $compress
      */
-    public function writeFile(string $name, string $contents): void
+    public function writeFile(string $name, string $contents, bool $compress = true): void
     {
-        $this->getZipArchive()->addFromString($name, $contents);
+        $zipArchive = $this->getZipArchive();
+        $zipArchive->addFromString($name, $contents);
+
+        if (!$compress) {
+            $zipArchive->setCompressionName($name, ZipArchive::CM_STORE);
+        }
     }
 
     /**

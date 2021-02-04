@@ -85,14 +85,17 @@ class StorageTest extends TestCase
 
     public function testWriteAndReadFile(): void
     {
-        $name = 'abc.txt';
-        $contents = 'def';
+        $name1 = 'abc.txt';
+        $contents1 = 'def';
+        $name2 = 'ghi.png';
+        $contents2 = 'jkl';
 
         $instance = $this->createInstance();
-        $instance->writeFile($name, $contents);
+        $instance->writeFile($name1, $contents1, true);
+        $instance->writeFile($name2, $contents2, false);
         $instance->close();
 
-        $result = $instance->readFile($name);
-        $this->assertSame($contents, $result);
+        $this->assertSame($contents1, $instance->readFile($name1));
+        $this->assertSame($contents2, $instance->readFile($name2));
     }
 }

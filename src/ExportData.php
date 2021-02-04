@@ -45,7 +45,7 @@ class ExportData
         $this->machines = new ChunkedCollection($storage, Machine::class);
         $this->recipes = new ChunkedCollection($storage, Recipe::class);
         $this->icons = new ChunkedCollection($storage, Icon::class);
-        $this->renderedIcons = new FileDictionary($storage, 'rendered-icon/%s.png');
+        $this->renderedIcons = new FileDictionary($storage, 'rendered-icon/%s.png', false);
     }
 
     /**
