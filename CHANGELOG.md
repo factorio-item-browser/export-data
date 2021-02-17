@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.0.0 - 2021-02-17
+
+### Added
+
+- Support for PHP 8.
+
+### Changed
+
+- **[BC Break]** Entity classes now using public properties instead of getter/setter.
+- **[BC Break]** Data structure in the archive file to be serialized in smaller chunks, so that not all data must be deserialized when reading from it in the importer.
+- Icon files are explicitly no longer compressed in the archive file.
+
 ## 3.0.0 - 2020-04-15
 
 ### Added
