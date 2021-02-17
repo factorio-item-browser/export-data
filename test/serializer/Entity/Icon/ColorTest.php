@@ -12,8 +12,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- *
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Icon\Color
  */
 class ColorTest extends SerializerTestCase
 {
@@ -24,10 +22,10 @@ class ColorTest extends SerializerTestCase
     protected function getObject(): object
     {
         $color = new Color();
-        $color->setRed(12.34)
-              ->setGreen(23.45)
-              ->setBlue(34.56)
-              ->setAlpha(45.67);
+        $color->red = 12.34;
+        $color->green = 23.45;
+        $color->blue = 34.56;
+        $color->alpha = 45.67;
 
         return $color;
     }

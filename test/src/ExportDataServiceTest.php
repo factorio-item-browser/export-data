@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace FactorioItemBrowserTest\ExportData;
 
 use BluePsyduck\TestHelper\ReflectionTrait;
-use FactorioItemBrowser\ExportData\Entity\Combination;
+use Exception;
 use FactorioItemBrowser\ExportData\ExportData;
 use FactorioItemBrowser\ExportData\ExportDataService;
-use FactorioItemBrowser\ExportData\Storage\StorageFactoryInterface;
-use FactorioItemBrowser\ExportData\Storage\StorageInterface;
+use FactorioItemBrowser\ExportData\Storage\Storage;
+use FactorioItemBrowser\ExportData\Storage\StorageFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
@@ -19,91 +19,116 @@ use ReflectionException;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- * @coversDefaultClass \FactorioItemBrowser\ExportData\ExportDataService
+ * @covers \FactorioItemBrowser\ExportData\ExportDataService
  */
 class ExportDataServiceTest extends TestCase
 {
     use ReflectionTrait;
 
-    /**
-     * The mocked storage factory.
-     * @var StorageFactoryInterface&MockObject
-     */
-    protected $storageFactory;
+    /** @var StorageFactory&MockObject */
+    private StorageFactory $storageFactory;
+    /** @var Storage&MockObject */
+    private Storage $storage;
+    private string $combinationId = 'abc';
 
-    /**
-     * Sets up the test case.
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->storageFactory = $this->createMock(StorageFactoryInterface::class);
+        $this->storageFactory = $this->createMock(StorageFactory::class);
+        $this->storage = $this->createMock(Storage::class);
+    }
+
+    private function createInstance(): ExportDataService
+    {
+        $this->storageFactory->expects($this->any())
+                             ->method('createForCombination')
+                             ->with($this->identicalTo($this->combinationId))
+                             ->willReturn($this->storage);
+
+        return new ExportDataService($this->storageFactory);
     }
 
     /**
-     * Tests the constructing.
      * @throws ReflectionException
-     * @covers ::__construct
      */
     public function testConstruct(): void
     {
-        $service = new ExportDataService($this->storageFactory);
+        $instance = $this->createInstance();
 
-        $this->assertSame($this->storageFactory, $this->extractProperty($service, 'storageFactory'));
+        $this->assertSame($this->storageFactory, $this->extractProperty($instance, 'storageFactory'));
     }
 
-    /**
-     * Tests the createExport method.
-     * @covers ::createExport
-     */
     public function testCreateExport(): void
     {
-        $combinationId = 'abc';
+        $expectedResult = new ExportData($this->storage, $this->combinationId);
 
-        /* @var StorageInterface&MockObject $storage */
-        $storage = $this->createMock(StorageInterface::class);
+        $this->storage->expects($this->once())
+                      ->method('remove');
 
-        $expectedResult = new ExportData((new Combination())->setId('abc'), $storage);
-
-        $this->storageFactory->expects($this->once())
-                             ->method('createForCombination')
-                             ->with($this->equalTo($combinationId))
-                             ->willReturn($storage);
-
-        $service = new ExportDataService($this->storageFactory);
-        $result = $service->createExport($combinationId);
+        $instance = $this->createInstance();
+        $result = $instance->createExport($this->combinationId);
 
         $this->assertEquals($expectedResult, $result);
     }
 
-    /**
-     * Tests the loadExport method.
-     * @covers ::loadExport
-     */
     public function testLoadExport(): void
     {
-        $combinationId = 'abc';
+        $exportData = $this->createMock(ExportData::class);
 
-        /* @var Combination&MockObject $combination */
-        $combination = $this->createMock(Combination::class);
+        $this->storage->expects($this->once())
+                      ->method('readData')
+                      ->with($this->identicalTo('meta'), $this->identicalTo(ExportData::class))
+                      ->willReturn($exportData);
 
-        /* @var StorageInterface&MockObject $storage */
-        $storage = $this->createMock(StorageInterface::class);
-        $storage->expects($this->once())
-                ->method('load')
-                ->willReturn($combination);
+        $instance = $this->createInstance();
+        $result = $instance->loadExport($this->combinationId);
 
-        $expectedResult = new ExportData($combination, $storage);
+        $this->assertSame($exportData, $result);
+    }
 
-        $this->storageFactory->expects($this->once())
-                             ->method('createForCombination')
-                             ->with($this->identicalTo($combinationId))
-                             ->willReturn($storage);
+    public function testLoadExportWithException(): void
+    {
+        $expectedResult = new ExportData($this->storage, $this->combinationId);
 
-        $service = new ExportDataService($this->storageFactory);
-        $result = $service->loadExport($combinationId);
+        $this->storage->expects($this->once())
+                      ->method('readData')
+                      ->with($this->identicalTo('meta'), $this->identicalTo(ExportData::class))
+                      ->willThrowException($this->createMock(Exception::class));
+
+        $instance = $this->createInstance();
+        $result = $instance->loadExport($this->combinationId);
 
         $this->assertEquals($expectedResult, $result);
+    }
+
+    public function testPersistExport(): void
+    {
+        $fileName = 'def';
+
+        $exportData = $this->createMock(ExportData::class);
+        $exportData->expects($this->once())
+                   ->method('getCombinationId')
+                   ->willReturn($this->combinationId);
+
+        $this->storage->expects($this->once())
+                      ->method('writeData')
+                      ->with($this->identicalTo('meta'), $this->identicalTo($exportData));
+        $this->storage->expects($this->once())
+                      ->method('getFileName')
+                      ->willReturn($fileName);
+
+        $instance = $this->createInstance();
+        $result = $instance->persistExport($exportData);
+        $this->assertSame($fileName, $result);
+    }
+
+    public function testRemoveExport(): void
+    {
+        $this->storage->expects($this->once())
+                      ->method('remove');
+
+        $instance = $this->createInstance();
+        $instance->removeExport($this->combinationId);
     }
 }

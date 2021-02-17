@@ -12,8 +12,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- *
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient
  */
 class IngredientTest extends SerializerTestCase
 {
@@ -24,10 +22,9 @@ class IngredientTest extends SerializerTestCase
     protected function getObject(): object
     {
         $ingredient = new Ingredient();
-        $ingredient->setType('abc')
-                   ->setName('def')
-                   ->setAmount(13.37);
-
+        $ingredient->type = 'abc';
+        $ingredient->name = 'def';
+        $ingredient->amount = 13.37;
         return $ingredient;
     }
 

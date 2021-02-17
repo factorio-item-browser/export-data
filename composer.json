@@ -12,9 +12,11 @@
     }
   ],
   "require": {
-    "php": "^7.4",
+    "php": "^7.4 | ^8.0",
     "ext-json": "*",
+    "ext-mbstring": "*",
     "ext-zip": "*",
+    "bluepsyduck/jms-serializer-factory": "^1.0",
     "bluepsyduck/laminas-autowire-factory": "^1.0",
     "jms/serializer": "^3.2",
     "laminas/laminas-servicemanager": "^3.0",
@@ -22,11 +24,10 @@
   },
   "require-dev": {
     "bluepsyduck/test-helper": "^1.0",
-    "mikey179/vfsstream": "^1.6",
     "phpstan/phpstan": "^0.12",
     "phpstan/phpstan-phpunit": "^0.12",
     "phpstan/phpstan-strict-rules": "^0.12",
-    "phpunit/phpunit": "^8.3",
+    "phpunit/phpunit": "^9.0",
     "rregeer/phpunit-coverage-check": "^0.3",
     "squizlabs/php_codesniffer": "^3.4"
   },

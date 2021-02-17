@@ -12,8 +12,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- *
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Icon\Offset
  */
 class OffsetTest extends SerializerTestCase
 {
@@ -24,8 +22,8 @@ class OffsetTest extends SerializerTestCase
     protected function getObject(): object
     {
         $offset = new Offset();
-        $offset->setX(42)
-               ->setY(21);
+        $offset->x = 42;
+        $offset->y = 21;
 
         return $offset;
     }

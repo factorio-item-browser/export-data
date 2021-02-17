@@ -12,8 +12,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- *
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Mod
  */
 class ModTest extends SerializerTestCase
 {
@@ -24,12 +22,12 @@ class ModTest extends SerializerTestCase
     protected function getObject(): object
     {
         $mod = new Mod();
-        $mod->setName('abc')
-            ->setAuthor('def')
-            ->setVersion('ghi')
-            ->setThumbnailId('jkl');
-        $mod->getTitles()->addTranslation('mno', 'pqr');
-        $mod->getDescriptions()->addTranslation('stu', 'vwx');
+        $mod->name = 'abc';
+        $mod->author = 'def';
+        $mod->version = 'ghi';
+        $mod->thumbnailId = 'jkl';
+        $mod->titles->set('mno', 'pqr');
+        $mod->descriptions->set('stu', 'vwx');
 
         return $mod;
     }

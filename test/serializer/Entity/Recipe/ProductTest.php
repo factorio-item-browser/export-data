@@ -12,8 +12,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- *
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Recipe\Product
  */
 class ProductTest extends SerializerTestCase
 {
@@ -24,12 +22,11 @@ class ProductTest extends SerializerTestCase
     protected function getObject(): object
     {
         $product = new Product();
-        $product->setType('abc')
-                ->setName('def')
-                ->setAmountMin(12.34)
-                ->setAmountMax(23.45)
-                ->setProbability(34.56);
-
+        $product->type = 'abc';
+        $product->name = 'def';
+        $product->amountMin = 12.34;
+        $product->amountMax = 23.45;
+        $product->probability = 34.56;
         return $product;
     }
 

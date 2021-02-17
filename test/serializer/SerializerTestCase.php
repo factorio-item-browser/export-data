@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTestSerializer\ExportData;
 
-use FactorioItemBrowser\ExportData\Serializer\SerializerFactory;
-use Interop\Container\ContainerInterface;
+use FactorioItemBrowser\ExportData\Serializer\Construction\ObjectConstructor;
+use FactorioItemBrowser\ExportData\Serializer\Handler\ChunkedCollectionHandler;
+use JMS\Serializer\Handler\HandlerRegistry;
+use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
+use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -24,11 +26,18 @@ abstract class SerializerTestCase extends TestCase
      */
     protected function createSerializer(): SerializerInterface
     {
-        /* @var ContainerInterface&MockObject $container */
-        $container = $this->createMock(ContainerInterface::class);
+        $builder = new SerializerBuilder();
+        $builder->setMetadataDirs([
+                    'FactorioItemBrowser\ExportData' => __DIR__ . '/../../config/serializer',
+                ])
+                ->setPropertyNamingStrategy(new IdenticalPropertyNamingStrategy())
+                ->setObjectConstructor(new ObjectConstructor())
+                ->addDefaultHandlers()
+                ->configureHandlers(function (HandlerRegistry $registry): void {
+                    $registry->registerSubscribingHandler(new ChunkedCollectionHandler());
+                });
 
-        $serializerFactory = new SerializerFactory();
-        return $serializerFactory($container, SerializerInterface::class);
+        return $builder->build();
     }
 
     /**

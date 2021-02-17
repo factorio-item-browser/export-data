@@ -14,8 +14,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- *
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Recipe
  */
 class RecipeTest extends SerializerTestCase
 {
@@ -26,29 +24,29 @@ class RecipeTest extends SerializerTestCase
     protected function getObject(): object
     {
         $ingredient1 = new Ingredient();
-        $ingredient1->setType('abc')
-                    ->setName('def');
+        $ingredient1->type = 'abc';
+        $ingredient1->name = 'def';
         $ingredient2 = new Ingredient();
-        $ingredient2->setType('ghi')
-                    ->setName('jkl');
+        $ingredient2->type = 'ghi';
+        $ingredient2->name = 'jkl';
 
         $product1 = new Product();
-        $product1->setType('mno')
-                 ->setName('pqr');
+        $product1->type = 'mno';
+        $product1->name = 'pqr';
         $product2 = new Product();
-        $product2->setType('stu')
-                 ->setName('vwx');
+        $product2->type = 'stu';
+        $product2->name = 'vwx';
 
         $recipe = new Recipe();
-        $recipe->setName('yza')
-               ->setMode('bcd')
-               ->setIngredients([$ingredient1, $ingredient2])
-               ->setProducts([$product1, $product2])
-               ->setCraftingTime(13.37)
-               ->setCraftingCategory('efg')
-               ->setIconId('hij');
-        $recipe->getLabels()->addTranslation('klm', 'opq');
-        $recipe->getDescriptions()->addTranslation('rst', 'uvw');
+        $recipe->name = 'yza';
+        $recipe->mode = 'bcd';
+        $recipe->ingredients = [$ingredient1, $ingredient2];
+        $recipe->products = [$product1, $product2];
+        $recipe->craftingTime = 13.37;
+        $recipe->craftingCategory = 'efg';
+        $recipe->iconId = 'hij';
+        $recipe->labels->set('klm', 'opq');
+        $recipe->descriptions->set('rst', 'uvw');
 
         return $recipe;
     }

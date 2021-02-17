@@ -12,8 +12,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- *
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Item
  */
 class ItemTest extends SerializerTestCase
 {
@@ -24,11 +22,11 @@ class ItemTest extends SerializerTestCase
     protected function getObject(): object
     {
         $item = new Item();
-        $item->setType('abc')
-             ->setName('def')
-             ->setIconId('ghi');
-        $item->getLabels()->addTranslation('jkl', 'mno');
-        $item->getDescriptions()->addTranslation('pqr', 'stu');
+        $item->type = 'abc';
+        $item->name = 'def';
+        $item->iconId = 'ghi';
+        $item->labels->set('jkl', 'mno');
+        $item->descriptions->set('pqr', 'stu');
 
         return $item;
     }

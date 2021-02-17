@@ -13,22 +13,17 @@ namespace FactorioItemBrowser\ExportData\Constant;
 interface ConfigKey
 {
     /**
-     * The key holding the name of the project.
+     * The main key for the config.
      */
-    public const PROJECT = 'factorio-item-browser';
-
-    /**
-     * The key holding the name of the ExportData library itself.
-     */
-    public const EXPORT_DATA = 'export-data';
-
-    /**
-     * The key holding the cache directory to use.
-     */
-    public const CACHE_DIR = 'cache-dir';
+    public const MAIN = 'export-data';
 
     /**
      * The key holding the working directory to use.
      */
     public const WORKING_DIRECTORY = 'working-directory';
+
+    /**
+     * The key holding the serializer config.
+     */
+    public const SERIALIZER = 'serializer';
 }

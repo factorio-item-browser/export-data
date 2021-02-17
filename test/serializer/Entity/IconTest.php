@@ -13,8 +13,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- *
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Entity\Icon
  */
 class IconTest extends SerializerTestCase
 {
@@ -25,19 +23,19 @@ class IconTest extends SerializerTestCase
     protected function getObject(): object
     {
         $layer1 = new Layer();
-        $layer1->setFileName('abc')
-               ->setScale(13.37)
-               ->setSize(42);
+        $layer1->fileName = 'abc';
+        $layer1->scale = 13.37;
+        $layer1->size = 42;
 
         $layer2 = new Layer();
-        $layer2->setFileName('def')
-               ->setScale(73.31)
-               ->setSize(21);
+        $layer2->fileName = 'def';
+        $layer2->scale = 73.31;
+        $layer2->size = 21;
 
         $icon = new Icon();
-        $icon->setId('ghi')
-             ->setLayers([$layer1, $layer2])
-             ->setSize(1337);
+        $icon->id = 'ghi';
+        $icon->layers = [$layer1, $layer2];
+        $icon->size = 1337;
 
         return $icon;
     }

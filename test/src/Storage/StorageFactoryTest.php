@@ -4,72 +4,39 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTest\ExportData\Storage;
 
-use BluePsyduck\TestHelper\ReflectionTrait;
+use FactorioItemBrowser\ExportData\Storage\Storage;
 use FactorioItemBrowser\ExportData\Storage\StorageFactory;
-use FactorioItemBrowser\ExportData\Storage\ZipArchiveStorage;
 use JMS\Serializer\SerializerInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 
 /**
  * The PHPUnit test of the StorageFactory class.
  *
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
- * @coversDefaultClass \FactorioItemBrowser\ExportData\Storage\StorageFactory
+ * @covers \FactorioItemBrowser\ExportData\Storage\StorageFactory
  */
 class StorageFactoryTest extends TestCase
 {
-    use ReflectionTrait;
-
-    /**
-     * The mocked serializer.
-     * @var SerializerInterface&MockObject
-     */
-    protected $serializer;
-
-    /**
-     * Sets up the test case.
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->serializer = $this->createMock(SerializerInterface::class);
-    }
-
-    /**
-     * Tests the constructing.
-     * @throws ReflectionException
-     * @covers ::__construct
-     */
-    public function testConstruct(): void
-    {
-        $workingDirectory = 'abc';
-
-        $factory = new StorageFactory($this->serializer, $workingDirectory);
-
-        $this->assertSame($this->serializer, $this->extractProperty($factory, 'serializer'));
-        $this->assertSame($workingDirectory, $this->extractProperty($factory, 'workingDirectory'));
-    }
-
-    /**
-     * Tests the createForCombination method.
-     * @throws ReflectionException
-     * @covers ::createForCombination
-     */
     public function testCreateForCombination(): void
     {
+        $serializer = $this->createMock(SerializerInterface::class);
         $workingDirectory = 'abc';
-        $combinationId = 'def';
-        $expectedFileName = 'abc/def.zip';
+        $combinationId1 = 'def';
+        $combinationId2 = 'ghi';
 
-        $factory = new StorageFactory($this->serializer, $workingDirectory);
-        $storage = $factory->createForCombination($combinationId);
+        $expectedStorage1 = new Storage($serializer, 'abc/def.zip');
+        $expectedStorage2 = new Storage($serializer, 'abc/ghi.zip');
 
-        $this->assertInstanceOf(ZipArchiveStorage::class, $storage);
-        $this->assertSame($this->serializer, $this->extractProperty($storage, 'serializer'));
-        $this->assertSame($expectedFileName, $this->extractProperty($storage, 'fileName'));
+        $instance = new StorageFactory($serializer, $workingDirectory);
+
+        $result1 = $instance->createForCombination($combinationId1);
+        $this->assertEquals($expectedStorage1, $result1);
+
+        $result2 = $instance->createForCombination($combinationId1);
+        $this->assertSame($result1, $result2);
+
+        $result3 = $instance->createForCombination($combinationId2);
+        $this->assertEquals($expectedStorage2, $result3);
     }
 }

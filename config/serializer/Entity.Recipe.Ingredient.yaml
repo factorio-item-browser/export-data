@@ -1,5 +1,4 @@
 FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient:
-  access_type: public_method
   exclusion_policy: all
   properties:
     type:
