@@ -22,18 +22,18 @@ use FactorioItemBrowser\ExportData\Storage\Storage;
  */
 class ExportData
 {
-    public readonly string $combinationId;
+    private readonly string $combinationId;
     /** @var ChunkedCollection<Mod> */
-    public readonly ChunkedCollection $mods;
+    private readonly ChunkedCollection $mods;
     /** @var ChunkedCollection<Item> */
-    public readonly ChunkedCollection $items;
+    private readonly ChunkedCollection $items;
     /** @var ChunkedCollection<Machine> */
-    public readonly ChunkedCollection $machines;
+    private readonly ChunkedCollection $machines;
     /** @var ChunkedCollection<Recipe> */
-    public readonly ChunkedCollection $recipes;
+    private readonly ChunkedCollection $recipes;
     /** @var ChunkedCollection<Icon> */
-    public readonly ChunkedCollection $icons;
-    public readonly DictionaryInterface $renderedIcons;
+    private readonly ChunkedCollection $icons;
+    private readonly DictionaryInterface $renderedIcons;
 
     public function __construct(
         Storage $storage,
@@ -46,5 +46,55 @@ class ExportData
         $this->recipes = new ChunkedCollection($storage, Recipe::class);
         $this->icons = new ChunkedCollection($storage, Icon::class);
         $this->renderedIcons = new FileDictionary($storage, 'rendered-icon/%s.png', false);
+    }
+
+    public function getCombinationId(): string
+    {
+        return $this->combinationId;
+    }
+
+    /**
+     * @return ChunkedCollection<Mod>
+     */
+    public function getMods(): ChunkedCollection
+    {
+        return $this->mods;
+    }
+
+    /**
+     * @return ChunkedCollection<Item>
+     */
+    public function getItems(): ChunkedCollection
+    {
+        return $this->items;
+    }
+
+    /**
+     * @return ChunkedCollection<Machine>
+     */
+    public function getMachines(): ChunkedCollection
+    {
+        return $this->machines;
+    }
+
+    /**
+     * @return ChunkedCollection<Recipe>
+     */
+    public function getRecipes(): ChunkedCollection
+    {
+        return $this->recipes;
+    }
+
+    /**
+     * @return ChunkedCollection<Icon>
+     */
+    public function getIcons(): ChunkedCollection
+    {
+        return $this->icons;
+    }
+
+    public function getRenderedIcons(): DictionaryInterface
+    {
+        return $this->renderedIcons;
     }
 }

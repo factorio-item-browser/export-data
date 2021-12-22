@@ -55,7 +55,7 @@ class ExportDataService
      */
     public function persistExport(ExportData $exportData): string
     {
-        $storage = $this->storageFactory->createForCombination($exportData->combinationId);
+        $storage = $this->storageFactory->createForCombination($exportData->getCombinationId());
         $storage->writeData('meta', $exportData);
         $storage->close();
         return $storage->getFileName();

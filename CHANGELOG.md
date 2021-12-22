@@ -4,7 +4,6 @@
 
 ### Changed
 
-- **[BC Break]** Getter methods of `ExportData` to readonly public properties.
 - Serializer now uses annotations instead of separate config files.
 - Dependency `bluepsyduck/laminas-autowire-factory` to version 2.x.
 
