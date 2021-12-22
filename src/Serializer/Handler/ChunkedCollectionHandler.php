@@ -65,13 +65,15 @@ class ChunkedCollectionHandler implements SubscribingHandlerInterface
      */
     public static function deserialize(
         JsonDeserializationVisitor $visitor,
-        $data,
+        mixed $data,
         array $type,
         Context $context
     ): ChunkedCollection {
+        /** @var Storage $storage */
         $storage = $context->getAttribute(Storage::class);
-        $itemClass = $type['params'][0]['name'] ?? '';
-        $count = (int) $data;
+        /** @var class-string<object> $itemClass */
+        $itemClass = $type['params'][0]['name'] ?? ''; // @phpstan-ignore-line
+        $count = intval($data);
 
         return new ChunkedCollection($storage, $itemClass, $count);
     }

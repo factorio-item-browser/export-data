@@ -22,10 +22,7 @@ class ChunkedCollection implements Countable, IteratorAggregate
 {
     private const CHUNK_SIZE = 1024;
 
-    private Storage $storage;
-    private string $itemClass;
     private string $prefix;
-    private int $numberOfItems;
     private int $nextChunk = 0;
     /** @var array<T> */
     private array $items = [];
@@ -35,11 +32,11 @@ class ChunkedCollection implements Countable, IteratorAggregate
      * @param class-string<T> $itemClass
      * @param int $numberOfItems
      */
-    public function __construct(Storage $storage, string $itemClass, int $numberOfItems = 0)
-    {
-        $this->storage = $storage;
-        $this->itemClass = $itemClass;
-        $this->numberOfItems = $numberOfItems;
+    public function __construct(
+        private readonly Storage $storage,
+        private readonly string $itemClass,
+        private int $numberOfItems = 0
+    ) {
         $this->prefix = strtolower(substr($itemClass, (int) strrpos($itemClass, '\\') + 1));
     }
 
@@ -94,9 +91,8 @@ class ChunkedCollection implements Countable, IteratorAggregate
             return [];
         }
 
-        /** @phpstan-var class-string<mixed> $type */
-        $type = "array<{$this->itemClass}>";
-        $items = $this->storage->readData("{$this->prefix}/{$this->nextChunk}", $type);
+        // @phpstan-ignore-next-line
+        $items = $this->storage->readData("{$this->prefix}/{$this->nextChunk}", "array<{$this->itemClass}>");
         array_push($this->items, ...$items);
         ++$this->nextChunk;
 

@@ -43,6 +43,7 @@ class ObjectConstructor implements ObjectConstructorInterface
         DeserializationContext $context
     ): ?object {
         if ($metadata->name === ExportData::class) {
+            /** @var Storage $storage */
             $storage = $context->getAttribute(Storage::class);
             return new ExportData($storage, '');
         }

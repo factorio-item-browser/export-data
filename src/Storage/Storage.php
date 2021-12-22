@@ -90,7 +90,7 @@ class Storage
         $context->setAttribute(self::class, $this);
 
         $contents = $this->readFile("{$name}.json");
-        return $this->serializer->deserialize($contents, $dataClass, 'json', $context);
+        return $this->serializer->deserialize($contents, $dataClass, 'json', $context); // @phpstan-ignore-line
     }
 
     /**
