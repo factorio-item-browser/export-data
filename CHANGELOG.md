@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- **[BC Break]** Getter methods of `ExportData` to readonly public properties.
+- Serializer now uses annotations instead of separate config files.
+- Dependency `bluepsyduck/laminas-autowire-factory` to version 2.x.
+
+### Removed
+
+- Support for PHP 7.4 and 8.0. The minimal required version is now 8.1.
+
 ## 4.0.0 - 2021-02-17
 
 ### Added
