@@ -52,7 +52,6 @@ class ObjectConstructorTest extends TestCase
                 ->with($this->identicalTo(Storage::class))
                 ->willReturn($storage);
 
-
         $instance = new ObjectConstructor();
         $result = $instance->construct(
             $this->createMock(DeserializationVisitorInterface::class),

@@ -15,12 +15,9 @@ use FactorioItemBrowser\ExportData\Storage\StorageFactory;
  */
 class ExportDataService
 {
-    private StorageFactory $storageFactory;
-
     public function __construct(
-        StorageFactory $storageFactory
+        private readonly StorageFactory $storageFactory
     ) {
-        $this->storageFactory = $storageFactory;
     }
 
     /**
@@ -58,7 +55,7 @@ class ExportDataService
      */
     public function persistExport(ExportData $exportData): string
     {
-        $storage = $this->storageFactory->createForCombination($exportData->getCombinationId());
+        $storage = $this->storageFactory->createForCombination($exportData->combinationId);
         $storage->writeData('meta', $exportData);
         $storage->close();
         return $storage->getFileName();

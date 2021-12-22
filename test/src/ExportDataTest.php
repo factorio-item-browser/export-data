@@ -31,12 +31,11 @@ class ExportDataTest extends TestCase
 
         $instance = new ExportData($storage, $combinationId);
 
-        $this->assertSame($combinationId, $instance->getCombinationId());
-        $this->assertEquals(new ChunkedCollection($storage, Mod::class), $instance->getMods());
-        $this->assertEquals(new ChunkedCollection($storage, Item::class), $instance->getItems());
-        $this->assertEquals(new ChunkedCollection($storage, Machine::class), $instance->getMachines());
-        $this->assertEquals(new ChunkedCollection($storage, Recipe::class), $instance->getRecipes());
-        $this->assertEquals(new ChunkedCollection($storage, Icon::class), $instance->getIcons());
-        $this->assertInstanceOf(FileDictionary::class, $instance->getRenderedIcons());
+        $this->assertEquals(new ChunkedCollection($storage, Mod::class), $instance->mods);
+        $this->assertEquals(new ChunkedCollection($storage, Item::class), $instance->items);
+        $this->assertEquals(new ChunkedCollection($storage, Machine::class), $instance->machines);
+        $this->assertEquals(new ChunkedCollection($storage, Recipe::class), $instance->recipes);
+        $this->assertEquals(new ChunkedCollection($storage, Icon::class), $instance->icons);
+        $this->assertInstanceOf(FileDictionary::class, $instance->renderedIcons);
     }
 }

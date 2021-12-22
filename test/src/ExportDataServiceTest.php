@@ -33,8 +33,6 @@ class ExportDataServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->storageFactory = $this->createMock(StorageFactory::class);
         $this->storage = $this->createMock(Storage::class);
     }
@@ -105,11 +103,7 @@ class ExportDataServiceTest extends TestCase
     public function testPersistExport(): void
     {
         $fileName = 'def';
-
-        $exportData = $this->createMock(ExportData::class);
-        $exportData->expects($this->once())
-                   ->method('getCombinationId')
-                   ->willReturn($this->combinationId);
+        $exportData = new ExportData($this->storage, $this->combinationId);
 
         $this->storage->expects($this->once())
                       ->method('writeData')
