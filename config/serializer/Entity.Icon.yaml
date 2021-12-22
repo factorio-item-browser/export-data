@@ -1,9 +1,0 @@
-FactorioItemBrowser\ExportData\Entity\Icon:
-  exclusion_policy: all
-  properties:
-    id:
-      type: string
-    size:
-      type: integer
-    layers:
-      type: array<FactorioItemBrowser\ExportData\Entity\Icon\Layer>

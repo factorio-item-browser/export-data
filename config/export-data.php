@@ -19,9 +19,6 @@ use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 return [
     ConfigKey::MAIN => [
         ConfigKey::SERIALIZER => [
-            JmsConfigKey::METADATA_DIRS => [
-                __NAMESPACE__ => 'vendor/factorio-item-browser/export-data/config/serializer',
-            ],
             JmsConfigKey::PROPERTY_NAMING_STRATEGY => IdenticalPropertyNamingStrategy::class,
             JmsConfigKey::OBJECT_CONSTRUCTOR => Serializer\Construction\ObjectConstructor::class,
             JmsConfigKey::ADD_DEFAULT_HANDLERS => true,

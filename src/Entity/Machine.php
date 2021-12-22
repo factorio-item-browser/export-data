@@ -6,6 +6,7 @@ namespace FactorioItemBrowser\ExportData\Entity;
 
 use FactorioItemBrowser\ExportData\Collection\DictionaryInterface;
 use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * The class representing a (crafting) machine from the export.
@@ -16,9 +17,12 @@ use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
 class Machine
 {
     public string $name = '';
+    #[Type(TranslationDictionary::class)]
     public DictionaryInterface $labels;
+    #[Type(TranslationDictionary::class)]
     public DictionaryInterface $descriptions;
     /** @var array<string> */
+    #[Type('array<string>')]
     public array $craftingCategories = [];
     public float $craftingSpeed = 1.;
     public int $numberOfItemSlots = 0;

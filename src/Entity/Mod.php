@@ -6,6 +6,7 @@ namespace FactorioItemBrowser\ExportData\Entity;
 
 use FactorioItemBrowser\ExportData\Collection\DictionaryInterface;
 use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * The entity representing a mod.
@@ -16,7 +17,9 @@ use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
 class Mod
 {
     public string $name = '';
+    #[Type(TranslationDictionary::class)]
     public DictionaryInterface $titles;
+    #[Type(TranslationDictionary::class)]
     public DictionaryInterface $descriptions;
     public string $author = '';
     public string $version = '';

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Storage;
 
+use BluePsyduck\LaminasAutoWireFactory\Attribute\Alias;
+use BluePsyduck\LaminasAutoWireFactory\Attribute\ReadConfig;
+use FactorioItemBrowser\ExportData\Constant\ConfigKey;
+use FactorioItemBrowser\ExportData\Constant\ServiceName;
 use JMS\Serializer\SerializerInterface;
 
 /**
@@ -14,18 +18,15 @@ use JMS\Serializer\SerializerInterface;
  */
 class StorageFactory
 {
-    private SerializerInterface $exportDataSerializer;
-    private string $exportDataWorkingDirectory;
-
     /** @var array<string, Storage> */
     private array $instances = [];
 
     public function __construct(
-        SerializerInterface $exportDataSerializer,
-        string $exportDataWorkingDirectory
+        #[Alias(ServiceName::SERIALIZER)]
+        private readonly SerializerInterface $serializer,
+        #[ReadConfig(ConfigKey::MAIN, ConfigKey::WORKING_DIRECTORY)]
+        private readonly string $workingDirectory,
     ) {
-        $this->exportDataSerializer = $exportDataSerializer;
-        $this->exportDataWorkingDirectory = $exportDataWorkingDirectory;
     }
 
     /**
@@ -37,8 +38,8 @@ class StorageFactory
     {
         if (!isset($this->instances[$combinationId])) {
             $this->instances[$combinationId] = new Storage(
-                $this->exportDataSerializer,
-                sprintf('%s/%s.zip', $this->exportDataWorkingDirectory, $combinationId),
+                $this->serializer,
+                sprintf('%s/%s.zip', $this->workingDirectory, $combinationId),
             );
         }
 

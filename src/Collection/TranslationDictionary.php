@@ -6,6 +6,8 @@ namespace FactorioItemBrowser\ExportData\Collection;
 
 use ArrayIterator;
 use IteratorAggregate;
+use JMS\Serializer\Annotation\Inline;
+use JMS\Serializer\Annotation\Type;
 use Traversable;
 
 /**
@@ -19,6 +21,8 @@ use Traversable;
 class TranslationDictionary implements DictionaryInterface, IteratorAggregate
 {
     /** @var array<string, string> */
+    #[Type('array<string, string>')]
+    #[Inline]
     private array $values = [];
 
     public function set(string $key, string $value): void

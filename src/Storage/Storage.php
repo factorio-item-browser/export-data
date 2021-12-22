@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Storage;
 
+use BluePsyduck\LaminasAutoWireFactory\Attribute\Alias;
+use FactorioItemBrowser\ExportData\Constant\ServiceName;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializerInterface;
 use ZipArchive;
@@ -16,15 +18,13 @@ use ZipArchive;
  */
 class Storage
 {
-    private SerializerInterface $exportDataSerializer;
-    private string $fileName;
-
     private ?ZipArchive $zipArchive = null;
 
-    public function __construct(SerializerInterface $exportDataSerializer, string $fileName)
-    {
-        $this->exportDataSerializer = $exportDataSerializer;
-        $this->fileName = $fileName;
+    public function __construct(
+        #[Alias(ServiceName::SERIALIZER)]
+        private readonly SerializerInterface $serializer,
+        private readonly string $fileName,
+    ) {
     }
 
     public function __destruct()
@@ -57,7 +57,7 @@ class Storage
      */
     public function writeData(string $name, $data): void
     {
-        $contents = $this->exportDataSerializer->serialize($data, 'json');
+        $contents = $this->serializer->serialize($data, 'json');
         $this->writeFile("{$name}.json", $contents);
     }
 
@@ -90,7 +90,7 @@ class Storage
         $context->setAttribute(self::class, $this);
 
         $contents = $this->readFile("{$name}.json");
-        return $this->exportDataSerializer->deserialize($contents, $dataClass, 'json', $context);
+        return $this->serializer->deserialize($contents, $dataClass, 'json', $context);
     }
 
     /**

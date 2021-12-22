@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FactorioItemBrowser\ExportData\Entity;
 
 use FactorioItemBrowser\ExportData\Entity\Icon\Layer;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * The entity representing an icon of an item or recipe.
@@ -17,5 +18,6 @@ class Icon
     public string $id = '';
     public int $size = 0;
     /** @var array<Layer> */
+    #[Type('array<' . Layer::class . '>')]
     public array $layers = [];
 }

@@ -27,10 +27,7 @@ abstract class SerializerTestCase extends TestCase
     protected function createSerializer(): SerializerInterface
     {
         $builder = new SerializerBuilder();
-        $builder->setMetadataDirs([
-                    'FactorioItemBrowser\ExportData' => __DIR__ . '/../../config/serializer',
-                ])
-                ->setPropertyNamingStrategy(new IdenticalPropertyNamingStrategy())
+        $builder->setPropertyNamingStrategy(new IdenticalPropertyNamingStrategy())
                 ->setObjectConstructor(new ObjectConstructor())
                 ->addDefaultHandlers()
                 ->configureHandlers(function (HandlerRegistry $registry): void {

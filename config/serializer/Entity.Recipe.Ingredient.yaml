@@ -1,9 +1,0 @@
-FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient:
-  exclusion_policy: all
-  properties:
-    type:
-      type: string
-    name:
-      type: string
-    amount:
-      type: float

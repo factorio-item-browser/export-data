@@ -1,7 +1,0 @@
-FactorioItemBrowser\ExportData\Entity\Icon\Offset:
-  exclusion_policy: all
-  properties:
-    x:
-      type: integer
-    y:
-      type: integer
