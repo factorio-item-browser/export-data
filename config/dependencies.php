@@ -13,11 +13,10 @@ namespace FactorioItemBrowser\ExportData;
 
 use BluePsyduck\JmsSerializerFactory\JmsSerializerFactory;
 use BluePsyduck\LaminasAutoWireFactory\AutoWireFactory;
+use BluePsyduck\LaminasAutoWireFactory\AutoWireUtils;
 use FactorioItemBrowser\ExportData\Constant\ConfigKey;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 use JMS\Serializer\SerializerInterface;
-
-use function BluePsyduck\LaminasAutoWireFactory\readConfig;
 
 return [
     'dependencies' => [
@@ -34,7 +33,7 @@ return [
 
             // Auto-wire helpers
             SerializerInterface::class . ' $exportDataSerializer' => new JmsSerializerFactory(ConfigKey::MAIN, ConfigKey::SERIALIZER),
-            'string $exportDataWorkingDirectory' => readConfig(ConfigKey::MAIN, ConfigKey::WORKING_DIRECTORY),
+            'string $exportDataWorkingDirectory' => AutoWireUtils::readConfig(ConfigKey::MAIN, ConfigKey::WORKING_DIRECTORY),
         ],
     ],
 ];
