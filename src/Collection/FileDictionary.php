@@ -19,15 +19,11 @@ use Traversable;
  */
 class FileDictionary implements DictionaryInterface, IteratorAggregate
 {
-    private Storage $storage;
-    private string $filePattern;
-    private bool $compressFiles;
-
-    public function __construct(Storage $storage, string $filePattern, bool $compressFiles = true)
-    {
-        $this->storage = $storage;
-        $this->filePattern = $filePattern;
-        $this->compressFiles = $compressFiles;
+    public function __construct(
+        private readonly Storage $storage,
+        private readonly string $filePattern,
+        private readonly bool $compressFiles = true
+    ) {
     }
 
     public function get(string $key): string
