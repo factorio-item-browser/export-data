@@ -13,6 +13,8 @@ use FactorioItemBrowser\ExportData\Entity\Machine;
 use FactorioItemBrowser\ExportData\Entity\Mod;
 use FactorioItemBrowser\ExportData\Entity\Recipe;
 use FactorioItemBrowser\ExportData\Storage\Storage;
+use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * The class managing the data of an export.
@@ -24,15 +26,21 @@ class ExportData
 {
     private readonly string $combinationId;
     /** @var ChunkedCollection<Mod> */
+    #[Type('ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Mod>')]
     private readonly ChunkedCollection $mods;
     /** @var ChunkedCollection<Item> */
+    #[Type('ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Item>')]
     private readonly ChunkedCollection $items;
     /** @var ChunkedCollection<Machine> */
+    #[Type('ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Machine>')]
     private readonly ChunkedCollection $machines;
     /** @var ChunkedCollection<Recipe> */
+    #[Type('ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Recipe>')]
     private readonly ChunkedCollection $recipes;
     /** @var ChunkedCollection<Icon> */
+    #[Type('ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Icon>')]
     private readonly ChunkedCollection $icons;
+    #[Exclude]
     private readonly DictionaryInterface $renderedIcons;
 
     public function __construct(

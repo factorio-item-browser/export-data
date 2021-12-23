@@ -55,7 +55,7 @@ class Storage
      * @param string $name
      * @param mixed $data
      */
-    public function writeData(string $name, $data): void
+    public function writeData(string $name, mixed $data): void
     {
         $contents = $this->serializer->serialize($data, 'json');
         $this->writeFile("{$name}.json", $contents);
