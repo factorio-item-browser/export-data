@@ -25,9 +25,11 @@ class ModTest extends SerializerTestCase
         $mod->name = 'abc';
         $mod->author = 'def';
         $mod->version = 'ghi';
-        $mod->thumbnailId = 'jkl';
-        $mod->titles->set('mno', 'pqr');
-        $mod->descriptions->set('stu', 'vwx');
+        $mod->iconId = 'jkl';
+        $mod->localisedName = ['mno', 42];
+        $mod->localisedDescription = ['pqr', 21];
+        $mod->labels->set('stu', 'vwx');
+        $mod->descriptions->set('yza', 'bcd');
 
         return $mod;
     }
@@ -42,12 +44,14 @@ class ModTest extends SerializerTestCase
             'name' => 'abc',
             'author' => 'def',
             'version' => 'ghi',
-            'thumbnailId' => 'jkl',
-            'titles' => [
-                'mno' => 'pqr',
+            'iconId' => 'jkl',
+            'localisedName' => ['mno', 42],
+            'localisedDescription' => ['pqr', 21],
+            'labels' => [
+                'stu' => 'vwx',
             ],
             'descriptions' => [
-                'stu' => 'vwx',
+                'yza' => 'bcd',
             ],
         ];
     }

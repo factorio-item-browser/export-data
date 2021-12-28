@@ -12,10 +12,29 @@ namespace FactorioItemBrowser\ExportData\Entity\Icon;
  */
 class Layer
 {
+    /**
+     * The name of the file used by the layer.
+     */
     public string $fileName = '';
+
+    /**
+     * The offset of the layer.
+     */
     public Offset $offset;
+
+    /**
+     * The scale of the layer.
+     */
     public float $scale = 1.;
+
+    /**
+     * The size of the layer, in pixel.
+     */
     public int $size = 0;
+
+    /**
+     * The tint of the layer.
+     */
     public Color $tint;
 
     public function __construct()

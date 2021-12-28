@@ -25,8 +25,10 @@ class ItemTest extends SerializerTestCase
         $item->type = 'abc';
         $item->name = 'def';
         $item->iconId = 'ghi';
-        $item->labels->set('jkl', 'mno');
-        $item->descriptions->set('pqr', 'stu');
+        $item->localisedName = ['jkl', 42];
+        $item->localisedDescription = ['mno', 21];
+        $item->labels->set('pqr', 'stu');
+        $item->descriptions->set('vwx', 'yza');
 
         return $item;
     }
@@ -41,11 +43,13 @@ class ItemTest extends SerializerTestCase
             'type' => 'abc',
             'name' => 'def',
             'iconId' => 'ghi',
+            'localisedName' => ['jkl', 42],
+            'localisedDescription' => ['mno', 21],
             'labels' => [
-                'jkl' => 'mno',
+                'pqr' => 'stu',
             ],
             'descriptions' => [
-                'pqr' => 'stu',
+                'vwx' => 'yza',
             ],
         ];
     }

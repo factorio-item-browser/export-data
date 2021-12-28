@@ -24,6 +24,7 @@ return [
             JmsConfigKey::ADD_DEFAULT_HANDLERS => true,
             JmsConfigKey::HANDLERS => [
                 Serializer\Handler\ChunkedCollectionHandler::class,
+                Serializer\Handler\LocalisedStringHandler::class,
             ],
         ],
     ],

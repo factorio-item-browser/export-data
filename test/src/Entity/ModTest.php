@@ -23,10 +23,8 @@ class ModTest extends TestCase
         $mod = new Mod();
 
         $this->assertSame('', $mod->name);
-        $this->assertEquals(new TranslationDictionary(), $mod->titles);
-        $this->assertEquals(new TranslationDictionary(), $mod->descriptions);
         $this->assertSame('', $mod->author);
         $this->assertSame('', $mod->version);
-        $this->assertSame('', $mod->thumbnailId);
+        $this->assertSame('', $mod->iconId);
     }
 }

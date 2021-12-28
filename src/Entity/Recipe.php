@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
-use FactorioItemBrowser\ExportData\Collection\DictionaryInterface;
-use FactorioItemBrowser\ExportData\Collection\TranslationDictionary;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Product;
 use JMS\Serializer\Annotation\Type;
@@ -16,27 +14,49 @@ use JMS\Serializer\Annotation\Type;
  * @author BluePsyduck <bluepsyduck@gmx.com>
  * @license http://opensource.org/licenses/GPL-3.0 GPL v3
  */
-class Recipe
+class Recipe extends LocalisedEntity
 {
+    /**
+     * The type of the recipe.
+     */
+    public string $type = '';
+
+    /**
+     * The name of the recipe.
+     */
     public string $name = '';
-    #[Type(TranslationDictionary::class)]
-    public DictionaryInterface $labels;
-    #[Type(TranslationDictionary::class)]
-    public DictionaryInterface $descriptions;
+
+    /**
+     * The mode of the recipe.
+     */
     public string $mode = '';
-    /** @var array<Ingredient> */
+
+    /**
+     * The ingredients of the recipe.
+     * @var array<Ingredient>
+     */
     #[Type('array<' . Ingredient::class . '>')]
     public array $ingredients = [];
-    /** @var array<Product> */
+
+    /**
+     * The products of the recipe.
+     * @var array<Product>
+     */
     #[Type('array<' . Product::class . '>')]
     public array $products = [];
-    public float $craftingTime = 0.;
-    public string $craftingCategory = '';
-    public string $iconId = '';
 
-    public function __construct()
-    {
-        $this->labels = new TranslationDictionary();
-        $this->descriptions = new TranslationDictionary();
-    }
+    /**
+     * The time of the recipe, either the crafting time, or mining time in case of a mining recipe.
+     */
+    public float $time = 0.;
+
+    /**
+     * The category of the recipe, either the crafting category, or the resource category in case of a mining recipe.
+     */
+    public string $category = '';
+
+    /**
+     * The ID of the icon used by the recipe.
+     */
+    public string $iconId = '';
 }

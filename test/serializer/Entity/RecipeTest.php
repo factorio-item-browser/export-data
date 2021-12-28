@@ -38,15 +38,18 @@ class RecipeTest extends SerializerTestCase
         $product2->name = 'vwx';
 
         $recipe = new Recipe();
+        $recipe->type = 'cde';
         $recipe->name = 'yza';
         $recipe->mode = 'bcd';
         $recipe->ingredients = [$ingredient1, $ingredient2];
         $recipe->products = [$product1, $product2];
-        $recipe->craftingTime = 13.37;
-        $recipe->craftingCategory = 'efg';
+        $recipe->time = 13.37;
+        $recipe->category = 'efg';
         $recipe->iconId = 'hij';
-        $recipe->labels->set('klm', 'opq');
-        $recipe->descriptions->set('rst', 'uvw');
+        $recipe->localisedName = ['klm', 42];
+        $recipe->localisedDescription = ['nop', 21];
+        $recipe->labels->set('qrs', 'tuv');
+        $recipe->descriptions->set('wxy', 'zab');
 
         return $recipe;
     }
@@ -58,6 +61,7 @@ class RecipeTest extends SerializerTestCase
     protected function getData(): array
     {
         return [
+            'type' => 'cde',
             'name' => 'yza',
             'mode' => 'bcd',
             'ingredients' => [
@@ -88,14 +92,16 @@ class RecipeTest extends SerializerTestCase
                     'probability' => 1.,
                 ],
             ],
-            'craftingTime' => 13.37,
-            'craftingCategory' => 'efg',
+            'time' => 13.37,
+            'category' => 'efg',
             'iconId' => 'hij',
+            'localisedName' => ['klm', 42],
+            'localisedDescription' => ['nop', 21],
             'labels' => [
-                'klm' => 'opq',
+                'qrs' => 'tuv',
             ],
             'descriptions' => [
-                'rst' => 'uvw',
+                'wxy' => 'zab',
             ],
         ];
     }

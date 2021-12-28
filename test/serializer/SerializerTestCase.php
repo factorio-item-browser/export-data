@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTestSerializer\ExportData;
 
+use BluePsyduck\JmsSerializerFactory\JmsSerializerFactory;
+use FactorioItemBrowser\ExportData\Constant\ConfigKey;
 use FactorioItemBrowser\ExportData\Serializer\Construction\ObjectConstructor;
 use FactorioItemBrowser\ExportData\Serializer\Handler\ChunkedCollectionHandler;
-use JMS\Serializer\Handler\HandlerRegistry;
+use FactorioItemBrowser\ExportData\Serializer\Handler\LocalisedStringHandler;
+use Interop\Container\ContainerInterface;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
-use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerExceptionInterface;
 
 /**
  * The test case for the serializing and deserializing of objects.
@@ -20,47 +23,46 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class SerializerTestCase extends TestCase
 {
-    /**
-     * Creates and returns the serializer.
-     * @return SerializerInterface
-     */
-    protected function createSerializer(): SerializerInterface
-    {
-        $builder = new SerializerBuilder();
-        $builder->setPropertyNamingStrategy(new IdenticalPropertyNamingStrategy())
-                ->setObjectConstructor(new ObjectConstructor())
-                ->addDefaultHandlers()
-                ->configureHandlers(function (HandlerRegistry $registry): void {
-                    $registry->registerSubscribingHandler(new ChunkedCollectionHandler());
-                });
+    private SerializerInterface $serializer;
 
-        return $builder->build();
+    /**
+     * @throws ContainerExceptionInterface
+     */
+    protected function setUp(): void
+    {
+        $config = require(__DIR__ . '/../../config/export-data.php');
+
+        $container = $this->createMock(ContainerInterface::class);
+        $container->expects($this->any())
+                  ->method('get')
+                  ->willReturnMap([
+                      ['config', $config],
+                      [ChunkedCollectionHandler::class, new ChunkedCollectionHandler()],
+                      [IdenticalPropertyNamingStrategy::class, new IdenticalPropertyNamingStrategy()],
+                      [LocalisedStringHandler::class, new LocalisedStringHandler()],
+                      [ObjectConstructor::class, new ObjectConstructor()],
+                  ]);
+
+        $serializerFactory = new JmsSerializerFactory(ConfigKey::MAIN, ConfigKey::SERIALIZER);
+        $this->serializer = $serializerFactory($container, SerializerInterface::class); // @phpstan-ignore-line
     }
 
-    /**
-     * Tests the serializing.
-     */
     public function testSerialize(): void
     {
         $object = $this->getObject();
         $expectedData = $this->getData();
 
-        $serializer = $this->createSerializer();
-        $result = $serializer->serialize($object, 'json');
+        $result = $this->serializer->serialize($object, 'json');
 
         $this->assertEquals($expectedData, json_decode($result, true));
     }
 
-    /**
-     * Tests the deserializing.
-     */
     public function testDeserialize(): void
     {
         $data = $this->getData();
         $expectedObject = $this->getObject();
 
-        $serializer = $this->createSerializer();
-        $result = $serializer->deserialize((string) json_encode($data), get_class($expectedObject), 'json');
+        $result = $this->serializer->deserialize((string) json_encode($data), get_class($expectedObject), 'json');
 
         $this->assertEquals($expectedObject, $result);
     }

@@ -12,6 +12,13 @@ namespace FactorioItemBrowser\ExportData\Entity\Icon;
  */
 class Offset
 {
+    /**
+     * The horizontal offset.
+     */
     public int $x = 0;
+
+    /**
+     * The vertical offset.
+     */
     public int $y = 0;
 }

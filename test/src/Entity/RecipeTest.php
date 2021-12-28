@@ -22,14 +22,13 @@ class RecipeTest extends TestCase
     {
         $recipe = new Recipe();
 
+        $this->assertSame('', $recipe->type);
         $this->assertSame('', $recipe->name);
-        $this->assertEquals(new TranslationDictionary(), $recipe->labels);
-        $this->assertEquals(new TranslationDictionary(), $recipe->descriptions);
         $this->assertSame('', $recipe->mode);
         $this->assertSame([], $recipe->ingredients);
         $this->assertSame([], $recipe->products);
-        $this->assertSame(0., $recipe->craftingTime);
-        $this->assertSame('', $recipe->craftingCategory);
+        $this->assertSame(0., $recipe->time);
+        $this->assertSame('', $recipe->category);
         $this->assertSame('', $recipe->iconId);
     }
 }

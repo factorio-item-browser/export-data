@@ -22,10 +22,9 @@ class MachineTest extends TestCase
         $machine = new Machine();
 
         $this->assertSame('', $machine->name);
-        $this->assertEquals(new TranslationDictionary(), $machine->labels);
-        $this->assertEquals(new TranslationDictionary(), $machine->descriptions);
         $this->assertSame([], $machine->craftingCategories);
-        $this->assertSame(1., $machine->craftingSpeed);
+        $this->assertSame([], $machine->resourceCategories);
+        $this->assertSame(1., $machine->speed);
         $this->assertSame(0, $machine->numberOfItemSlots);
         $this->assertSame(0, $machine->numberOfFluidInputSlots);
         $this->assertSame(0, $machine->numberOfFluidOutputSlots);

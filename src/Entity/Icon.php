@@ -15,9 +15,20 @@ use JMS\Serializer\Annotation\Type;
  */
 class Icon
 {
+    /**
+     * The ID of the icon.
+     */
     public string $id = '';
+
+    /**
+     * The size in which the icon is rendered.
+     */
     public int $size = 0;
-    /** @var array<Layer> */
+
+    /**
+     * The layers of the icon.
+     * @var array<Layer>
+     */
     #[Type('array<' . Layer::class . '>')]
     public array $layers = [];
 }

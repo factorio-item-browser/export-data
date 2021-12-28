@@ -24,7 +24,8 @@ class MachineTest extends SerializerTestCase
         $machine = new Machine();
         $machine->name = 'abc';
         $machine->craftingCategories = ['def', 'ghi'];
-        $machine->craftingSpeed = 13.37;
+        $machine->resourceCategories = ['hij', 'klm'];
+        $machine->speed = 13.37;
         $machine->numberOfItemSlots = 12;
         $machine->numberOfFluidInputSlots = 34;
         $machine->numberOfFluidOutputSlots = 56;
@@ -32,8 +33,10 @@ class MachineTest extends SerializerTestCase
         $machine->energyUsage = 2.1;
         $machine->energyUsageUnit = 'jkl';
         $machine->iconId = 'mno';
-        $machine->labels->set('pqr', 'stu');
-        $machine->descriptions->set('vwx', 'yza');
+        $machine->localisedName = ['pqr', 42];
+        $machine->localisedDescription = ['stu', 21];
+        $machine->labels->set('vwx', 'yza');
+        $machine->descriptions->set('bcd', 'efg');
 
         return $machine;
     }
@@ -47,7 +50,8 @@ class MachineTest extends SerializerTestCase
         return [
             'name' => 'abc',
             'craftingCategories' => ['def', 'ghi'],
-            'craftingSpeed' => 13.37,
+            'resourceCategories' => ['hij', 'klm'],
+            'speed' => 13.37,
             'numberOfItemSlots' => 12,
             'numberOfFluidInputSlots' => 34,
             'numberOfFluidOutputSlots' => 56,
@@ -55,11 +59,13 @@ class MachineTest extends SerializerTestCase
             'energyUsage' => 2.1,
             'energyUsageUnit' => 'jkl',
             'iconId' => 'mno',
+            'localisedName' => ['pqr', 42],
+            'localisedDescription' => ['stu', 21],
             'labels' => [
-                'pqr' => 'stu',
+                'vwx' => 'yza',
             ],
             'descriptions' => [
-                'vwx' => 'yza',
+                'bcd' => 'efg',
             ],
         ];
     }

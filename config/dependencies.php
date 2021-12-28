@@ -24,6 +24,7 @@ return [
 
             Serializer\Construction\ObjectConstructor::class => AutoWireFactory::class,
             Serializer\Handler\ChunkedCollectionHandler::class => AutoWireFactory::class,
+            Serializer\Handler\LocalisedStringHandler::class => AutoWireFactory::class,
 
             Storage\StorageFactory::class => AutoWireFactory::class,
 

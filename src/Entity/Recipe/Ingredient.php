@@ -12,7 +12,18 @@ namespace FactorioItemBrowser\ExportData\Entity\Recipe;
  */
 class Ingredient
 {
+    /**
+     * The type of the ingredient.
+     */
     public string $type = '';
+
+    /**
+     * The name of the ingredient.
+     */
     public string $name = '';
+
+    /**
+     * The amount of the ingredient used in the recipe.
+     */
     public float $amount = 1.;
 }

@@ -12,9 +12,28 @@ namespace FactorioItemBrowser\ExportData\Entity\Recipe;
  */
 class Product
 {
+    /**
+     * The type of the product.
+     */
     public string $type = '';
+
+    /**
+     * The name of the product.
+     */
     public string $name = '';
+
+    /**
+     * The minimal amount of the product returned from the recipe.
+     */
     public float $amountMin = 1.;
+
+    /**
+     * The maximal amount of the product returned  from the recipe.
+     */
     public float $amountMax = 1.;
+
+    /**
+     * The probability in which the product is returned from the recipe.
+     */
     public float $probability = 1.;
 }

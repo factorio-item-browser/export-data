@@ -23,8 +23,6 @@ class ItemTest extends TestCase
         $item = new Item();
 
         $this->assertSame('', $item->type);
-        $this->assertEquals(new TranslationDictionary(), $item->labels);
-        $this->assertEquals(new TranslationDictionary(), $item->descriptions);
         $this->assertSame('', $item->name);
         $this->assertSame('', $item->iconId);
     }
