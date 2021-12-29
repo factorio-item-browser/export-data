@@ -62,6 +62,7 @@ class ChunkedCollection implements Countable, IteratorAggregate
         foreach ($this->items as $key => $value) {
             if ($value === $item) {
                 unset($this->items[$key]);
+                --$this->numberOfItems;
                 break;
             }
         }

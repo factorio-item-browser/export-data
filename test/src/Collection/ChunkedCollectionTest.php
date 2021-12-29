@@ -191,6 +191,7 @@ class ChunkedCollectionTest extends TestCase
         $instance = new ChunkedCollection($this->storage, Item::class, 1536);
         $instance->add($newItem);
         $this->assertEquals($items, iterator_to_array($instance));
+        $this->assertCount(1537, $instance);
     }
 
     public function testRemoveLoadsAllChunks(): void
@@ -215,6 +216,7 @@ class ChunkedCollectionTest extends TestCase
         $instance = new ChunkedCollection($this->storage, Item::class, 1536);
         $instance->remove($item);
         $this->assertEquals($expectedItems, iterator_to_array($instance));
+        $this->assertCount(1535, $instance);
     }
 
     public function testPersistLoadsAllChunks(): void
