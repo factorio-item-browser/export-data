@@ -22,6 +22,8 @@ class IconTest extends TestCase
         $icon = new Icon();
 
         $this->assertSame('', $icon->id);
+        $this->assertSame('', $icon->type);
+        $this->assertSame('', $icon->name);
         $this->assertSame(0, $icon->size);
         $this->assertSame([], $icon->layers);
     }

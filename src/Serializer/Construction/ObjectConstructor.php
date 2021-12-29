@@ -20,13 +20,6 @@ use JMS\Serializer\Visitor\DeserializationVisitorInterface;
  */
 class ObjectConstructor implements ObjectConstructorInterface
 {
-    private ObjectConstructorInterface $defaultConstructor;
-
-    public function __construct()
-    {
-        $this->defaultConstructor = new UnserializeObjectConstructor();
-    }
-
     /**
      * @param DeserializationVisitorInterface $visitor
      * @param ClassMetadata $metadata
@@ -38,7 +31,7 @@ class ObjectConstructor implements ObjectConstructorInterface
     public function construct(
         DeserializationVisitorInterface $visitor,
         ClassMetadata $metadata,
-        $data,
+        mixed $data,
         array $type,
         DeserializationContext $context
     ): ?object {
@@ -48,6 +41,7 @@ class ObjectConstructor implements ObjectConstructorInterface
             return new ExportData($storage, '');
         }
 
-        return $this->defaultConstructor->construct($visitor, $metadata, $data, $type, $context);
+        $className = $metadata->name;
+        return new $className();
     }
 }

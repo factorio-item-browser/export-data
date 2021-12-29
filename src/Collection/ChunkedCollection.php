@@ -52,6 +52,22 @@ class ChunkedCollection implements Countable, IteratorAggregate
         return $this;
     }
 
+    /**
+     * @param T $item
+     * @return $this
+     */
+    public function remove(object $item): self
+    {
+        $this->loadAllChunks();
+        foreach ($this->items as $key => $value) {
+            if ($value === $item) {
+                unset($this->items[$key]);
+                break;
+            }
+        }
+        return $this;
+    }
+
     public function getIterator(): Traversable
     {
         yield from $this->items;

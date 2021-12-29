@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowserTest\ExportData\Serializer\Construction;
 
+use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\ExportData;
 use FactorioItemBrowser\ExportData\Serializer\Construction\ObjectConstructor;
 use FactorioItemBrowser\ExportData\Storage\Storage;
@@ -31,6 +32,7 @@ class ObjectConstructorTest extends TestCase
 
         return [
             [ExportData::class, $storage, new ExportData($storage, '')],
+            [Item::class, $storage, new Item()],
             [stdClass::class, $storage, new stdClass()],
         ];
     }

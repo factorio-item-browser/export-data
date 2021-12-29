@@ -193,6 +193,30 @@ class ChunkedCollectionTest extends TestCase
         $this->assertEquals($items, iterator_to_array($instance));
     }
 
+    public function testRemoveLoadsAllChunks(): void
+    {
+        $chunk1 = $this->createItemArray(1024, 'foo');
+        $chunk2 = $this->createItemArray(512, 'bar');
+        $expectedItems = array_merge($chunk1, $chunk2);
+        $item = $expectedItems[42];
+        unset($expectedItems[42]);
+
+        $this->storage->expects($this->exactly(2))
+                      ->method('readData')
+                      ->withConsecutive(
+                          [$this->identicalTo('item/0')],
+                          [$this->identicalTo('item/1')],
+                      )
+                      ->willReturnOnConsecutiveCalls(
+                          $chunk1,
+                          $chunk2
+                      );
+
+        $instance = new ChunkedCollection($this->storage, Item::class, 1536);
+        $instance->remove($item);
+        $this->assertEquals($expectedItems, iterator_to_array($instance));
+    }
+
     public function testPersistLoadsAllChunks(): void
     {
         $chunk1 = $this->createItemArray(1024, 'foo');

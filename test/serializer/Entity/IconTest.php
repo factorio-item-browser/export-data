@@ -34,6 +34,8 @@ class IconTest extends SerializerTestCase
 
         $icon = new Icon();
         $icon->id = 'ghi';
+        $icon->type = 'jkl';
+        $icon->name = 'mno';
         $icon->layers = [$layer1, $layer2];
         $icon->size = 1337;
 
@@ -48,6 +50,8 @@ class IconTest extends SerializerTestCase
     {
         return [
             'id' => 'ghi',
+            'type' => 'jkl',
+            'name' => 'mno',
             'layers' => [
                 [
                     'fileName' => 'abc',

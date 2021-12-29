@@ -21,6 +21,16 @@ class Icon
     public string $id = '';
 
     /**
+     * The type of the icon.
+     */
+    public string $type = '';
+
+    /**
+     * The name of the icon.
+     */
+    public string $name = '';
+
+    /**
      * The size in which the icon is rendered.
      */
     public int $size = 0;
