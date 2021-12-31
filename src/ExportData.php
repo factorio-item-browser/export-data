@@ -12,6 +12,7 @@ use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\Machine;
 use FactorioItemBrowser\ExportData\Entity\Mod;
 use FactorioItemBrowser\ExportData\Entity\Recipe;
+use FactorioItemBrowser\ExportData\Entity\Technology;
 use FactorioItemBrowser\ExportData\Storage\Storage;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\Type;
@@ -25,21 +26,31 @@ use JMS\Serializer\Annotation\Type;
 class ExportData
 {
     private readonly string $combinationId;
+
     /** @var ChunkedCollection<Mod> */
-    #[Type('ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Mod>')]
+    #[Type('ChunkedCollection<' . Mod::class . '>')]
     private readonly ChunkedCollection $mods;
+
     /** @var ChunkedCollection<Item> */
-    #[Type('ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Item>')]
+    #[Type('ChunkedCollection<' . Item::class . '>')]
     private readonly ChunkedCollection $items;
+
     /** @var ChunkedCollection<Machine> */
-    #[Type('ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Machine>')]
+    #[Type('ChunkedCollection<' . Machine::class . '>')]
     private readonly ChunkedCollection $machines;
+
     /** @var ChunkedCollection<Recipe> */
-    #[Type('ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Recipe>')]
+    #[Type('ChunkedCollection<' . Recipe::class . '>')]
     private readonly ChunkedCollection $recipes;
+
+    /** @var ChunkedCollection<Technology> */
+    #[Type('ChunkedCollection<' . Technology::class . '>')]
+    private readonly ChunkedCollection $technologies;
+
     /** @var ChunkedCollection<Icon> */
     #[Type('ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Icon>')]
     private readonly ChunkedCollection $icons;
+
     #[Exclude]
     private readonly DictionaryInterface $renderedIcons;
 
@@ -52,6 +63,7 @@ class ExportData
         $this->items = new ChunkedCollection($storage, Item::class);
         $this->machines = new ChunkedCollection($storage, Machine::class);
         $this->recipes = new ChunkedCollection($storage, Recipe::class);
+        $this->technologies = new ChunkedCollection($storage, Technology::class);
         $this->icons = new ChunkedCollection($storage, Icon::class);
         $this->renderedIcons = new FileDictionary($storage, 'rendered-icon/%s.png', false);
     }
@@ -91,6 +103,14 @@ class ExportData
     public function getRecipes(): ChunkedCollection
     {
         return $this->recipes;
+    }
+
+    /**
+     * @return ChunkedCollection<Technology>
+     */
+    public function getTechnologies(): ChunkedCollection
+    {
+        return $this->technologies;
     }
 
     /**

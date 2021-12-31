@@ -11,6 +11,7 @@ use FactorioItemBrowser\ExportData\Entity\Item;
 use FactorioItemBrowser\ExportData\Entity\Machine;
 use FactorioItemBrowser\ExportData\Entity\Mod;
 use FactorioItemBrowser\ExportData\Entity\Recipe;
+use FactorioItemBrowser\ExportData\Entity\Technology;
 use FactorioItemBrowser\ExportData\ExportData;
 use FactorioItemBrowser\ExportData\Storage\Storage;
 use PHPUnit\Framework\TestCase;
@@ -36,6 +37,7 @@ class ExportDataTest extends TestCase
         $this->assertEquals(new ChunkedCollection($storage, Item::class), $instance->getItems());
         $this->assertEquals(new ChunkedCollection($storage, Machine::class), $instance->getMachines());
         $this->assertEquals(new ChunkedCollection($storage, Recipe::class), $instance->getRecipes());
+        $this->assertEquals(new ChunkedCollection($storage, Technology::class), $instance->getTechnologies());
         $this->assertEquals(new ChunkedCollection($storage, Icon::class), $instance->getIcons());
         $this->assertInstanceOf(FileDictionary::class, $instance->getRenderedIcons());
     }
