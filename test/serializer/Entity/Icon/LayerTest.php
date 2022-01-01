@@ -15,10 +15,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  */
 class LayerTest extends SerializerTestCase
 {
-    /**
-     * Returns the object to be serialized or deserialized.
-     * @return object
-     */
     protected function getObject(): object
     {
         $layer = new Layer();
@@ -35,10 +31,6 @@ class LayerTest extends SerializerTestCase
         return $layer;
     }
 
-    /**
-     * Returns the serialized data.
-     * @return array<mixed>
-     */
     protected function getData(): array
     {
         return [
@@ -56,5 +48,10 @@ class LayerTest extends SerializerTestCase
                 'alpha' => 45.67,
             ],
         ];
+    }
+
+    protected function getHashData(): array
+    {
+        return $this->getData();
     }
 }

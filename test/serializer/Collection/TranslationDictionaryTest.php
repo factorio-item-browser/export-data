@@ -15,10 +15,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  */
 class TranslationDictionaryTest extends SerializerTestCase
 {
-    /**
-     * Returns the object to be serialized or deserialized.
-     * @return object
-     */
     protected function getObject(): object
     {
         $translations = new TranslationDictionary();
@@ -28,15 +24,16 @@ class TranslationDictionaryTest extends SerializerTestCase
         return $translations;
     }
 
-    /**
-     * Returns the serialized data.
-     * @return array<mixed>
-     */
     protected function getData(): array
     {
         return [
             'abc' => 'def',
             'ghi' => 'jkl',
         ];
+    }
+
+    protected function getHashData(): array
+    {
+        return [];
     }
 }

@@ -15,10 +15,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  */
 class ProductTest extends SerializerTestCase
 {
-    /**
-     * Returns the object to be serialized or deserialized.
-     * @return object
-     */
     protected function getObject(): object
     {
         $product = new Product();
@@ -30,10 +26,6 @@ class ProductTest extends SerializerTestCase
         return $product;
     }
 
-    /**
-     * Returns the serialized data.
-     * @return array<mixed>
-     */
     protected function getData(): array
     {
         return [
@@ -43,5 +35,10 @@ class ProductTest extends SerializerTestCase
             'amountMax' => 23.45,
             'probability' => 34.56,
         ];
+    }
+
+    protected function getHashData(): array
+    {
+        return $this->getData();
     }
 }

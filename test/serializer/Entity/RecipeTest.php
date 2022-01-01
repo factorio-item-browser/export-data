@@ -17,10 +17,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  */
 class RecipeTest extends SerializerTestCase
 {
-    /**
-     * Returns the object to be serialized or deserialized.
-     * @return object
-     */
     protected function getObject(): object
     {
         $ingredient1 = new Ingredient();
@@ -54,10 +50,6 @@ class RecipeTest extends SerializerTestCase
         return $recipe;
     }
 
-    /**
-     * Returns the serialized data.
-     * @return array<mixed>
-     */
     protected function getData(): array
     {
         return [
@@ -103,6 +95,46 @@ class RecipeTest extends SerializerTestCase
             'descriptions' => [
                 'wxy' => 'zab',
             ],
+        ];
+    }
+
+    protected function getHashData(): array
+    {
+        return [
+            'type' => 'cde',
+            'name' => 'yza',
+            'ingredients' => [
+                [
+                    'type' => 'abc',
+                    'name' => 'def',
+                    'amount' => 1.,
+                ],
+                [
+                    'type' => 'ghi',
+                    'name' => 'jkl',
+                    'amount' => 1.,
+                ],
+            ],
+            'products' => [
+                [
+                    'type' => 'mno',
+                    'name' => 'pqr',
+                    'amountMin' => 1.,
+                    'amountMax' => 1.,
+                    'probability' => 1.,
+                ],
+                [
+                    'type' => 'stu',
+                    'name' => 'vwx',
+                    'amountMin' => 1.,
+                    'amountMax' => 1.,
+                    'probability' => 1.,
+                ],
+            ],
+            'time' => 13.37,
+            'category' => 'efg',
+            'localisedName' => ['klm', 42],
+            'localisedDescription' => ['nop', 21],
         ];
     }
 }

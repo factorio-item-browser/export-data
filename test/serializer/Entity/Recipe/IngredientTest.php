@@ -15,10 +15,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  */
 class IngredientTest extends SerializerTestCase
 {
-    /**
-     * Returns the object to be serialized or deserialized.
-     * @return object
-     */
     protected function getObject(): object
     {
         $ingredient = new Ingredient();
@@ -28,10 +24,6 @@ class IngredientTest extends SerializerTestCase
         return $ingredient;
     }
 
-    /**
-     * Returns the serialized data.
-     * @return array<mixed>
-     */
     protected function getData(): array
     {
         return [
@@ -39,5 +31,10 @@ class IngredientTest extends SerializerTestCase
             'name' => 'def',
             'amount' => 13.37,
         ];
+    }
+
+    protected function getHashData(): array
+    {
+        return $this->getData();
     }
 }

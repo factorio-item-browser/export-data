@@ -18,14 +18,17 @@ class TechnologyTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $recipe = new Technology();
+        $instance = new Technology();
 
-        $this->assertSame('', $recipe->name);
-        $this->assertSame('', $recipe->mode);
-        $this->assertSame([], $recipe->prerequisites);
-        $this->assertSame([], $recipe->researchIngredients);
-        $this->assertSame(0, $recipe->researchCount);
-        $this->assertSame(0., $recipe->researchTime);
-        $this->assertSame('', $recipe->iconId);
+        $this->assertSame('', $instance->name);
+        $this->assertSame('', $instance->mode);
+        $this->assertSame([], $instance->prerequisites);
+        $this->assertSame([], $instance->researchIngredients);
+        $this->assertSame(0, $instance->researchCount);
+        $this->assertSame('', $instance->researchCountFormula);
+        $this->assertSame(0., $instance->researchTime);
+        $this->assertSame(0, $instance->level);
+        $this->assertSame(0, $instance->maxLevel);
+        $this->assertSame('', $instance->iconId);
     }
 }

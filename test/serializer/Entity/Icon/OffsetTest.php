@@ -15,10 +15,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  */
 class OffsetTest extends SerializerTestCase
 {
-    /**
-     * Returns the object to be serialized or deserialized.
-     * @return object
-     */
     protected function getObject(): object
     {
         $offset = new Offset();
@@ -28,15 +24,16 @@ class OffsetTest extends SerializerTestCase
         return $offset;
     }
 
-    /**
-     * Returns the serialized data.
-     * @return array<mixed>
-     */
     protected function getData(): array
     {
         return [
             'x' => 42,
             'y' => 21,
         ];
+    }
+
+    protected function getHashData(): array
+    {
+        return $this->getData();
     }
 }

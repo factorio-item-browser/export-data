@@ -15,10 +15,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  */
 class ColorTest extends SerializerTestCase
 {
-    /**
-     * Returns the object to be serialized or deserialized.
-     * @return object
-     */
     protected function getObject(): object
     {
         $color = new Color();
@@ -30,10 +26,6 @@ class ColorTest extends SerializerTestCase
         return $color;
     }
 
-    /**
-     * Returns the serialized data.
-     * @return array<mixed>
-     */
     protected function getData(): array
     {
         return [
@@ -42,5 +34,11 @@ class ColorTest extends SerializerTestCase
             'blue' => 34.56,
             'alpha' => 45.67,
         ];
+    }
+
+
+    protected function getHashData(): array
+    {
+        return $this->getData();
     }
 }

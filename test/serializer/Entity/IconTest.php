@@ -16,10 +16,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  */
 class IconTest extends SerializerTestCase
 {
-    /**
-     * Returns the object to be serialized or deserialized.
-     * @return object
-     */
     protected function getObject(): object
     {
         $layer1 = new Layer();
@@ -42,14 +38,51 @@ class IconTest extends SerializerTestCase
         return $icon;
     }
 
-    /**
-     * Returns the serialized data.
-     * @return array<mixed>
-     */
     protected function getData(): array
     {
         return [
             'id' => 'ghi',
+            'type' => 'jkl',
+            'name' => 'mno',
+            'layers' => [
+                [
+                    'fileName' => 'abc',
+                    'offset' => [
+                        'x' => 0,
+                        'y' => 0,
+                    ],
+                    'scale' => 13.37,
+                    'size' => 42,
+                    'tint' => [
+                        'red' => 1.,
+                        'green' => 1.,
+                        'blue' => 1.,
+                        'alpha' => 1.,
+                    ],
+                ],
+                [
+                    'fileName' => 'def',
+                    'offset' => [
+                        'x' => 0,
+                        'y' => 0,
+                    ],
+                    'scale' => 73.31,
+                    'size' => 21,
+                    'tint' => [
+                        'red' => 1.,
+                        'green' => 1.,
+                        'blue' => 1.,
+                        'alpha' => 1.,
+                    ],
+                ]
+            ],
+            'size' => 1337,
+        ];
+    }
+
+    protected function getHashData(): array
+    {
+        return [
             'type' => 'jkl',
             'name' => 'mno',
             'layers' => [

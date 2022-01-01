@@ -15,10 +15,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  */
 class MachineTest extends SerializerTestCase
 {
-    /**
-     * Returns the object to be serialized or deserialized.
-     * @return object
-     */
     protected function getObject(): object
     {
         $machine = new Machine();
@@ -41,10 +37,6 @@ class MachineTest extends SerializerTestCase
         return $machine;
     }
 
-    /**
-     * Returns the serialized data.
-     * @return array<mixed>
-     */
     protected function getData(): array
     {
         return [
@@ -67,6 +59,24 @@ class MachineTest extends SerializerTestCase
             'descriptions' => [
                 'bcd' => 'efg',
             ],
+        ];
+    }
+
+    protected function getHashData(): array
+    {
+        return [
+            'name' => 'abc',
+            'craftingCategories' => ['def', 'ghi'],
+            'resourceCategories' => ['hij', 'klm'],
+            'speed' => 13.37,
+            'numberOfItemSlots' => 12,
+            'numberOfFluidInputSlots' => 34,
+            'numberOfFluidOutputSlots' => 56,
+            'numberOfModuleSlots' => 78,
+            'energyUsage' => 2.1,
+            'energyUsageUnit' => 'jkl',
+            'localisedName' => ['pqr', 42],
+            'localisedDescription' => ['stu', 21],
         ];
     }
 }

@@ -11,6 +11,7 @@ use FactorioItemBrowser\ExportData\Serializer\Handler\ChunkedCollectionHandler;
 use FactorioItemBrowser\ExportData\Serializer\Handler\LocalisedStringHandler;
 use Interop\Container\ContainerInterface;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
+use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
@@ -57,6 +58,16 @@ abstract class SerializerTestCase extends TestCase
         $this->assertEquals($expectedData, json_decode($result, true));
     }
 
+    public function testSerializeHash(): void
+    {
+        $object = $this->getObject();
+        $expectedData = $this->getHashData();
+
+        $result = $this->serializer->serialize($object, 'json', SerializationContext::create()->setGroups(['Hash']));
+
+        $this->assertEquals($expectedData, json_decode($result, true));
+    }
+
     public function testDeserialize(): void
     {
         $data = $this->getData();
@@ -78,4 +89,10 @@ abstract class SerializerTestCase extends TestCase
      * @return array<mixed>
      */
     abstract protected function getData(): array;
+
+    /**
+     * Returns the serialized data in case of hashing.
+     * @return array<mixed>
+     */
+    abstract protected function getHashData(): array;
 }

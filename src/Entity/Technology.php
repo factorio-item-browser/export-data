@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace FactorioItemBrowser\ExportData\Entity;
 
+use FactorioItemBrowser\ExportData\Constant\SerializationGroup;
 use FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient;
+use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
 
 /**
@@ -18,11 +20,13 @@ class Technology extends LocalisedEntity
     /**
      * The name of the technology.
      */
+    #[Groups([SerializationGroup::DEFAULT, SerializationGroup::HASH])]
     public string $name = '';
 
     /**
      * The difficulty mode of the technology.
      */
+    #[Groups([SerializationGroup::DEFAULT])]
     public string $mode = '';
 
     /**
@@ -30,6 +34,7 @@ class Technology extends LocalisedEntity
      * @var array<string>
      */
     #[Type('array<string>')]
+    #[Groups([SerializationGroup::DEFAULT, SerializationGroup::HASH])]
     public array $prerequisites = [];
 
     /**
@@ -37,16 +42,25 @@ class Technology extends LocalisedEntity
      * @var array<Ingredient>
      */
     #[Type('array<' . Ingredient::class . '>')]
+    #[Groups([SerializationGroup::DEFAULT, SerializationGroup::HASH])]
     public array $researchIngredients = [];
 
     /**
      * The number of researches required to unlock the technology.
      */
+    #[Groups([SerializationGroup::DEFAULT, SerializationGroup::HASH])]
     public int $researchCount = 0;
+
+    /**
+     * The formula to calculate the research count in case the technology has multiple levels.
+     */
+    #[Groups([SerializationGroup::DEFAULT, SerializationGroup::HASH])]
+    public string $researchCountFormula = '';
 
     /**
      * The time required for each research.
      */
+    #[Groups([SerializationGroup::DEFAULT, SerializationGroup::HASH])]
     public float $researchTime = 0.;
 
     /**
@@ -54,10 +68,24 @@ class Technology extends LocalisedEntity
      * @var array<string>
      */
     #[Type('array<string>')]
+    #[Groups([SerializationGroup::DEFAULT, SerializationGroup::HASH])]
     public array $unlockedRecipes = [];
+
+    /**
+     * The level of the technology.
+     */
+    #[Groups([SerializationGroup::DEFAULT, SerializationGroup::HASH])]
+    public int $level = 0;
+
+    /**
+     * The maximum level of the technology.
+     */
+    #[Groups([SerializationGroup::DEFAULT, SerializationGroup::HASH])]
+    public int $maxLevel = 0;
 
     /**
      * The ID of the icon used by the technology.
      */
+    #[Groups([SerializationGroup::DEFAULT])]
     public string $iconId = '';
 }

@@ -15,10 +15,6 @@ use FactorioItemBrowserTestSerializer\ExportData\SerializerTestCase;
  */
 class ModTest extends SerializerTestCase
 {
-    /**
-     * Returns the object to be serialized or deserialized.
-     * @return object
-     */
     protected function getObject(): object
     {
         $mod = new Mod();
@@ -34,10 +30,6 @@ class ModTest extends SerializerTestCase
         return $mod;
     }
 
-    /**
-     * Returns the serialized data.
-     * @return array<mixed>
-     */
     protected function getData(): array
     {
         return [
@@ -53,6 +45,17 @@ class ModTest extends SerializerTestCase
             'descriptions' => [
                 'yza' => 'bcd',
             ],
+        ];
+    }
+
+    protected function getHashData(): array
+    {
+        return [
+            'name' => 'abc',
+            'author' => 'def',
+            'version' => 'ghi',
+            'localisedName' => ['mno', 42],
+            'localisedDescription' => ['pqr', 21],
         ];
     }
 }

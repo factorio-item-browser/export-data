@@ -31,7 +31,10 @@ class TechnologyTest extends SerializerTestCase
         $object->prerequisites = ['stu', 'vwx'];
         $object->researchIngredients = [$ingredient1, $ingredient2];
         $object->researchCount = 1337;
+        $object->researchCountFormula = 'zab';
         $object->researchTime = 13.37;
+        $object->level = 12;
+        $object->maxLevel = 34;
         $object->unlockedRecipes = ['yza', 'bcd'];
         $object->iconId = 'efg';
         $object->localisedName = ['hij', 42];
@@ -60,7 +63,10 @@ class TechnologyTest extends SerializerTestCase
                 ],
             ],
             'researchCount' => '1337',
+            'researchCountFormula' => 'zab',
             'researchTime' => 13.37,
+            'level' => 12,
+            'maxLevel' => 34,
             'unlockedRecipes' => ['yza', 'bcd'],
             'iconId' => 'efg',
             'localisedName' => ['hij', 42],
@@ -71,6 +77,34 @@ class TechnologyTest extends SerializerTestCase
             'descriptions' => [
                 'tuv' => 'wxy',
             ],
+        ];
+    }
+
+    protected function getHashData(): array
+    {
+        return [
+            'name' => 'mno',
+            'prerequisites' => ['stu', 'vwx'],
+            'researchIngredients' => [
+                [
+                    'type' => 'abc',
+                    'name' => 'def',
+                    'amount' => 1.,
+                ],
+                [
+                    'type' => 'ghi',
+                    'name' => 'jkl',
+                    'amount' => 1.,
+                ],
+            ],
+            'researchCount' => 1337,
+            'researchCountFormula' => 'zab',
+            'researchTime' => 13.37,
+            'level' => 12,
+            'maxLevel' => 34,
+            'unlockedRecipes' => ['yza', 'bcd'],
+            'localisedName' => ['hij', 42],
+            'localisedDescription' => ['klm', 21],
         ];
     }
 }
