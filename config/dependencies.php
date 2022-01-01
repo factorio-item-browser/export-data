@@ -22,6 +22,8 @@ return [
         'factories'  => [
             ExportDataService::class => AutoWireFactory::class,
 
+            Helper\HashCalculator::class => AutoWireFactory::class,
+
             Serializer\Construction\ObjectConstructor::class => AutoWireFactory::class,
             Serializer\Handler\ChunkedCollectionHandler::class => AutoWireFactory::class,
             Serializer\Handler\LocalisedStringHandler::class => AutoWireFactory::class,
