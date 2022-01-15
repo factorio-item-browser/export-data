@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FactorioItemBrowser\ExportData\Entity;
 
 use FactorioItemBrowser\ExportData\Constant\SerializationGroup;
-use FactorioItemBrowser\ExportData\Entity\Recipe\Ingredient;
+use FactorioItemBrowser\ExportData\Entity\Technology\Ingredient;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
 
