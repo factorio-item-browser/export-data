@@ -25,34 +25,34 @@ use JMS\Serializer\Annotation\Type;
  */
 class ExportData
 {
-    private readonly string $combinationId;
+    private string $combinationId;
 
     /** @var ChunkedCollection<Mod> */
     #[Type('ChunkedCollection<' . Mod::class . '>')]
-    private readonly ChunkedCollection $mods;
+    private ChunkedCollection $mods;
 
     /** @var ChunkedCollection<Item> */
     #[Type('ChunkedCollection<' . Item::class . '>')]
-    private readonly ChunkedCollection $items;
+    private ChunkedCollection $items;
 
     /** @var ChunkedCollection<Machine> */
     #[Type('ChunkedCollection<' . Machine::class . '>')]
-    private readonly ChunkedCollection $machines;
+    private ChunkedCollection $machines;
 
     /** @var ChunkedCollection<Recipe> */
     #[Type('ChunkedCollection<' . Recipe::class . '>')]
-    private readonly ChunkedCollection $recipes;
+    private ChunkedCollection $recipes;
 
     /** @var ChunkedCollection<Technology> */
     #[Type('ChunkedCollection<' . Technology::class . '>')]
-    private readonly ChunkedCollection $technologies;
+    private ChunkedCollection $technologies;
 
     /** @var ChunkedCollection<Icon> */
     #[Type('ChunkedCollection<FactorioItemBrowser\ExportData\Entity\Icon>')]
-    private readonly ChunkedCollection $icons;
+    private ChunkedCollection $icons;
 
     #[Exclude]
-    private readonly DictionaryInterface $renderedIcons;
+    private DictionaryInterface $renderedIcons;
 
     public function __construct(
         Storage $storage,
