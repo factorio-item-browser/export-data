@@ -26,13 +26,13 @@ class Icon
     /**
      * The type of the icon.
      */
-    #[Groups([SerializationGroup::DEFAULT, SerializationGroup::HASH])]
+    #[Groups([SerializationGroup::DEFAULT])]
     public string $type = '';
 
     /**
      * The name of the icon.
      */
-    #[Groups([SerializationGroup::DEFAULT, SerializationGroup::HASH])]
+    #[Groups([SerializationGroup::DEFAULT])]
     public string $name = '';
 
     /**

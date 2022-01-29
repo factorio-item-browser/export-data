@@ -83,8 +83,6 @@ class IconTest extends SerializerTestCase
     protected function getHashData(): array
     {
         return [
-            'type' => 'jkl',
-            'name' => 'mno',
             'layers' => [
                 [
                     'fileName' => 'abc',
